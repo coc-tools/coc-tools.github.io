@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COC部落冲突阵型链接打开器</title>
+    <title>COC 部落冲突阵型链接打开器</title>
     <style>
         * {
             box-sizing: border-box;
@@ -168,23 +168,24 @@
             transform: translateX(4px);
         }
 
-        /* ===== 提示与复制区域 ===== */
+        /* ===== 优化：彻底阻断两边空白点击 ===== */
         .text-tips-group {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             margin-bottom: 10px;
-            color: #999;
-            font-size: 14px;
+            width: 100%;          /* 占满整行 */
+            pointer-events: none; /* 关键：让整片区域的点击事件失效 */
         }
         .copyable-text {
-            user-select: text;
+            user-select: text;       /* 支持长按复制 */
             -webkit-user-select: text;
-            cursor: pointer;
-            display: inline-block;
+            cursor: pointer;         /* 可点击 */
+            display: inline-block;   /* 宽度仅包裹文字 */
             color: #999;
             text-decoration: none;
+            pointer-events: auto;    /* 关键：只让文字本身恢复事件响应 */
         }
         .copyable-text:active {
             color: #666;
@@ -192,7 +193,8 @@
         .ios-tip {
             user-select: text;
             -webkit-user-select: text;
-            color: #999;
+            color: #bbb;             /* 颜色较浅，区分提示 */
+            font-size: 13px;
         }
     </style>
 </head>
@@ -209,14 +211,11 @@
 
         <div class="extra-area">
 
-            <!-- ★ 已修改文字并调换了位置（iOS提示在上，下载链接在下） ★ -->
+            <!-- ★ 极致的文字点触体验，两边点击不再生效 ★ -->
             <div class="text-tips-group">
-                <div>
-                    <span class="ios-tip">iOS用户添加到主屏幕使用 coc-tools.github.io</span>
-                </div>
-                <div>
-                    <span class="copyable-text download-trigger">游戏下载 pan.xingchencoc.com</span>
-                </div>
+                <span class="copyable-text" data-url="https://cungu.aiyige.ren/#download">部落冲突计时器</span>
+                <span class="ios-tip">iOS用户复制链接在Safari打开：coc-tools.github.io</span>
+                <span class="copyable-text download-trigger">游戏下载 pan.xingchencoc.com</span>
             </div>
 
             <div class="extra-card">
@@ -289,7 +288,7 @@
             linkInput.value = '';
         });
 
-        // 处理所有 data-url 元素（游戏跳转相关）
+        // 处理所有 data-url 元素（包含新加的“部落冲突计时器”）
         document.querySelectorAll('[data-url]').forEach(function(el) {
             el.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
@@ -297,18 +296,16 @@
             });
         });
 
-        // 处理“游戏下载”跳转（点击唤起浏览器下载）
+        // 处理“游戏下载”的点击（唤起系统浏览器下载）
         const downloadTrigger = document.querySelector('.download-trigger');
         if (downloadTrigger) {
             downloadTrigger.addEventListener('click', function(e) {
                 const downloadUrl = 'https://pan.xingchencoc.com';
                 
                 if (isAndroid) {
-                    // 安卓强制唤起系统浏览器
                     const intentUrl = 'intent://' + downloadUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
                     window.location.href = intentUrl;
                 } else {
-                    // iOS / 电脑直接打开新标签页
                     window.open(downloadUrl, '_blank');
                 }
             });
