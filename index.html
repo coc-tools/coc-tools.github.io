@@ -168,24 +168,24 @@
             transform: translateX(4px);
         }
 
-        /* ===== 优化：彻底阻断两边空白点击 ===== */
+        /* ===== 提示与复制区域 ===== */
         .text-tips-group {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 4px;
             margin-bottom: 10px;
-            width: 100%;          /* 占满整行 */
-            pointer-events: none; /* 关键：让整片区域的点击事件失效 */
+            width: 100%;
+            pointer-events: none; /* 阻断两边空白点击 */
         }
         .copyable-text {
-            user-select: text;       /* 支持长按复制 */
+            user-select: text;
             -webkit-user-select: text;
-            cursor: pointer;         /* 可点击 */
-            display: inline-block;   /* 宽度仅包裹文字 */
+            cursor: pointer;
+            display: inline-block;
             color: #999;
             text-decoration: none;
-            pointer-events: auto;    /* 关键：只让文字本身恢复事件响应 */
+            pointer-events: auto; /* 仅文字本身允许点击 */
         }
         .copyable-text:active {
             color: #666;
@@ -193,7 +193,7 @@
         .ios-tip {
             user-select: text;
             -webkit-user-select: text;
-            color: #bbb;             /* 颜色较浅，区分提示 */
+            color: #bbb;
             font-size: 13px;
         }
     </style>
@@ -211,9 +211,10 @@
 
         <div class="extra-area">
 
-            <!-- ★ 极致的文字点触体验，两边点击不再生效 ★ -->
+            <!-- ★ 提示区域 ★ -->
             <div class="text-tips-group">
-                <span class="copyable-text" data-url="https://cungu.aiyige.ren/#download">部落冲突计时器</span>
+                <!-- 移除 data-url 属性，改用专有类名和独立的 JS 控制，点击效果与“游戏下载”完全一致 -->
+                <span class="copyable-text browser-trigger">部落冲突计时器</span>
                 <span class="ios-tip">iOS用户复制链接在Safari打开：coc-tools.github.io</span>
                 <span class="copyable-text download-trigger">游戏下载 pan.xingchencoc.com</span>
             </div>
@@ -288,7 +289,7 @@
             linkInput.value = '';
         });
 
-        // 处理所有 data-url 元素（包含新加的“部落冲突计时器”）
+        // 处理游戏相关跳转（处理带有 data-url 的按钮）
         document.querySelectorAll('[data-url]').forEach(function(el) {
             el.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
@@ -296,13 +297,29 @@
             });
         });
 
-        // 处理“游戏下载”的点击（唤起系统浏览器下载）
+        // ★ 处理“部落冲突计时器”（与游戏下载逻辑完全一致：强制系统浏览器打开） ★
+        const timerTrigger = document.querySelector('.browser-trigger');
+        if (timerTrigger) {
+            timerTrigger.addEventListener('click', function(e) {
+                const timerUrl = 'https://cungu.aiyige.ren/#download';
+                if (isAndroid) {
+                    // 安卓：通过自定义 intent 强制唤起手机内置系统浏览器
+                    const intentUrl = 'intent://' + timerUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
+                    window.location.href = intentUrl;
+                } else {
+                    // iOS / 电脑：直接在新标签页打开
+                    window.open(timerUrl, '_blank');
+                }
+            });
+        }
+
+        // ★ 处理“游戏下载”（唤起系统浏览器下载） ★
         const downloadTrigger = document.querySelector('.download-trigger');
         if (downloadTrigger) {
             downloadTrigger.addEventListener('click', function(e) {
                 const downloadUrl = 'https://pan.xingchencoc.com';
-                
                 if (isAndroid) {
+                    // 安卓强制唤起系统浏览器
                     const intentUrl = 'intent://' + downloadUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
                     window.location.href = intentUrl;
                 } else {
