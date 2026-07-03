@@ -1,311 +1,296 @@
-<<！doctype超文本标记语言超文本标记语言>最小高度：160px；
- 超文本标记语言>超文本标记语言 朗="zh-CN">
-<头>
-    <元 字符集="UTF-8">
-    <元 姓名="视口" 内容="宽度=设备宽度，初始比例=1.0">
-    <标题>部落冲突阵型链接打开器</标题>
-    <风格>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国际服部落冲突阵型链接打开器</title>
+    <style>
         /* 清除默认边距，统一背景色 */
-*{
-            箱体尺寸: 边框框;
-边缘: 0;
-填充：0；
-        
-身体 {
-}
-背景颜色：#f8f9fa；/*浅灰底色*/
-填料：20px；
-颜色: #333;
-显示：弯曲；
-justify-content：中心；
-        
-        /* 容器最大宽度，适配手机和电脑端 */
-。容器 {
-最大容忍度：400px；
-宽容度：100%；
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
-        /* 顶部红色提示语 */
-。提示{
-字体大小：14px；
-}
-线高：1.5；
-底边距：20px；
-        
-/* 输入框区域 */
-。输入面积
-宽容度：100%；
-最小高度：160px；
-填充：08px；
-border:1px solid#eac069；/*截图里的黄色/金色边框*/
-边界半径：8px；
-填料：15px；
-字体大小：15px；
-字体系列：继承；
-color：#333；
-调整大小：无；
-大纲：无；
-        
-.输入区域：焦点{
-边框颜色：#d4a33d；
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            justify-content: center;
         }
-.输入区域：：占位符{
-颜色：#999；
+        .container {
+            max-width: 400px;
+            width: 100%;
         }
-/* 按钮组布局 */
-.btn-group{
-显示：柔性；
-间隙：12px；/*两个按钮的间距*/
-margin-top:20px；
+        .tips {
+            color: #ff5e5e;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
         }
-/* 按钮基本样式 */
-.btn{
-flex:1；/*两个按钮平分宽度*/
-填充：14px0；
-边框：无；
-边界半径：6px；
-字体大小：16px；
-font-weight:500；
-颜色：#FFFFFF；
-光标：指针；
-过渡：不透明度0.2s；
+        /* 输入框调小高度 */
+        .input-area {
+            width: 100%;
+            min-height: 80px;
+            background: #ffffff;
+            border: 1px solid #eac069;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #333;
+            resize: none;
+            outline: none;
         }
-.btn：活动{
-不透明度：0.8；
+        .input-area:focus {
+            border-color: #d4a33d;
         }
-/* 蓝色打开按钮 */
-.btn-open{
-背景色：#3a9df5；
+        .input-area::placeholder {
+            color: #999;
         }
-/* 红色清空按钮 */
-.btn-clear{
-背景色：#f46262；
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        .btn {
+            flex: 1;
+            padding: 14px 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn:active {
+            opacity: 0.8;
+        }
+        .btn-open {
+            background-color: #3a9df5;
+        }
+        .btn-clear {
+            background-color: #f46262;
         }
 
-/* ===== 下方新增内容区域样式 ===== */
-.多余区域{
-margin-top:24px；
-显示：柔性；
-弯曲方向：立柱；
-间隙：18px；
-垫底：20px；
+        /* 下方内容区域 */
+        .extra-area {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding-bottom: 20px;
         }
-.Extra-card{
-背景：#FFFFFF；
-边界半径：10px；
-填充：16px18px；
-边框：1px实体#f0f0f0；
-箱阴影：02px6px rgba(0，0，0.03)；
+        .extra-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
         }
-.Extra-card.card-title{
-字体大小：16px；
-font-weight:600；
-颜色：#222；
-底边距：12px；
-显示：柔性；
-对齐项：居中；
-间隙：6px；
+        .extra-card .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-.附加卡.卡标题.图标{
-字体大小：18px；
-        }
-
-        /* 卡片二：按钮风格的快速链接（横向排列） */
-.btn-药丸-组{
-显示：柔性；
-柔性缠绕：缠绕；
-间隙：10px；
-        }
-.btn-药丸{
-显示：inline-flex；
-对齐项：居中；
-填料：6px14px；
-背景：#f0f7ff；
-颜色：#3a9df5；
-边界半径：20px；
-font-size:14px；
-光标：指针；
-过渡：背景0.2s；
-空白：noWrap；/*防止文字换行*/
-        }
-.btn-药丸：有效{
-背景：#DCEBFF；
-        }
-.pill-tag{
-显示：内联块；
-font-size:12px；
-background：#e1efff；
-颜色：#3a9df5；
-填充：08px；
-边界半径：10px；
-margin-left:2px；
+        .extra-card .card-title .icon {
+            font-size: 18px;
         }
 
-        /* 卡片三：新手教程文字 */
-.tutorial-text{
-font-size:14px；
-线高：1.7；
-颜色：#444；
+        /* 按钮风格链接 */
+        .btn-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-.tutorial-text p{
-底边距：8px；
+        .btn-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            background: #f0f7ff;
+            color: #3a9df5;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
         }
-.tutorial-text。子项目{
-显示：块；
-padding-left:16px；
-底边距：6px；
-font-size:13.5px；
+        .btn-pill:active {
+            background: #dcebff;
         }
-.tutorial-text.num{
-font-weight:600；
-颜色：#222；
-        }
-.tutorial-text.link-label{
-颜色：#3a9df5；
-光标：指针；
-word-break:break-all；
-        }
-.tutorial-text.link-label：活动{
-颜色：#1a7ac4；
-        }
-        /* 隐藏完整链接，仅显示跳转按钮 */
-.jump-btn{
-颜色：#3a9df5；
-光标：指针；
-font-weight:500；
-font-size:14px；
-显示：内联块；
-填充：2px8px；
-边界半径：4px；
-        }
-.jump-btn：活动{
-颜色：#1a7ac4；
-背景：#f0f7ff；
-        }
-.arrow{
-显示：内联块；
-过渡：变换0.2s；
-        }
-.jump-btn：活动.箭{
-transform:translateX(4px)；
-        }
-    </风格>
-</头>
-<身体>
-<div 班级="容器">
-    <！--倾城COC-->
-    <div 班级="提示">注意：强制跳转国际服 需游戏在后台运行</div>
-<! -- 输入框 -->
-    <textarea 班级="输入区域" 身份标识="linkInput" 占位符="这里输入阵型或配兵的链接..."></textarea>
-<! -- 操作按钮 -->
-    <div 班级="btn-group">
-        <按钮 班级="btn btn-open" 身份标识="openBtn">打开部落冲突</按钮>
-        <按钮 班级="btn btn-clear" 身份标识="clearBtn">清空</按钮>
-    </div>
 
-    <!-- ===== 新增内容区域 ===== -->
-    <div class="extra-area">
-        
-        <!-- 卡片二：制作一本村庄（按纽样式） -->
-        <div class="extra-card">
-            <div class="card-title">
-                <span class="icon"></span> 制作一本村庄
-            </div>
-            <div class="btn-pill-group">
-                <span class="btn-pill" data-url="https://link.clashofclans.com/en/?action=OpenSCID">注册SCID</span>
-                <span class="btn-pill" data-url="https://link.clashofclans.com/en/?action=OpenEvents">打开活动</span>
-                <!-- 已替换为“打开更多设置” -->
-                <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenMoreSettings">打开更多设置</span>
-                <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenShop">打开商城</span>
-                <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenNews">打开新闻</span>
-            </div>
+        /* 教程文字 */
+        .tutorial-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #444;
+        }
+        .tutorial-text p {
+            margin-bottom: 8px;
+        }
+        .tutorial-text .sub-item {
+            display: block;
+            padding-left: 16px;
+            margin-bottom: 6px;
+            font-size: 13.5px;
+        }
+        .tutorial-text .num {
+            font-weight: 600;
+            color: #222;
+        }
+        .tutorial-text .link-label {
+            color: #3a9df5;
+            cursor: pointer;
+            word-break: break-all;
+        }
+        .tutorial-text .link-label:active {
+            color: #1a7ac4;
+        }
+        .jump-btn {
+            color: #3a9df5;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .jump-btn:active {
+            color: #1a7ac4;
+            background: #f0f7ff;
+        }
+        .arrow {
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .jump-btn:active .arrow {
+            transform: translateX(4px);
+        }
+
+        /* ===== 优化：仅文字可点击，两边取消点击区域 ===== */
+        .hidden-text-wrapper {
+            text-align: center;      /* 让文字居中 */
+            margin-bottom: 10px;
+        }
+        .hidden-text-link {
+            color: #999;             /* 灰色普通文本 */
+            cursor: pointer;         /* 悬停时显示手指 */
+            font-size: 14px;
+            text-decoration: none;   /* 去掉下划线 */
+            user-select: none;
+            display: inline-block;   /* 改为行内块，宽度仅包裹文字，不占满整行 */
+        }
+        .hidden-text-link:active {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部提示 -->
+        <div class="tips">注意：强制跳转国际服 需游戏在后台运行</div>
+
+        <!-- 输入框 -->
+        <textarea class="input-area" id="linkInput" placeholder="这里输入阵型或配兵的链接..."></textarea>
+
+        <!-- 操作按钮 -->
+        <div class="btn-group">
+            <button class="btn btn-open" id="openBtn">打开部落冲突</button>
+            <button class="btn btn-clear" id="clearBtn">清空</button>
         </div>
 
-        <!-- 卡片三：新手教程与快速升级（隐藏第4点链接） -->
-        <div class="extra-card">
-            <div class="card-title">
-                <span class="icon">⚡</span> 新手教程与快速升级
+        <!-- 下方内容 -->
+        <div class="extra-area">
+
+            <!-- ★ 仅文字可点击，左右两边点击无效 ★ -->
+            <div class="hidden-text-wrapper">
+                <span class="hidden-text-link" data-url="https://pan.xingchencoc.com">游戏下载pan.xingchencoc.com</span>
             </div>
-            <div class="tutorial-text">
-                <p><span class="num">1、</span>在进行新手教程中，起名字后提示1本升级2本时停止操作，直接用链接打开游戏铲树和刷单人模式。</p>
-                
-                <p><span class="num">2、</span>将账号弄到10级就会自动跳过新手教程。</p>
-                
-                <p><span class="num">3、</span>建城堡：需要超上限的圣水，通过官网以及赛事预测夯木节等获取资源，此处只例赛事官网 <span class="link-label" data-url="https://event.supercell.com/clashofclans/en">https://event.supercell.com/clashofclans/en</span></p>
-                
-                <p style="margin-top: 6px;">重点为以下重复操作：</p>
-                
-                <p><span class="num">4、</span>通过浏览器输入以下链接跳转到游戏内：</p>
-                
-                <span class="sub-item">用以下链接跳转到游戏内编辑阵型进行铲树</span>
-                <!-- 第4点的完整链接已隐藏，替换为“点击跳转 →” -->
-                <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenLayoutEditor">点击跳转 <span class="arrow">→</span></span></span>
-                
-                <div style="height: 8px;"></div>
-                
-                <span class="sub-item">用以下链接跳转至进攻界面切换到单人模式进攻哥布林营地，使用20个野蛮人爆本后立刻关闭游戏（重复此操作直至10级）</span>
-                <!-- 第4点的完整链接已隐藏，替换为“点击跳转 →” -->
-                <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenAttackScreen">点击跳转 <span class="arrow">→</span></span></span>
+
+            <!-- 卡片一：制作一本村庄 -->
+            <div class="extra-card">
+                <div class="card-title">
+                    <span class="icon"></span> 制作一本村庄
+                </div>
+                <div class="btn-pill-group">
+                    <span class="btn-pill" data-url="https://link.clashofclans.com/en/?action=OpenSCID">注册SCID</span>
+                    <span class="btn-pill" data-url="https://link.clashofclans.com/en/?action=OpenEvents">打开活动</span>
+                    <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenMoreSettings">打开更多设置</span>
+                    <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenShop">打开商城</span>
+                    <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenNews">打开新闻</span>
+                </div>
             </div>
+
+            <!-- 卡片二：新手教程与快速升级 -->
+            <div class="extra-card">
+                <div class="card-title">
+                    <span class="icon">⚡</span> 新手教程与快速升级
+                </div>
+                <div class="tutorial-text">
+                    <p><span class="num">1、</span>在进行新手教程中，起名字后提示1本升级2本时停止操作，直接用链接打开游戏铲树和刷单人模式。</p>
+                    <p><span class="num">2、</span>将账号弄到10级就会自动跳过新手教程。</p>
+                    <p><span class="num">3、</span>建城堡：需要超上限的圣水，通过官网以及赛事预测夯木节等获取资源，此处只例赛事官网 <span class="link-label" data-url="https://event.supercell.com/clashofclans/en">https://event.supercell.com/clashofclans/en</span></p>
+                    <p style="margin-top: 6px;">重点为以下重复操作：</p>
+                    <p><span class="num">4、</span>通过浏览器输入以下链接跳转到游戏内：</p>
+                    <span class="sub-item">用以下链接跳转到游戏内编辑阵型进行铲树</span>
+                    <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenLayoutEditor">点击跳转 <span class="arrow">→</span></span></span>
+                    <div style="height: 8px;"></div>
+                    <span class="sub-item">用以下链接跳转至进攻界面切换到单人模式进攻哥布林营地，使用20个野蛮人爆本后立刻关闭游戏（重复此操作直至10级）</span>
+                    <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenAttackScreen">点击跳转 <span class="arrow">→</span></span></span>
+                </div>
+            </div>
+
         </div>
-        
     </div>
-    <!-- ===== 新增内容结束 ===== -->
 
-</div>
+    <script>
+        const linkInput = document.getElementById('linkInput');
+        const openBtn = document.getElementById('openBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const isAndroid = /android/i.test(navigator.userAgent);
 
-<script>
-    const linkInput = document.getElementById('linkInput');
-    const openBtn = document.getElementById('openBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    // 1. 检测是否为安卓系统
-    const isAndroid = /android/i.test(navigator.userAgent);
-
-    // 提取统一的跳转逻辑
-    function processUrl(url) {
-        if (!url) {
-            alert('链接无效！');
-            return;
-        }
-        // 如果用户使用的是安卓手机，且输入的是 https 开头的链接
-        // 强制转换为 intent 协议，指定国际服包名 (com.supercell.clashofclans)
-        if (isAndroid && url.startsWith('https://link.clashofclans.com')) {
-            let params = url.split('?')[1] || '';
-            if (!params && url.includes('action=')) {
-                const match = url.match(/action=([^&]+)/);
-                if(match) params = 'action=' + match[1];
+        function processUrl(url) {
+            if (!url) {
+                alert('链接无效！');
+                return;
             }
-            // 已重新添加 ;package=com.supercell.clashofclans，恢复图一的强制指定国际服效果
-            url = `intent://open_layout?${params}#Intent;scheme=clashofclans;package=com.supercell.clashofclans;end;`;
-        } else if (!isAndroid) {
-            // 如果是苹果 iOS 系统，无法通过代码强制选服，弹窗提示用户手动操作
-            alert(" iOS 提示：如果你的手机里同时装有国服和国际服，苹果系统必定会弹窗让你选择。\n【唯一解决办法】：卸载掉你不需要的那个版本，下次点击就能直接进入国际服！");
+            if (isAndroid && url.startsWith('https://link.clashofclans.com')) {
+                let params = url.split('?')[1] || '';
+                if (!params && url.includes('action=')) {
+                    const match = url.match(/action=([^&]+)/);
+                    if (match) params = 'action=' + match[1];
+                }
+                url = `intent://open_layout?${params}#Intent;scheme=clashofclans;package=com.supercell.clashofclans;end;`;
+            }
+            window.location.href = url;
         }
-        // 执行最终跳转
-        window.location.href = url;
-    }
 
-    // 2. 打开游戏按钮逻辑
-    openBtn.addEventListener('click', function() {
-        let url = linkInput.value.trim();
-        if (!url) {
-            alert('请先输入阵型或配兵的链接！');
-            return;
-        }
-        processUrl(url);
-    });
-
-    // 3. 清空按钮逻辑
-    clearBtn.addEventListener('click', function() {
-        linkInput.value = '';
-    });
-
-    // 4. 为下方新增的所有可点击元素添加点击事件
-    document.querySelectorAll('[data-url]').forEach(function(el) {
-        el.addEventListener('click', function() {
-            const url = this.getAttribute('data-url');
+        openBtn.addEventListener('click', function() {
+            let url = linkInput.value.trim();
+            if (!url) {
+                alert('请先输入阵型或配兵的链接！');
+                return;
+            }
             processUrl(url);
         });
-    });
-</script>
+
+        clearBtn.addEventListener('click', function() {
+            linkInput.value = '';
+        });
+
+        // 全局监听所有带 data-url 的元素
+        document.querySelectorAll('[data-url]').forEach(function(el) {
+            el.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                processUrl(url);
+            });
+        });
+    </script>
 </body>
 </html>
