@@ -82,24 +82,49 @@
         }
         .extra-card {
             background: #ffffff;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 16px 18px;
             border: 1px solid #f0f0f0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-        .extra-card .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .extra-card .card-title .icon {
-            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
+        /* ===== 顶部提示卡片 ===== */
+        .top-info-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 18px 16px;
+        }
+        .row-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        .blue-text {
+            color: #3a9df5;
+            font-size: 16px;
+            user-select: text;
+            cursor: pointer; /* 让鼠标显示手型 */
+        }
+        .blue-text:active {
+            opacity: 0.8;
+        }
+        .gray-text-1 {
+            color: #999;
+            font-size: 13px;
+            text-align: center;
+            user-select: text;
+            line-height: 1.6;
+        }
+        .gray-text-2 {
+            color: #999;
+            font-size: 14px;
+            user-select: text;
+        }
+
+        /* 按钮风格链接 */
         .btn-pill-group {
             display: flex;
             flex-wrap: wrap;
@@ -167,35 +192,6 @@
         .jump-btn:active .arrow {
             transform: translateX(4px);
         }
-
-        /* ===== 提示与复制区域 ===== */
-        .text-tips-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            margin-bottom: 10px;
-            width: 100%;
-            pointer-events: none; /* 阻断两边空白点击 */
-        }
-        .copyable-text {
-            user-select: text;
-            -webkit-user-select: text;
-            cursor: pointer;
-            display: inline-block;
-            color: #999;
-            text-decoration: none;
-            pointer-events: auto; /* 仅文字本身允许点击 */
-        }
-        .copyable-text:active {
-            color: #666;
-        }
-        .ios-tip {
-            user-select: text;
-            -webkit-user-select: text;
-            color: #bbb;
-            font-size: 13px;
-        }
     </style>
 </head>
 <body>
@@ -211,12 +207,14 @@
 
         <div class="extra-area">
 
-            <!-- ★ 提示区域 ★ -->
-            <div class="text-tips-group">
-                <!-- 移除 data-url 属性，改用专有类名和独立的 JS 控制，点击效果与“游戏下载”完全一致 -->
-                <span class="copyable-text browser-trigger">部落冲突计时器</span>
-                <span class="ios-tip">iOS用户复制链接在Safari打开：coc-tools.github.io</span>
-                <span class="copyable-text download-trigger">游戏下载 pan.xingchencoc.com</span>
+            <!-- ★ 已增加 <br> 换行，让“coc-”精准出现在第二行开头 ★ -->
+            <div class="extra-card top-info-card">
+                <div class="row-title">
+                    <span class="blue-text timer-link">部落冲突计时器</span>
+                    <span class="blue-text intl-link">国际服</span>
+                </div>
+                <div class="gray-text-1">iOS用户复制链接在Safari打开<br>coc-awos.github.io/kang 共享</div>
+                <div class="gray-text-2">添加到主屏幕使用</div>
             </div>
 
             <div class="extra-card">
@@ -289,7 +287,7 @@
             linkInput.value = '';
         });
 
-        // 处理游戏相关跳转（处理带有 data-url 的按钮）
+        // 监听所有带 data-url 的游戏功能按钮
         document.querySelectorAll('[data-url]').forEach(function(el) {
             el.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
@@ -297,34 +295,29 @@
             });
         });
 
-        // ★ 处理“部落冲突计时器”（与游戏下载逻辑完全一致：强制系统浏览器打开） ★
-        const timerTrigger = document.querySelector('.browser-trigger');
-        if (timerTrigger) {
-            timerTrigger.addEventListener('click', function(e) {
-                const timerUrl = 'https://cungu.aiyige.ren/#download';
-                if (isAndroid) {
-                    // 安卓：通过自定义 intent 强制唤起手机内置系统浏览器
-                    const intentUrl = 'intent://' + timerUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
-                    window.location.href = intentUrl;
-                } else {
-                    // iOS / 电脑：直接在新标签页打开
-                    window.open(timerUrl, '_blank');
-                }
+        // 浏览器唤起函数（安卓强制跳系统浏览器，其他端新窗口打开）
+        function jumpToExternalBrowser(url) {
+            if (isAndroid) {
+                const intentUrl = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
+                window.location.href = intentUrl;
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        // 独立绑定：部落冲突计时器
+        const timerLink = document.querySelector('.timer-link');
+        if (timerLink) {
+            timerLink.addEventListener('click', function(e) {
+                jumpToExternalBrowser('https://cungu.aiyige.ren/#download');
             });
         }
 
-        // ★ 处理“游戏下载”（唤起系统浏览器下载） ★
-        const downloadTrigger = document.querySelector('.download-trigger');
-        if (downloadTrigger) {
-            downloadTrigger.addEventListener('click', function(e) {
-                const downloadUrl = 'https://pan.xingchencoc.com';
-                if (isAndroid) {
-                    // 安卓强制唤起系统浏览器
-                    const intentUrl = 'intent://' + downloadUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
-                    window.location.href = intentUrl;
-                } else {
-                    window.open(downloadUrl, '_blank');
-                }
+        // 独立绑定：国际服
+        const intlLink = document.querySelector('.intl-link');
+        if (intlLink) {
+            intlLink.addEventListener('click', function(e) {
+                jumpToExternalBrowser('https://pan.xingchencoc.com/');
             });
         }
     </script>
