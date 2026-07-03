@@ -1,205 +1,205 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>部落冲突阵型链接打开器</title>
-    <style>
+<<！doctype超文本标记语言超文本标记语言>最小高度：160px；
+ 超文本标记语言>超文本标记语言 朗="zh-CN">
+<头>
+    <元 字符集="UTF-8">
+    <元 姓名="视口" 内容="宽度=设备宽度，初始比例=1.0">
+    <标题>部落冲突阵型链接打开器</标题>
+    <风格>
         /* 清除默认边距，统一背景色 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f8f9fa; /* 浅灰底色 */
-            padding: 20px;
-            color: #333;
-            display: flex;
-            justify-content: center;
-        }
+*{
+            箱体尺寸: 边框框;
+边缘: 0;
+填充：0；
+        
+身体 {
+}
+背景颜色：#f8f9fa；/*浅灰底色*/
+填料：20px；
+颜色: #333;
+显示：弯曲；
+justify-content：中心；
+        
         /* 容器最大宽度，适配手机和电脑端 */
-        .container {
-            max-width: 400px; 
-            width: 100%;
+。容器 {
+最大容忍度：400px；
+宽容度：100%；
         }
         /* 顶部红色提示语 */
-        .tips {
-            color: #ff5e5e;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 20px;
+。提示{
+字体大小：14px；
+}
+线高：1.5；
+底边距：20px；
+        
+/* 输入框区域 */
+。输入面积
+宽容度：100%；
+最小高度：160px；
+填充：08px；
+border:1px solid#eac069；/*截图里的黄色/金色边框*/
+边界半径：8px；
+填料：15px；
+字体大小：15px；
+字体系列：继承；
+color：#333；
+调整大小：无；
+大纲：无；
+        
+.输入区域：焦点{
+边框颜色：#d4a33d；
         }
-        /* 输入框区域 */
-        .input-area {
-            width: 100%;
-            min-height: 160px;
-            background: #ffffff;
-            border: 1px solid #eac069; /* 截图里的黄/金色边框 */
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 15px;
-            font-family: inherit;
-            color: #333;
-            resize: none;
-            outline: none;
+.输入区域：：占位符{
+颜色：#999；
         }
-        .input-area:focus {
-            border-color: #d4a33d;
+/* 按钮组布局 */
+.btn-group{
+显示：柔性；
+间隙：12px；/*两个按钮的间距*/
+margin-top:20px；
         }
-        .input-area::placeholder {
-            color: #999;
+/* 按钮基本样式 */
+.btn{
+flex:1；/*两个按钮平分宽度*/
+填充：14px0；
+边框：无；
+边界半径：6px；
+字体大小：16px；
+font-weight:500；
+颜色：#FFFFFF；
+光标：指针；
+过渡：不透明度0.2s；
         }
-        /* 按钮组布局 */
-        .btn-group {
-            display: flex;
-            gap: 12px; /* 两个按钮的间距 */
-            margin-top: 20px;
+.btn：活动{
+不透明度：0.8；
         }
-        /* 按钮基本样式 */
-        .btn {
-            flex: 1; /* 两个按钮平分宽度 */
-            padding: 14px 0;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #ffffff;
-            cursor: pointer;
-            transition: opacity 0.2s;
+/* 蓝色打开按钮 */
+.btn-open{
+背景色：#3a9df5；
         }
-        .btn:active {
-            opacity: 0.8;
-        }
-        /* 蓝色打开按钮 */
-        .btn-open {
-            background-color: #3a9df5; 
-        }
-        /* 红色清空按钮 */
-        .btn-clear {
-            background-color: #f46262; 
+/* 红色清空按钮 */
+.btn-clear{
+背景色：#f46262；
         }
 
-        /* ===== 下方新增内容区域样式 ===== */
-        .extra-area {
-            margin-top: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            padding-bottom: 20px;
+/* ===== 下方新增内容区域样式 ===== */
+.多余区域{
+margin-top:24px；
+显示：柔性；
+弯曲方向：立柱；
+间隙：18px；
+垫底：20px；
         }
-        .extra-card {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 16px 18px;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+.Extra-card{
+背景：#FFFFFF；
+边界半径：10px；
+填充：16px18px；
+边框：1px实体#f0f0f0；
+箱阴影：02px6px rgba(0，0，0.03)；
         }
-        .extra-card .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+.Extra-card.card-title{
+字体大小：16px；
+font-weight:600；
+颜色：#222；
+底边距：12px；
+显示：柔性；
+对齐项：居中；
+间隙：6px；
         }
-        .extra-card .card-title .icon {
-            font-size: 18px;
+.附加卡.卡标题.图标{
+字体大小：18px；
         }
 
         /* 卡片二：按钮风格的快速链接（横向排列） */
-        .btn-pill-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+.btn-药丸-组{
+显示：柔性；
+柔性缠绕：缠绕；
+间隙：10px；
         }
-        .btn-pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 14px;
-            background: #f0f7ff;
-            color: #3a9df5;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap; /* 防止文字换行 */
+.btn-药丸{
+显示：inline-flex；
+对齐项：居中；
+填料：6px14px；
+背景：#f0f7ff；
+颜色：#3a9df5；
+边界半径：20px；
+font-size:14px；
+光标：指针；
+过渡：背景0.2s；
+空白：noWrap；/*防止文字换行*/
         }
-        .btn-pill:active {
-            background: #dcebff;
+.btn-药丸：有效{
+背景：#DCEBFF；
         }
-        .pill-tag {
-            display: inline-block;
-            font-size: 12px;
-            background: #e1efff;
-            color: #3a9df5;
-            padding: 0 8px;
-            border-radius: 10px;
-            margin-left: 2px;
+.pill-tag{
+显示：内联块；
+font-size:12px；
+background：#e1efff；
+颜色：#3a9df5；
+填充：08px；
+边界半径：10px；
+margin-left:2px；
         }
 
         /* 卡片三：新手教程文字 */
-        .tutorial-text {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #444;
+.tutorial-text{
+font-size:14px；
+线高：1.7；
+颜色：#444；
         }
-        .tutorial-text p {
-            margin-bottom: 8px;
+.tutorial-text p{
+底边距：8px；
         }
-        .tutorial-text .sub-item {
-            display: block;
-            padding-left: 16px;
-            margin-bottom: 6px;
-            font-size: 13.5px;
+.tutorial-text。子项目{
+显示：块；
+padding-left:16px；
+底边距：6px；
+font-size:13.5px；
         }
-        .tutorial-text .num {
-            font-weight: 600;
-            color: #222;
+.tutorial-text.num{
+font-weight:600；
+颜色：#222；
         }
-        .tutorial-text .link-label {
-            color: #3a9df5;
-            cursor: pointer;
-            word-break: break-all;
+.tutorial-text.link-label{
+颜色：#3a9df5；
+光标：指针；
+word-break:break-all；
         }
-        .tutorial-text .link-label:active {
-            color: #1a7ac4;
+.tutorial-text.link-label：活动{
+颜色：#1a7ac4；
         }
         /* 隐藏完整链接，仅显示跳转按钮 */
-        .jump-btn {
-            color: #3a9df5;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
+.jump-btn{
+颜色：#3a9df5；
+光标：指针；
+font-weight:500；
+font-size:14px；
+显示：内联块；
+填充：2px8px；
+边界半径：4px；
         }
-        .jump-btn:active {
-            color: #1a7ac4;
-            background: #f0f7ff;
+.jump-btn：活动{
+颜色：#1a7ac4；
+背景：#f0f7ff；
         }
-        .arrow {
-            display: inline-block;
-            transition: transform 0.2s;
+.arrow{
+显示：内联块；
+过渡：变换0.2s；
         }
-        .jump-btn:active .arrow {
-            transform: translateX(4px);
+.jump-btn：活动.箭{
+transform:translateX(4px)；
         }
-    </style>
-</head>
-<body>
-<div class="container">
-    <!-- 倾城coc -->
-    <div class="tips">注意：强制跳转国际服 需游戏在后台运行</div>
-    <!-- 输入框 -->
-    <textarea class="input-area" id="linkInput" placeholder="这里输入阵型或配兵的链接..."></textarea>
-    <!-- 操作按钮 -->
-    <div class="btn-group">
-        <button class="btn btn-open" id="openBtn">打开部落冲突</button>
-        <button class="btn btn-clear" id="clearBtn">清空</button>
+    </风格>
+</头>
+<身体>
+<div 班级="容器">
+    <！--倾城COC-->
+    <div 班级="提示">注意：强制跳转国际服 需游戏在后台运行</div>
+<! -- 输入框 -->
+    <textarea 班级="输入区域" 身份标识="linkInput" 占位符="这里输入阵型或配兵的链接..."></textarea>
+<! -- 操作按钮 -->
+    <div 班级="btn-group">
+        <按钮 班级="btn btn-open" 身份标识="openBtn">打开部落冲突</按钮>
+        <按钮 班级="btn btn-clear" 身份标识="clearBtn">清空</按钮>
     </div>
 
     <!-- ===== 新增内容区域 ===== -->
