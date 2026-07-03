@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>国际服部落冲突阵型链接打开器</title>
     <style>
-        /* 清除默认边距，统一背景色 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,7 +28,6 @@
             line-height: 1.5;
             margin-bottom: 20px;
         }
-        /* 输入框调小高度 */
         .input-area {
             width: 100%;
             min-height: 80px;
@@ -74,8 +72,6 @@
         .btn-clear {
             background-color: #f46262;
         }
-
-        /* 下方内容区域 */
         .extra-area {
             margin-top: 24px;
             display: flex;
@@ -102,8 +98,6 @@
         .extra-card .card-title .icon {
             font-size: 18px;
         }
-
-        /* 按钮风格链接 */
         .btn-pill-group {
             display: flex;
             flex-wrap: wrap;
@@ -124,8 +118,6 @@
         .btn-pill:active {
             background: #dcebff;
         }
-
-        /* 教程文字 */
         .tutorial-text {
             font-size: 14px;
             line-height: 1.7;
@@ -172,19 +164,20 @@
         .jump-btn:active .arrow {
             transform: translateX(4px);
         }
-
-        /* ===== 优化：仅文字可点击，两边取消点击区域 ===== */
+        /* 仅文字可点击，两边取消点击区域 */
         .hidden-text-wrapper {
-            text-align: center;      /* 让文字居中 */
+            text-align: center;
             margin-bottom: 10px;
         }
         .hidden-text-link {
-            color: #999;             /* 灰色普通文本 */
-            cursor: pointer;         /* 悬停时显示手指 */
+            color: #999;
+            cursor: pointer;
             font-size: 14px;
-            text-decoration: none;   /* 去掉下划线 */
+            text-decoration: none;
             user-select: none;
-            display: inline-block;   /* 改为行内块，宽度仅包裹文字，不占满整行 */
+            display: inline-block;
+            border: none;
+            background: transparent;
         }
         .hidden-text-link:active {
             color: #666;
@@ -193,27 +186,17 @@
 </head>
 <body>
     <div class="container">
-        <!-- 顶部提示 -->
         <div class="tips">注意：强制跳转国际服 需游戏在后台运行</div>
-
-        <!-- 输入框 -->
         <textarea class="input-area" id="linkInput" placeholder="这里输入阵型或配兵的链接..."></textarea>
-
-        <!-- 操作按钮 -->
         <div class="btn-group">
             <button class="btn btn-open" id="openBtn">打开部落冲突</button>
             <button class="btn btn-clear" id="clearBtn">清空</button>
         </div>
-
-        <!-- 下方内容 -->
         <div class="extra-area">
-
-            <!-- ★ 仅文字可点击，左右两边点击无效 ★ -->
+            <!-- ★ 修复下载链接：点击时强制唤起系统浏览器 ★ -->
             <div class="hidden-text-wrapper">
-                <span class="hidden-text-link" data-url="https://pan.xingchencoc.com">游戏下载pan.xingchencoc.com</span>
+                <a href="javascript:void(0)" class="hidden-text-link download-trigger">游戏下载pan.xingchencoc.com</a>
             </div>
-
-            <!-- 卡片一：制作一本村庄 -->
             <div class="extra-card">
                 <div class="card-title">
                     <span class="icon"></span> 制作一本村庄
@@ -226,8 +209,6 @@
                     <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenNews">打开新闻</span>
                 </div>
             </div>
-
-            <!-- 卡片二：新手教程与快速升级 -->
             <div class="extra-card">
                 <div class="card-title">
                     <span class="icon">⚡</span> 新手教程与快速升级
@@ -245,16 +226,14 @@
                     <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenAttackScreen">点击跳转 <span class="arrow">→</span></span></span>
                 </div>
             </div>
-
         </div>
     </div>
-
     <script>
         const linkInput = document.getElementById('linkInput');
         const openBtn = document.getElementById('openBtn');
         const clearBtn = document.getElementById('clearBtn');
         const isAndroid = /android/i.test(navigator.userAgent);
-
+        // ---------- 统一跳转游戏（强制国际服） ----------
         function processUrl(url) {
             if (!url) {
                 alert('链接无效！');
@@ -270,7 +249,6 @@
             }
             window.location.href = url;
         }
-
         openBtn.addEventListener('click', function() {
             let url = linkInput.value.trim();
             if (!url) {
@@ -279,18 +257,34 @@
             }
             processUrl(url);
         });
-
         clearBtn.addEventListener('click', function() {
             linkInput.value = '';
         });
-
-        // 全局监听所有带 data-url 的元素
+        // ---------- 处理所有 data-url 元素 ----------
         document.querySelectorAll('[data-url]').forEach(function(el) {
+            // 排除“游戏下载”标签（它没有 data-url），其他正常触发游戏跳转
             el.addEventListener('click', function() {
                 const url = this.getAttribute('data-url');
                 processUrl(url);
             });
         });
+        // ---------- 处理“游戏下载”强制系统浏览器跳转 ----------
+        const downloadTrigger = document.querySelector('.download-trigger');
+        if (downloadTrigger) {
+            downloadTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                const downloadUrl = 'https://pan.xingchencoc.com';
+                if (isAndroid) {
+                    // 安卓手机强制发起 intent 视图，交给系统默认浏览器打开（彻底离开当前WebView）
+                    const intentUrl = 'intent://' + downloadUrl.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
+                    window.location.href = intentUrl;
+                } else {
+                    // iOS / 电脑环境直接打开新标签页
+                    window.open(downloadUrl, '_blank');
+                }
+            });
+        }
     </script>
 </body>
 </html>
+
