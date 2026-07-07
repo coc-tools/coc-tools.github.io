@@ -25,7 +25,6 @@
         .blue-text { color: #3a9df5; font-size: 16px; user-select: text; cursor: pointer; }
         .blue-text:active { opacity: 0.8; }
 
-        /* 卡片区 */
         .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .layout-card { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f0f0f0; display: flex; flex-direction: column; }
         .card-img-wrapper { position: relative; width: 100%; height: 120px; background: #f0f2f5; overflow: hidden; }
@@ -52,7 +51,6 @@
         .delete-btn:active { opacity: 0.6; }
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #999; font-size: 14px; }
 
-        /* 数据迁移区 */
         .data-migration-area { display: flex; justify-content: center; gap: 16px; background: #fff; padding: 12px; border-radius: 12px; border: 1px dashed #d9d9d9; margin-bottom: 16px; }
         .data-migration-area .btn-migrate { padding: 6px 18px; border-radius: 20px; border: none; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .btn-export { background: #52c41a; }
@@ -60,7 +58,6 @@
         .data-migration-area .btn-migrate:active { opacity: 0.7; }
         .data-migration-area .btn-migrate svg { width: 16px; height: 16px; fill: currentColor; }
 
-        /* 模态框区 */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: #fff; width: 90%; max-width: 380px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -84,7 +81,6 @@
         .modal-btn-cancel { background: #f0f0f0; color: #666; }
         .modal-btn-confirm { background: #3a9df5; color: #fff; }
 
-        /* 导入框 (直接选择文件) */
         .import-modal-text { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 12px; }
         .import-modal-file-wrapper { border: 2px dashed #faad14; border-radius: 8px; padding: 20px; text-align: center; color: #faad14; background: #fffbe6; margin-bottom: 12px; cursor: pointer; position: relative; }
         .import-modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
@@ -150,12 +146,12 @@
         </div>
     </div>
 
-    <!-- 导入数据弹出窗 (选文件即可) -->
+    <!-- 导入数据弹出窗 (选文件) -->
     <div class="modal-overlay" id="importModalOverlay">
         <div class="modal-content">
             <div class="modal-title">导入数据</div>
             <p class="import-modal-text">
-                <b> 简单三步，无需复制粘贴：</b><br>
+                <b>简单三步，无需复制粘贴：</b><br>
                 1. 旧手机点【导出文件】下载好 `.json` 文件。<br>
                 2. 用微信把这个文件发到新手机。<br>
                 3. 点击下方<b>黄色虚线框</b>，选中文件，瞬间恢复！
@@ -283,48 +279,47 @@
             }
         });
 
-        // ====== 导出修复 (解决点击没反应) ======
+        // ====== 导出修复 (直接下载，失败则提供兜底) ======
         document.getElementById('exportDataBtn').addEventListener('click', function() {
-            // 1. 安全读取数据，防止 localStorage 报错导致静默死机
             let data = '[]';
-            try {
-                data = localStorage.getItem('coc_layouts') || '[]';
-            } catch (e) {
-                showToast('⚠️ 环境异常，请用手机自带浏览器打开此页');
-                return;
-            }
-
+            try { data = localStorage.getItem('coc_layouts') || '[]'; } catch(e) {}
+            
             if (data === '[]') {
-                showToast('当前还没有阵型可以导出');
+                showToast('当前没有阵型可以导出');
                 return;
             }
 
-            // 2. 尝试用系统分享（最稳定，有原生界面）
-            try {
-                if (navigator.share) {
-                    // 针对大型 JSON 可能引发的分享失败，用 try catch 兜底
-                    navigator.share({ title: 'COC阵型数据', text: data }).catch(() => {});
-                    return;
-                }
-            } catch (e) {}
-
-            // 3. 尝试直接下载文件
+            // 优先执行下载
             try {
                 const blob = new Blob([data], {type: 'application/json'});
-                const url = URL.createObjectURL(blob);
+                const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = `coc_backup_${Date.now()}.json`;
+                a.download = `coc_阵型备份_${Date.now()}.json`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                setTimeout(() => URL.revokeObjectURL(url), 3000);
-                showToast('✅ 文件已开始下载');
-                return;
+                setTimeout(() => window.URL.revokeObjectURL(url), 5000);
+                showToast('✅ 导出成功，请查看下载列表');
             } catch (e) {
-                // 如果这里捕获到异常（典型是在 content:// 协议下）
-                // 直接提示用户去系统浏览器，不弹复杂的复制框
-                showToast('⚠️ 当前环境无法下载，请用系统自带浏览器打开此页面导出');
+                // 兜底：如果无法下载，尝试复制完整数据
+                try {
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'COC 阵型备份',
+                            text: data
+                        });
+                        return;
+                    }
+                } catch (shareError) {}
+                // 利用输入框复制
+                const textarea = document.createElement('textarea');
+                textarea.value = data;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast('⚠️ 下载失败，数据已复制到剪贴板，请新建TXT粘贴保存');
             }
         });
 
@@ -334,7 +329,6 @@
         const importFileStatus = document.getElementById('importFileStatus');
 
         document.getElementById('importDataBtn').addEventListener('click', function() {
-            // 打开窗口的时候重置，防止选错了看不到反馈
             importModal.classList.add('active');
             importFileInput.value = '';
             importFileStatus.innerText = ' 点击选择 .json 数据文件';
