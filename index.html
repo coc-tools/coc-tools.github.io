@@ -9,7 +9,6 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f7f8fa; color: #333; display: flex; justify-content: center; padding-bottom: 20px; }
         .container { max-width: 400px; width: 100%; padding: 16px 16px 0; }
 
-        /* 原始顶部区域 */
         .tips { color: #ff5e5e; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
         .input-area { width: 100%; min-height: 60px; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; font-size: 15px; font-family: inherit; color: #333; resize: none; outline: none; }
         .input-area:focus { border-color: #3a9df5; }
@@ -19,7 +18,6 @@
         .btn-open { background-color: #3a9df5; }
         .btn-clear { background-color: #f46262; }
 
-        /* 顶部提示卡片 */
         .extra-area { display: flex; flex-direction: column; gap: 18px; padding-bottom: 20px; }
         .extra-card { background: #ffffff; border-radius: 12px; padding: 16px 18px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); }
         .top-info-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 16px; }
@@ -27,14 +25,12 @@
         .blue-text { color: #3a9df5; font-size: 16px; user-select: text; cursor: pointer; }
         .blue-text:active { opacity: 0.8; }
 
-        /* ===== 双列卡片与标签样式 ===== */
+        /* 卡片区 */
         .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .layout-card { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f0f0f0; display: flex; flex-direction: column; }
         .card-img-wrapper { position: relative; width: 100%; height: 120px; background: #f0f2f5; overflow: hidden; }
         .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        
         .badge-server { position: absolute; bottom: 8px; right: 8px; background: #8b5cf6; color: #fff; padding: 2px 6px; border-radius: 12px; font-size: 9px; font-weight: 500; z-index: 10; }
-
         .card-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .card-title { font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; min-height: 24px; }
@@ -42,7 +38,6 @@
         .tag-blue { background-color: #E6F4FF; color: #1677FF; }
         .tag-green { background-color: #F6FFED; color: #52C41A; }
         .tag-orange { background-color: #FFFBE6; color: #D48806; }
-
         .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f5f5f5; padding-top: 8px; }
         .action-group-left { display: flex; gap: 12px; }
         .action-group-right { display: flex; align-items: center; gap: 12px; }
@@ -57,7 +52,7 @@
         .delete-btn:active { opacity: 0.6; }
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #999; font-size: 14px; }
 
-        /* ===== 数据迁移按钮 ===== */
+        /* 数据迁移区 */
         .data-migration-area { display: flex; justify-content: center; gap: 16px; background: #fff; padding: 12px; border-radius: 12px; border: 1px dashed #d9d9d9; margin-bottom: 16px; }
         .data-migration-area .btn-migrate { padding: 6px 18px; border-radius: 20px; border: none; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
         .btn-export { background: #52c41a; }
@@ -65,7 +60,7 @@
         .data-migration-area .btn-migrate:active { opacity: 0.7; }
         .data-migration-area .btn-migrate svg { width: 16px; height: 16px; fill: currentColor; }
 
-        /* ===== 上传模态框 ===== */
+        /* 模态框区 */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: #fff; width: 90%; max-width: 380px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -89,16 +84,14 @@
         .modal-btn-cancel { background: #f0f0f0; color: #666; }
         .modal-btn-confirm { background: #3a9df5; color: #fff; }
 
-        /* ===== 导入数据模态框 (修改为直接读取文件) ===== */
+        /* 导入框 */
         .import-modal-text { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 12px; }
         .import-modal-file-wrapper { border: 2px dashed #faad14; border-radius: 8px; padding: 20px; text-align: center; color: #faad14; background: #fffbe6; margin-bottom: 12px; cursor: pointer; position: relative; }
         .import-modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
-        /* 悬浮按钮 */
         .fab-add { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background: #3a9df5; border-radius: 50%; color: #fff; font-size: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(58, 157, 245, 0.4); border: none; cursor: pointer; z-index: 998; transition: transform 0.2s; }
         .fab-add:active { transform: scale(0.95); }
 
-        /* Toast 提示 */
         #toast { visibility: hidden; min-width: 200px; background-color: #323232; color: #fff; text-align: center; border-radius: 8px; padding: 12px 16px; position: fixed; z-index: 9999; bottom: 100px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
         #toast.show { visibility: visible; opacity: 1; }
     </style>
@@ -120,7 +113,6 @@
                 </div>
             </div>
 
-            <!-- 数据迁移按钮区域 -->
             <div class="data-migration-area">
                 <button class="btn-migrate btn-export" id="exportDataBtn">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 导出文件
@@ -158,32 +150,31 @@
         </div>
     </div>
 
-    <!-- 导入数据弹出窗 (改为文件上传) -->
+    <!-- 导入数据弹出窗 -->
     <div class="modal-overlay" id="importModalOverlay">
         <div class="modal-content">
             <div class="modal-title">导入数据</div>
             <p class="import-modal-text">
-                <b> 不用复制粘贴，直接选文件即可！</b><br>
-                1. 微信/QQ 把旧手机导出的 <b>`.json` 文件</b> 发到新手机。<br>
-                2. 点击下方黄色区域，**直接选择该文件**即可自动导入！
+                <b> 非常简单，三步搞定：</b><br>
+                1. 在旧手机点【导出文件】，下载 <b>.json</b> 数据。<br>
+                2. 用微信把这个 <b>.json</b> 文件发到新手机上。<br>
+                3. 点击下方<b>黄色虚线框</b>，选择微信里接收的文件即可自动导入。
             </p>
-            
             <div class="import-modal-file-wrapper">
                 <span class="file-status" id="importFileStatus"> 点击选择 .json 数据文件</span>
                 <input type="file" id="importFileInput" accept=".json" />
             </div>
-
             <div class="modal-btn-group">
                 <button class="modal-btn modal-btn-cancel" id="importCancelBtn">取消</button>
             </div>
         </div>
     </div>
 
-    <!-- 删除验证密码模态框 -->
+    <!-- 删除密码框 -->
     <div class="modal-overlay" id="deleteModalOverlay">
         <div class="modal-content">
             <div class="modal-title" style="color: #ff4d4f;">删除阵型</div>
-            <p style="font-size: 14px; color: #666; text-align: center; margin-bottom: 12px;">此操作不可恢复，请输入管理密码进行确认</p>
+            <p style="font-size: 14px; color: #666; text-align: center; margin-bottom: 12px;">此操作不可恢复，请输入管理密码</p>
             <input class="modal-input" id="deletePasswordInput" type="password" placeholder="请输入管理密码" autocomplete="off" />
             <div class="modal-btn-group">
                 <button class="modal-btn modal-btn-cancel" id="deleteCancelBtn">取消</button>
@@ -193,7 +184,6 @@
     </div>
 
     <script>
-        // ====== Toast 提示 ======
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -201,7 +191,7 @@
             setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
         }
 
-        // ====== 跳转游戏功能 ======
+        // 游戏跳转
         const linkInput = document.getElementById('linkInput');
         const openBtn = document.getElementById('openBtn');
         const clearBtn = document.getElementById('clearBtn');
@@ -231,7 +221,7 @@
         document.querySelector('.timer-link').addEventListener('click', function() { jumpToExternalBrowser('https://cungu.aiyige.ren/#download'); });
         document.querySelector('.intl-link').addEventListener('click', function() { jumpToExternalBrowser('https://pan.xingchencoc.com/'); });
 
-        // ====== 数据与卡片渲染 ======
+        // 数据渲染
         let layouts = JSON.parse(localStorage.getItem('coc_layouts') || '[]');
         const gridContainer = document.getElementById('gridContainer');
 
@@ -261,7 +251,6 @@
             }
         }
 
-        // ====== 删除密码逻辑 ======
         const DELETE_PASSWORD = '123'; 
         let pendingDeleteId = null;
 
@@ -294,7 +283,7 @@
             }
         });
 
-        // ====== 数据导出逻辑（生成并下载 json 文件） ======
+        // 导出
         document.getElementById('exportDataBtn').addEventListener('click', function() {
             const data = localStorage.getItem('coc_layouts') || '[]';
             const blob = new Blob([data], {type: 'application/json;charset=utf-8'});
@@ -305,10 +294,10 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(link.href);
-            showToast('✅ 数据文件已下载！请用微信/QQ发到新手机');
+            showToast('✅ 数据文件已下载！请用微信发送到新手机');
         });
 
-        // ====== 数据导入逻辑 (改为直接读取文件) ======
+        // 导入
         const importModal = document.getElementById('importModalOverlay');
         const importFileInput = document.getElementById('importFileInput');
         const importFileStatus = document.getElementById('importFileStatus');
@@ -326,7 +315,6 @@
             if (e.target === importModal) importModal.classList.remove('active');
         });
 
-        // 监听文件选择并自动导入
         importFileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -398,7 +386,6 @@
         }
         renderLayouts();
 
-        // ====== 分类标签系统 ======
         const tagGroups = [
             { name: "阵型类型", items: ["搬运", "自用"], single: true },
             { name: "大本营", items: ["18本"], single: true },
@@ -414,17 +401,14 @@
             wrapper.innerHTML = '';
             selectedTags = [];
             groupSingleState = {};
-
             tagGroups.forEach(group => {
                 const titleEl = document.createElement('span');
                 titleEl.className = 'tag-group-title';
                 titleEl.innerText = group.name;
                 wrapper.appendChild(titleEl);
-
                 const container = document.createElement('div');
                 container.className = 'tag-group-container';
                 if (group.single) { groupSingleState[group.name] = ''; }
-
                 group.items.forEach(tag => {
                     const el = document.createElement('span');
                     el.className = 'tag-option';
@@ -507,17 +491,9 @@
             let finalTags = [...selectedTags];
             if (customTag) finalTags.push(customTag);
 
-            const newLayout = { 
-                id: Date.now(), 
-                title: title, 
-                tags: finalTags, 
-                imageUrl: currentImageBase64, 
-                link: link,
-                likes: 0
-            };
+            const newLayout = { id: Date.now(), title: title, tags: finalTags, imageUrl: currentImageBase64, link: link, likes: 0 };
             layouts.unshift(newLayout);
             localStorage.setItem('coc_layouts', JSON.stringify(layouts));
-            
             modalOverlay.classList.remove('active');
             renderLayouts();
             showToast('阵型发布成功！');
