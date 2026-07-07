@@ -33,41 +33,37 @@
         .card-img-wrapper { position: relative; width: 100%; height: 120px; background: #f0f2f5; overflow: hidden; }
         .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* 右下角标签 */
-        .badge-server { 
-            position: absolute; 
-            bottom: 8px; 
-            right: 8px; 
-            background: #8b5cf6; 
-            color: #fff; 
-            padding: 2px 6px;
-            border-radius: 12px; 
-            font-size: 9px;
-            font-weight: 500; 
-            z-index: 10; 
-        }
+        .badge-server { position: absolute; bottom: 8px; right: 8px; background: #8b5cf6; color: #fff; padding: 2px 6px; border-radius: 12px; font-size: 9px; font-weight: 500; z-index: 10; }
 
         .card-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .card-title { font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; min-height: 24px; }
-        
         .tag { display: inline-block; padding: 1px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; }
         .tag-blue { background-color: #E6F4FF; color: #1677FF; }
         .tag-green { background-color: #F6FFED; color: #52C41A; }
         .tag-orange { background-color: #FFFBE6; color: #D48806; }
 
-        /* ===== 卡片底部操作区 (加入点赞) ===== */
         .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f5f5f5; padding-top: 8px; }
-        .action-group { display: flex; gap: 10px; align-items: center; }
+        .action-group-left { display: flex; gap: 12px; }
+        .action-group-right { display: flex; align-items: center; gap: 12px; }
         .action-btn { font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
         .action-btn:active { opacity: 0.7; }
         .action-copy { color: #3a9df5; }
         .action-open { color: #34a853; }
-        .action-like { color: #ff6b6b; font-weight: 500; } /* 点赞按钮颜色 */
+        .like-btn { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 2px; color: #ff4d4f; }
+        .like-btn:active { transform: scale(0.9); }
+        .like-count { font-size: 11px; color: #666; }
         .delete-btn { color: #ff4d4f; font-size: 15px; cursor: pointer; font-weight: bold; padding: 0 4px; line-height: 1; }
         .delete-btn:active { opacity: 0.6; }
-
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #999; font-size: 14px; }
+
+        /* ===== 数据迁移按钮 ===== */
+        .data-migration-area { display: flex; justify-content: center; gap: 16px; background: #fff; padding: 12px; border-radius: 12px; border: 1px dashed #d9d9d9; margin-bottom: 16px; }
+        .data-migration-area .btn-migrate { padding: 6px 18px; border-radius: 20px; border: none; color: #fff; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .btn-export { background: #52c41a; }
+        .btn-import { background: #faad14; }
+        .data-migration-area .btn-migrate:active { opacity: 0.7; }
+        .data-migration-area .btn-migrate svg { width: 16px; height: 16px; fill: currentColor; }
 
         /* ===== 上传模态框 ===== */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
@@ -88,18 +84,22 @@
         .modal-file-wrapper { border: 1px dashed #3a9df5; border-radius: 8px; padding: 20px; text-align: center; color: #3a9df5; background: #f0f7ff; margin-bottom: 12px; cursor: pointer; position: relative; }
         .modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         .file-status { color: #333; font-size: 14px; display: block; }
-        
         .modal-btn-group { display: flex; gap: 12px; margin-top: 10px; }
         .modal-btn { flex: 1; padding: 10px 0; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; }
         .modal-btn-cancel { background: #f0f0f0; color: #666; }
         .modal-btn-confirm { background: #3a9df5; color: #fff; }
+
+        /* ===== 导入数据模态框 (修改为直接读取文件) ===== */
+        .import-modal-text { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 12px; }
+        .import-modal-file-wrapper { border: 2px dashed #faad14; border-radius: 8px; padding: 20px; text-align: center; color: #faad14; background: #fffbe6; margin-bottom: 12px; cursor: pointer; position: relative; }
+        .import-modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
         /* 悬浮按钮 */
         .fab-add { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background: #3a9df5; border-radius: 50%; color: #fff; font-size: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(58, 157, 245, 0.4); border: none; cursor: pointer; z-index: 998; transition: transform 0.2s; }
         .fab-add:active { transform: scale(0.95); }
 
         /* Toast 提示 */
-        #toast { visibility: hidden; min-width: 200px; background-color: #323232; color: #fff; text-align: center; border-radius: 8px; padding: 12px 16px; position: fixed; z-index: 9999; bottom: 90px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
+        #toast { visibility: hidden; min-width: 200px; background-color: #323232; color: #fff; text-align: center; border-radius: 8px; padding: 12px 16px; position: fixed; z-index: 9999; bottom: 100px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
         #toast.show { visibility: visible; opacity: 1; }
     </style>
 </head>
@@ -120,6 +120,16 @@
                 </div>
             </div>
 
+            <!-- 数据迁移按钮区域 -->
+            <div class="data-migration-area">
+                <button class="btn-migrate btn-export" id="exportDataBtn">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 导出文件
+                </button>
+                <button class="btn-migrate btn-import" id="importDataBtn">
+                    <svg viewBox="0 0 24 24"><path d="M2.5 5.5h19v2h-19v-2zm0 5h19v2h-19v-2zm0 5h10v2h-10v-2z"/></svg> 导入数据
+                </button>
+            </div>
+
             <div class="grid-container" id="gridContainer">
                 <div class="empty-state">暂无阵型，点击右下角➕上传你的阵型吧</div>
             </div>
@@ -133,24 +143,38 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
             <div class="modal-title">上传新阵型</div>
-            <!-- 修改 1：标题改成 援兵推荐 -->
             <input class="modal-input" id="modalTitle" placeholder="援兵推荐" />
-            
             <div class="tag-picker-wrapper" id="tagPickerWrapper"></div>
-
-            <!-- 修改 1：自定义标签去掉了额外提示文字 -->
             <input class="modal-input" id="customTagInput" placeholder="自定义标签" />
-            
             <div class="modal-file-wrapper">
                 <span class="file-status" id="fileStatus">点击选择阵型截图</span>
                 <input type="file" id="modalImage" accept="image/*" />
             </div>
-            
             <input class="modal-input" id="modalLink" placeholder="阵型复制链接 (https://link.clashofclans.com...)" />
-            
             <div class="modal-btn-group">
                 <button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button>
                 <button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入数据弹出窗 (改为文件上传) -->
+    <div class="modal-overlay" id="importModalOverlay">
+        <div class="modal-content">
+            <div class="modal-title">导入数据</div>
+            <p class="import-modal-text">
+                <b> 不用复制粘贴，直接选文件即可！</b><br>
+                1. 微信/QQ 把旧手机导出的 <b>`.json` 文件</b> 发到新手机。<br>
+                2. 点击下方黄色区域，**直接选择该文件**即可自动导入！
+            </p>
+            
+            <div class="import-modal-file-wrapper">
+                <span class="file-status" id="importFileStatus"> 点击选择 .json 数据文件</span>
+                <input type="file" id="importFileInput" accept=".json" />
+            </div>
+
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" id="importCancelBtn">取消</button>
             </div>
         </div>
     </div>
@@ -227,14 +251,13 @@
 
         function openLayout(link) { if (!link) { showToast('链接无效！'); return; } processUrl(link); }
 
-        // ====== 点赞功能 ======
         function toggleLike(id) {
             const layout = layouts.find(item => item.id === id);
             if (layout) {
-                // 如果没有 likes 属性，初始化为 0，然后 +1
                 layout.likes = (layout.likes || 0) + 1;
                 localStorage.setItem('coc_layouts', JSON.stringify(layouts));
-                renderLayouts(); // 刷新页面渲染以显示最新点赞数
+                renderLayouts();
+                showToast('感谢你的点赞 ❤️');
             }
         }
 
@@ -271,21 +294,80 @@
             }
         });
 
-        // ====== 渲染卡片列表 ======
+        // ====== 数据导出逻辑（生成并下载 json 文件） ======
+        document.getElementById('exportDataBtn').addEventListener('click', function() {
+            const data = localStorage.getItem('coc_layouts') || '[]';
+            const blob = new Blob([data], {type: 'application/json;charset=utf-8'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `coc_backup_${new Date().getTime()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+            showToast('✅ 数据文件已下载！请用微信/QQ发到新手机');
+        });
+
+        // ====== 数据导入逻辑 (改为直接读取文件) ======
+        const importModal = document.getElementById('importModalOverlay');
+        const importFileInput = document.getElementById('importFileInput');
+        const importFileStatus = document.getElementById('importFileStatus');
+
+        document.getElementById('importDataBtn').addEventListener('click', function() {
+            importModal.classList.add('active');
+            importFileInput.value = '';
+            importFileStatus.innerText = ' 点击选择 .json 数据文件';
+            importFileStatus.style.color = '#faad14';
+        });
+        document.getElementById('importCancelBtn').addEventListener('click', () => {
+            importModal.classList.remove('active');
+        });
+        importModal.addEventListener('click', (e) => {
+            if (e.target === importModal) importModal.classList.remove('active');
+        });
+
+        // 监听文件选择并自动导入
+        importFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                importFileStatus.innerText = `⏳ 正在读取: ${file.name}`;
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    try {
+                        const rawData = ev.target.result;
+                        const parseData = JSON.parse(rawData);
+                        if (Array.isArray(parseData)) {
+                            localStorage.setItem('coc_layouts', rawData);
+                            showToast('✅ 数据导入成功！即将刷新');
+                            setTimeout(() => { window.location.reload(); }, 1000);
+                        } else {
+                            showToast('❌ 数据异常，请确认导出的文件');
+                            importFileStatus.innerText = ' 点击选择 .json 数据文件';
+                            importFileStatus.style.color = '#faad14';
+                        }
+                    } catch (e) {
+                        showToast('❌ 文件内容格式错误');
+                        importFileStatus.innerText = ' 点击选择 .json 数据文件';
+                        importFileStatus.style.color = '#faad14';
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
         function renderLayouts() {
             if (layouts.length === 0) {
                 gridContainer.innerHTML = `<div class="empty-state">暂无阵型，点击右下角➕上传你的阵型吧</div>`;
                 return;
             }
+            layouts.sort((a, b) => b.id - a.id);
             let html = '';
             layouts.forEach((item) => {
                 let tagsHtml = '';
                 if (item.tags && item.tags.length > 0) {
                     tagsHtml = item.tags.map(tag => `<span class="tag ${getTagClass(tag)}">${tag}</span>`).join('');
                 }
-
-                // 修改 2：如果第一行不填，发布后不显示标题
-                const titleHtml = item.title && item.title.trim() !== '' ? `<div class="card-title">${item.title}</div>` : '';
+                const titleHtml = item.title ? `<div class="card-title">${item.title}</div>` : '';
 
                 html += `
                     <div class="layout-card">
@@ -299,13 +381,14 @@
                                 <div class="card-tags">${tagsHtml}</div>
                             </div>
                             <div class="card-actions">
-                                <div class="action-group">
+                                <div class="action-group-left">
                                     <span class="action-btn action-copy" onclick="copyLink('${item.link}')">复制阵型</span>
                                     <span class="action-btn action-open" onclick="openLayout('${item.link}')">打开游戏</span>
-                                    <!-- 修改 3：新增点赞按钮 -->
-                                    <span class="action-btn action-like" onclick="toggleLike(${item.id})">❤️ ${item.likes || 0}</span>
                                 </div>
-                                <span class="delete-btn" onclick="deleteLayout(${item.id})">✕</span>
+                                <div class="action-group-right">
+                                    <span class="like-btn" onclick="toggleLike(${item.id})">❤️ <span class="like-count">${item.likes || 0}</span></span>
+                                    <span class="delete-btn" onclick="deleteLayout(${item.id})">✕</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -414,7 +497,7 @@
         });
 
         modalConfirm.addEventListener('click', () => {
-            const title = modalTitle.value.trim() || ''; // 如果为空，就存空字符串
+            const title = modalTitle.value.trim();
             const link = modalLink.value.trim();
             const customTag = customTagInput.value.trim();
 
@@ -424,10 +507,14 @@
             let finalTags = [...selectedTags];
             if (customTag) finalTags.push(customTag);
 
-            // 修改 4：新增 likes 属性，初始为 0
-            const newLayout = { id: Date.now(), title: title, tags: finalTags, imageUrl: currentImageBase64, link: link, likes: 0 };
-            
-            // 修改 4：按更新排序 (unshift 将最新数据添加到最前面，始终保持按照发布时间倒序)
+            const newLayout = { 
+                id: Date.now(), 
+                title: title, 
+                tags: finalTags, 
+                imageUrl: currentImageBase64, 
+                link: link,
+                likes: 0
+            };
             layouts.unshift(newLayout);
             localStorage.setItem('coc_layouts', JSON.stringify(layouts));
             
