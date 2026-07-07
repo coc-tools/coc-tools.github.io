@@ -2,267 +2,189 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COC 部落冲突阵型链接打开器</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COC 部落冲突阵型广场</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 20px;
-            color: #333;
-            display: flex;
-            justify-content: center;
-        }
-        .container {
-            max-width: 400px;
-            width: 100%;
-        }
-        .tips {
-            color: #ff5e5e;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-        .input-area {
-            width: 100%;
-            min-height: 80px;
-            background: #ffffff;
-            border: 1px solid #eac069;
-            border-radius: 8px;
-            padding: 15px;
-            font-size: 15px;
-            font-family: inherit;
-            color: #333;
-            resize: none;
-            outline: none;
-        }
-        .input-area:focus {
-            border-color: #d4a33d;
-        }
-        .input-area::placeholder {
-            color: #999;
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .btn {
-            flex: 1;
-            padding: 14px 0;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #ffffff;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        .btn:active {
-            opacity: 0.8;
-        }
-        .btn-open {
-            background-color: #3a9df5;
-        }
-        .btn-clear {
-            background-color: #f46262;
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f7f8fa; color: #333; display: flex; justify-content: center; padding-bottom: 20px; }
+        .container { max-width: 400px; width: 100%; padding: 16px 16px 0; }
+
+        /* 原始顶部区域 */
+        .tips { color: #ff5e5e; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
+        .input-area { width: 100%; min-height: 60px; background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; font-size: 15px; font-family: inherit; color: #333; resize: none; outline: none; }
+        .input-area:focus { border-color: #3a9df5; }
+        .btn-group { display: flex; gap: 12px; margin-top: 12px; margin-bottom: 20px; }
+        .btn { flex: 1; padding: 12px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: 500; color: #ffffff; cursor: pointer; transition: opacity 0.2s; }
+        .btn:active { opacity: 0.8; }
+        .btn-open { background-color: #3a9df5; }
+        .btn-clear { background-color: #f46262; }
+
+        /* 顶部提示卡片 */
+        .extra-area { display: flex; flex-direction: column; gap: 18px; padding-bottom: 20px; }
+        .extra-card { background: #ffffff; border-radius: 12px; padding: 16px 18px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); }
+        .top-info-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 16px; }
+        .row-title { display: flex; align-items: center; gap: 10px; justify-content: center; }
+        .blue-text { color: #3a9df5; font-size: 16px; user-select: text; cursor: pointer; }
+        .blue-text:active { opacity: 0.8; }
+
+        /* ===== 双列卡片与标签样式 ===== */
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .layout-card { background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); border: 1px solid #f0f0f0; display: flex; flex-direction: column; }
+        .card-img-wrapper { position: relative; width: 100%; height: 120px; background: #f0f2f5; overflow: hidden; }
+        .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* 右下角标签 */
+        .badge-server { 
+            position: absolute; 
+            bottom: 8px; 
+            right: 8px; 
+            background: #8b5cf6; 
+            color: #fff; 
+            padding: 2px 6px;
+            border-radius: 12px; 
+            font-size: 9px;
+            font-weight: 500; 
+            z-index: 10; 
         }
 
-        .extra-area {
-            margin-top: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            padding-bottom: 20px;
-        }
-        .extra-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 16px 18px;
-            border: 1px solid #f0f0f0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-        }
+        .card-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .card-title { font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; min-height: 24px; }
+        
+        .tag { display: inline-block; padding: 1px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; }
+        .tag-blue { background-color: #E6F4FF; color: #1677FF; }
+        .tag-green { background-color: #F6FFED; color: #52C41A; }
+        .tag-orange { background-color: #FFFBE6; color: #D48806; }
 
-        /* ===== 顶部提示卡片 ===== */
-        .top-info-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            padding: 18px 16px;
-        }
-        .row-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
-        }
-        .blue-text {
-            color: #3a9df5;
-            font-size: 16px;
-            user-select: text;
-            cursor: pointer; /* 让鼠标显示手型 */
-        }
-        .blue-text:active {
-            opacity: 0.8;
-        }
-        .gray-text-1 {
-            color: #999;
-            font-size: 13px;
-            text-align: center;
-            user-select: text;
-            line-height: 1.6;
-        }
-        .gray-text-2 {
-            color: #999;
-            font-size: 14px;
-            user-select: text;
-        }
+        /* ===== 卡片底部操作区 (加入点赞) ===== */
+        .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f5f5f5; padding-top: 8px; }
+        .action-group { display: flex; gap: 10px; align-items: center; }
+        .action-btn { font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .action-btn:active { opacity: 0.7; }
+        .action-copy { color: #3a9df5; }
+        .action-open { color: #34a853; }
+        .action-like { color: #ff6b6b; font-weight: 500; } /* 点赞按钮颜色 */
+        .delete-btn { color: #ff4d4f; font-size: 15px; cursor: pointer; font-weight: bold; padding: 0 4px; line-height: 1; }
+        .delete-btn:active { opacity: 0.6; }
 
-        /* 按钮风格链接 */
-        .btn-pill-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .btn-pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 6px 14px;
-            background: #f0f7ff;
-            color: #3a9df5;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background 0.2s;
-            white-space: nowrap;
-        }
-        .btn-pill:active {
-            background: #dcebff;
-        }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #999; font-size: 14px; }
 
-        .tutorial-text {
-            font-size: 14px;
-            line-height: 1.7;
-            color: #444;
-        }
-        .tutorial-text p {
-            margin-bottom: 8px;
-        }
-        .tutorial-text .sub-item {
-            display: block;
-            padding-left: 16px;
-            margin-bottom: 6px;
-            font-size: 13.5px;
-        }
-        .tutorial-text .num {
-            font-weight: 600;
-            color: #222;
-        }
-        .tutorial-text .link-label {
-            color: #3a9df5;
-            cursor: pointer;
-            word-break: break-all;
-        }
-        .tutorial-text .link-label:active {
-            color: #1a7ac4;
-        }
-        .jump-btn {
-            color: #3a9df5;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 14px;
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 4px;
-        }
-        .jump-btn:active {
-            color: #1a7ac4;
-            background: #f0f7ff;
-        }
-        .arrow {
-            display: inline-block;
-            transition: transform 0.2s;
-        }
-        .jump-btn:active .arrow {
-            transform: translateX(4px);
-        }
+        /* ===== 上传模态框 ===== */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: #fff; width: 90%; max-width: 380px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; text-align: center; }
+        .modal-input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; }
+        .modal-input:focus { border-color: #3a9df5; }
+        
+        .tag-picker-wrapper { background: #f7f8fa; border-radius: 8px; padding: 10px; margin-bottom: 12px; max-height: 280px; overflow-y: auto; }
+        .tag-group-title { font-size: 12px; font-weight: bold; color: #666; margin: 8px 0 6px 0; display: block; }
+        .tag-group-title:first-of-type { margin-top: 0; }
+        .tag-group-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+        .tag-option { display: inline-block; padding: 4px 12px; border: 1px solid #ddd; border-radius: 14px; font-size: 12px; color: #333; cursor: pointer; background: #f9f9f9; transition: all 0.2s; }
+        .tag-option:active { transform: scale(0.95); }
+        .tag-option.active { background: #3a9df5; color: #fff; border-color: #3a9df5; }
+
+        .modal-file-wrapper { border: 1px dashed #3a9df5; border-radius: 8px; padding: 20px; text-align: center; color: #3a9df5; background: #f0f7ff; margin-bottom: 12px; cursor: pointer; position: relative; }
+        .modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .file-status { color: #333; font-size: 14px; display: block; }
+        
+        .modal-btn-group { display: flex; gap: 12px; margin-top: 10px; }
+        .modal-btn { flex: 1; padding: 10px 0; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; }
+        .modal-btn-cancel { background: #f0f0f0; color: #666; }
+        .modal-btn-confirm { background: #3a9df5; color: #fff; }
+
+        /* 悬浮按钮 */
+        .fab-add { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background: #3a9df5; border-radius: 50%; color: #fff; font-size: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(58, 157, 245, 0.4); border: none; cursor: pointer; z-index: 998; transition: transform 0.2s; }
+        .fab-add:active { transform: scale(0.95); }
+
+        /* Toast 提示 */
+        #toast { visibility: hidden; min-width: 200px; background-color: #323232; color: #fff; text-align: center; border-radius: 8px; padding: 12px 16px; position: fixed; z-index: 9999; bottom: 90px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
+        #toast.show { visibility: visible; opacity: 1; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="tips">注意：强制跳转国际服 奖励链接领取专用</div>
-
         <textarea class="input-area" id="linkInput" placeholder="这里输入阵型或配兵的链接..."></textarea>
-
         <div class="btn-group">
             <button class="btn btn-open" id="openBtn">打开部落冲突</button>
             <button class="btn btn-clear" id="clearBtn">清空</button>
         </div>
 
         <div class="extra-area">
-
-            <!-- ★ 已恢复蓝色标题文字，仅清空下方的灰色描述 ★ -->
             <div class="extra-card top-info-card">
                 <div class="row-title">
                     <span class="blue-text timer-link">部落冲突计时器</span>
                     <span class="blue-text intl-link">国际服</span>
                 </div>
-                <div class="gray-text-1"></div>
-                <div class="gray-text-2"></div>
             </div>
 
-            <div class="extra-card">
-                <div class="card-title">
-                    <span class="icon"></span> 制作一本村庄
-                </div>
-                <div class="btn-pill-group">
-                    <span class="btn-pill" data-url="https://link.clashofclans.com/en/?action=OpenSCID">注册SCID</span>
-                    <span class="btn-pill" data-url="https://link.clashofclans.com/en/?action=OpenEvents">打开活动</span>
-                    <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenMoreSettings">打开更多设置</span>
-                    <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenShop">打开商城</span>
-                    <span class="btn-pill" data-url="https://link.clashofclans.com/en?action=OpenNews">打开新闻</span>
-                </div>
+            <div class="grid-container" id="gridContainer">
+                <div class="empty-state">暂无阵型，点击右下角➕上传你的阵型吧</div>
             </div>
+        </div>
+    </div>
 
-            <div class="extra-card">
-                <div class="card-title">
-                    <span class="icon">⚡</span> 新手教程与快速升级
-                </div>
-                <div class="tutorial-text">
-                    <p><span class="num">1、</span>在进行新手教程中，起名字后提示1本升级2本时停止操作，直接用链接打开游戏铲树和刷单人模式。</p>
-                    <p><span class="num">2、</span>将账号弄到10级就会自动跳过新手教程。</p>
-                    <p><span class="num">3、</span>建城堡：需要超上限的圣水，通过官网以及赛事预测夯木节等获取资源，此处只例赛事官网 <span class="link-label" data-url="https://event.supercell.com/clashofclans/en">https://event.supercell.com/clashofclans/en</span></p>
-                    <p style="margin-top: 6px;">重点为以下重复操作：</p>
-                    <p><span class="num">4、</span>通过浏览器输入以下链接跳转到游戏内：</p>
-                    <span class="sub-item">用以下链接跳转到游戏内编辑阵型进行铲树</span>
-                    <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenLayoutEditor">点击跳转 <span class="arrow">→</span></span></span>
-                    <div style="height: 8px;"></div>
-                    <span class="sub-item">用以下链接跳转至进攻界面切换到单人模式进攻哥布林营地，使用20个野蛮人爆本后立刻关闭游戏（重复此操作直至10级）</span>
-                    <span class="sub-item"><span class="jump-btn" data-url="https://link.clashofclans.com/cn/?action=OpenAttackScreen">点击跳转 <span class="arrow">→</span></span></span>
-                </div>
+    <div id="toast"></div>
+    <button class="fab-add" id="addBtn">+</button>
+
+    <!-- 上传弹出窗 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-title">上传新阵型</div>
+            <!-- 修改 1：标题改成 援兵推荐 -->
+            <input class="modal-input" id="modalTitle" placeholder="援兵推荐" />
+            
+            <div class="tag-picker-wrapper" id="tagPickerWrapper"></div>
+
+            <!-- 修改 1：自定义标签去掉了额外提示文字 -->
+            <input class="modal-input" id="customTagInput" placeholder="自定义标签" />
+            
+            <div class="modal-file-wrapper">
+                <span class="file-status" id="fileStatus">点击选择阵型截图</span>
+                <input type="file" id="modalImage" accept="image/*" />
             </div>
+            
+            <input class="modal-input" id="modalLink" placeholder="阵型复制链接 (https://link.clashofclans.com...)" />
+            
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button>
+                <button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- 删除验证密码模态框 -->
+    <div class="modal-overlay" id="deleteModalOverlay">
+        <div class="modal-content">
+            <div class="modal-title" style="color: #ff4d4f;">删除阵型</div>
+            <p style="font-size: 14px; color: #666; text-align: center; margin-bottom: 12px;">此操作不可恢复，请输入管理密码进行确认</p>
+            <input class="modal-input" id="deletePasswordInput" type="password" placeholder="请输入管理密码" autocomplete="off" />
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" id="deleteCancelBtn">取消</button>
+                <button class="modal-btn" id="deleteConfirmBtn" style="background: #ff4d4f; color: #fff; border: none;">确认删除</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // ====== Toast 提示 ======
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
+        }
+
+        // ====== 跳转游戏功能 ======
         const linkInput = document.getElementById('linkInput');
         const openBtn = document.getElementById('openBtn');
         const clearBtn = document.getElementById('clearBtn');
         const isAndroid = /android/i.test(navigator.userAgent);
 
-        // 统一跳转游戏（强制国际服）
         function processUrl(url) {
-            if (!url) {
-                alert('链接无效！');
-                return;
-            }
+            if (!url) { showToast('链接无效！'); return; }
             if (isAndroid && url.startsWith('https://link.clashofclans.com')) {
                 let params = url.split('?')[1] || '';
                 if (!params && url.includes('action=')) {
@@ -273,53 +195,246 @@
             }
             window.location.href = url;
         }
+        openBtn.addEventListener('click', function() { let url = linkInput.value.trim(); if (!url) return showToast('请先输入链接！'); processUrl(url); });
+        clearBtn.addEventListener('click', function() { linkInput.value = ''; });
 
-        openBtn.addEventListener('click', function() {
-            let url = linkInput.value.trim();
-            if (!url) {
-                alert('请先输入阵型或配兵的链接！');
-                return;
-            }
-            processUrl(url);
-        });
-
-        clearBtn.addEventListener('click', function() {
-            linkInput.value = '';
-        });
-
-        // 监听所有带 data-url 的游戏功能按钮
-        document.querySelectorAll('[data-url]').forEach(function(el) {
-            el.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
-                processUrl(url);
-            });
-        });
-
-        // 浏览器唤起函数（安卓强制跳系统浏览器，其他端新窗口打开）
         function jumpToExternalBrowser(url) {
             if (isAndroid) {
                 const intentUrl = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
                 window.location.href = intentUrl;
-            } else {
-                window.open(url, '_blank');
+            } else { window.open(url, '_blank'); }
+        }
+        document.querySelector('.timer-link').addEventListener('click', function() { jumpToExternalBrowser('https://cungu.aiyige.ren/#download'); });
+        document.querySelector('.intl-link').addEventListener('click', function() { jumpToExternalBrowser('https://pan.xingchencoc.com/'); });
+
+        // ====== 数据与卡片渲染 ======
+        let layouts = JSON.parse(localStorage.getItem('coc_layouts') || '[]');
+        const gridContainer = document.getElementById('gridContainer');
+
+        function getTagClass(tag) {
+            if (tag.includes('本')) return 'tag-blue';
+            if (tag.includes('资源') || tag.includes('炮弹') || tag.includes('火炮') || tag.includes('发射器') || tag.includes('防御')) return 'tag-green';
+            return 'tag-orange';
+        }
+
+        function copyLink(link) {
+            if (!link) { showToast('暂无链接可复制！'); return; }
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(link).then(() => { showToast('复制成功！'); }).catch(() => { fallbackCopy(link); });
+            } else { fallbackCopy(link); }
+        }
+        function fallbackCopy(text) { const input = document.createElement('input'); document.body.appendChild(input); input.value = text; input.select(); document.execCommand('copy'); document.body.removeChild(input); showToast('复制成功！'); }
+
+        function openLayout(link) { if (!link) { showToast('链接无效！'); return; } processUrl(link); }
+
+        // ====== 点赞功能 ======
+        function toggleLike(id) {
+            const layout = layouts.find(item => item.id === id);
+            if (layout) {
+                // 如果没有 likes 属性，初始化为 0，然后 +1
+                layout.likes = (layout.likes || 0) + 1;
+                localStorage.setItem('coc_layouts', JSON.stringify(layouts));
+                renderLayouts(); // 刷新页面渲染以显示最新点赞数
             }
         }
 
-        // 独立绑定：部落冲突计时器
-        const timerLink = document.querySelector('.timer-link');
-        if (timerLink) {
-            timerLink.addEventListener('click', function(e) {
-                jumpToExternalBrowser('https://cungu.aiyige.ren/#download');
+        // ====== 删除密码逻辑 ======
+        const DELETE_PASSWORD = '123'; 
+        let pendingDeleteId = null;
+
+        function deleteLayout(id) {
+            pendingDeleteId = id;
+            document.getElementById('deleteModalOverlay').classList.add('active');
+            document.getElementById('deletePasswordInput').value = '';
+            document.getElementById('deletePasswordInput').focus();
+        }
+
+        document.getElementById('deleteCancelBtn').addEventListener('click', () => {
+            document.getElementById('deleteModalOverlay').classList.remove('active');
+            pendingDeleteId = null;
+        });
+
+        document.getElementById('deleteConfirmBtn').addEventListener('click', () => {
+            const pwd = document.getElementById('deletePasswordInput').value.trim();
+            if (pwd !== DELETE_PASSWORD) {
+                showToast('密码错误，删除失败！');
+                document.getElementById('deletePasswordInput').value = '';
+                return;
+            }
+            if (pendingDeleteId !== null) {
+                layouts = layouts.filter(item => item.id !== pendingDeleteId);
+                localStorage.setItem('coc_layouts', JSON.stringify(layouts));
+                renderLayouts();
+                showToast('已成功删除');
+                document.getElementById('deleteModalOverlay').classList.remove('active');
+                pendingDeleteId = null;
+            }
+        });
+
+        // ====== 渲染卡片列表 ======
+        function renderLayouts() {
+            if (layouts.length === 0) {
+                gridContainer.innerHTML = `<div class="empty-state">暂无阵型，点击右下角➕上传你的阵型吧</div>`;
+                return;
+            }
+            let html = '';
+            layouts.forEach((item) => {
+                let tagsHtml = '';
+                if (item.tags && item.tags.length > 0) {
+                    tagsHtml = item.tags.map(tag => `<span class="tag ${getTagClass(tag)}">${tag}</span>`).join('');
+                }
+
+                // 修改 2：如果第一行不填，发布后不显示标题
+                const titleHtml = item.title && item.title.trim() !== '' ? `<div class="card-title">${item.title}</div>` : '';
+
+                html += `
+                    <div class="layout-card">
+                        <div class="card-img-wrapper">
+                            <img src="${item.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2UwZTBlMCIvPjwvc3ZnPg=='}" alt="阵型图" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2UwZTBlMCIvPjwvc3ZnPg=='" />
+                            <span class="badge-server">国际服</span>
+                        </div>
+                        <div class="card-info">
+                            <div>
+                                ${titleHtml}
+                                <div class="card-tags">${tagsHtml}</div>
+                            </div>
+                            <div class="card-actions">
+                                <div class="action-group">
+                                    <span class="action-btn action-copy" onclick="copyLink('${item.link}')">复制阵型</span>
+                                    <span class="action-btn action-open" onclick="openLayout('${item.link}')">打开游戏</span>
+                                    <!-- 修改 3：新增点赞按钮 -->
+                                    <span class="action-btn action-like" onclick="toggleLike(${item.id})">❤️ ${item.likes || 0}</span>
+                                </div>
+                                <span class="delete-btn" onclick="deleteLayout(${item.id})">✕</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            gridContainer.innerHTML = html;
+        }
+        renderLayouts();
+
+        // ====== 分类标签系统 ======
+        const tagGroups = [
+            { name: "阵型类型", items: ["搬运", "自用"], single: true },
+            { name: "大本营", items: ["18本"], single: true },
+            { name: "精工防御", items: ["熔岩火炮", "空中炸弹发射器", "熔岩发射器"], single: true },
+            { name: "法术塔配置", items: ["双狂暴", "双隐身", "双毒药", "双地震", "一狂一隐", "一狂一毒", "一隐一毒", "一狂一地", "一毒一地", "一隐一地"], single: true },
+            { name: "阵型用途", items: ["护资源", "防三星", "冲杯", "部落战"], single: false }
+        ];
+        let selectedTags = [];
+        let groupSingleState = {};
+
+        function initTagPicker() {
+            const wrapper = document.getElementById('tagPickerWrapper');
+            wrapper.innerHTML = '';
+            selectedTags = [];
+            groupSingleState = {};
+
+            tagGroups.forEach(group => {
+                const titleEl = document.createElement('span');
+                titleEl.className = 'tag-group-title';
+                titleEl.innerText = group.name;
+                wrapper.appendChild(titleEl);
+
+                const container = document.createElement('div');
+                container.className = 'tag-group-container';
+                if (group.single) { groupSingleState[group.name] = ''; }
+
+                group.items.forEach(tag => {
+                    const el = document.createElement('span');
+                    el.className = 'tag-option';
+                    el.innerText = tag;
+                    el.onclick = function() {
+                        if (group.single) {
+                            if (this.classList.contains('active')) {
+                                this.classList.remove('active');
+                                const idx = selectedTags.indexOf(tag);
+                                if (idx > -1) selectedTags.splice(idx, 1);
+                                groupSingleState[group.name] = '';
+                            } else {
+                                container.querySelectorAll('.tag-option').forEach(t => t.classList.remove('active'));
+                                this.classList.add('active');
+                                const oldTag = groupSingleState[group.name];
+                                if (oldTag) {
+                                    const idx = selectedTags.indexOf(oldTag);
+                                    if (idx > -1) selectedTags.splice(idx, 1);
+                                }
+                                selectedTags.push(tag);
+                                groupSingleState[group.name] = tag;
+                            }
+                        } else {
+                            this.classList.toggle('active');
+                            const index = selectedTags.indexOf(tag);
+                            if (index > -1) selectedTags.splice(index, 1);
+                            else selectedTags.push(tag);
+                        }
+                    };
+                    container.appendChild(el);
+                });
+                wrapper.appendChild(container);
             });
         }
 
-        // 独立绑定：国际服
-        const intlLink = document.querySelector('.intl-link');
-        if (intlLink) {
-            intlLink.addEventListener('click', function(e) {
-                jumpToExternalBrowser('https://pan.xingchencoc.com/');
-            });
-        }
+        const addBtn = document.getElementById('addBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const modalTitle = document.getElementById('modalTitle');
+        const customTagInput = document.getElementById('customTagInput');
+        const modalImage = document.getElementById('modalImage');
+        const modalLink = document.getElementById('modalLink');
+        const fileStatus = document.getElementById('fileStatus');
+        let currentImageBase64 = '';
+
+        addBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+            modalTitle.value = ''; modalLink.value = ''; modalImage.value = ''; customTagInput.value = '';
+            currentImageBase64 = '';
+            fileStatus.innerText = '点击选择阵型截图';
+            fileStatus.style.color = '#3a9df5';
+            initTagPicker();
+        });
+        modalCancel.addEventListener('click', () => modalOverlay.classList.remove('active'));
+        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) modalOverlay.classList.remove('active'); });
+
+        modalImage.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileStatus.innerText = `✅ 已选择: ${file.name}`;
+                fileStatus.style.color = '#52c41a';
+                const reader = new FileReader();
+                reader.onload = function(ev) { currentImageBase64 = ev.target.result; };
+                reader.readAsDataURL(file);
+            } else {
+                fileStatus.innerText = '点击选择阵型截图';
+                fileStatus.style.color = '#3a9df5';
+            }
+        });
+
+        modalConfirm.addEventListener('click', () => {
+            const title = modalTitle.value.trim() || ''; // 如果为空，就存空字符串
+            const link = modalLink.value.trim();
+            const customTag = customTagInput.value.trim();
+
+            if (!link) return showToast('请填写阵型链接！');
+            if (!currentImageBase64) return showToast('请选择一张阵型截图！');
+
+            let finalTags = [...selectedTags];
+            if (customTag) finalTags.push(customTag);
+
+            // 修改 4：新增 likes 属性，初始为 0
+            const newLayout = { id: Date.now(), title: title, tags: finalTags, imageUrl: currentImageBase64, link: link, likes: 0 };
+            
+            // 修改 4：按更新排序 (unshift 将最新数据添加到最前面，始终保持按照发布时间倒序)
+            layouts.unshift(newLayout);
+            localStorage.setItem('coc_layouts', JSON.stringify(layouts));
+            
+            modalOverlay.classList.remove('active');
+            renderLayouts();
+            showToast('阵型发布成功！');
+        });
     </script>
 </body>
 </html>
