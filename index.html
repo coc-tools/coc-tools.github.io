@@ -84,7 +84,7 @@
         .modal-btn-cancel { background: #f0f0f0; color: #666; }
         .modal-btn-confirm { background: #3a9df5; color: #fff; }
 
-        /* 导入框 */
+        /* 导入框 (直接选择文件) */
         .import-modal-text { font-size: 13px; color: #666; line-height: 1.6; margin-bottom: 12px; }
         .import-modal-file-wrapper { border: 2px dashed #faad14; border-radius: 8px; padding: 20px; text-align: center; color: #faad14; background: #fffbe6; margin-bottom: 12px; cursor: pointer; position: relative; }
         .import-modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
@@ -150,15 +150,15 @@
         </div>
     </div>
 
-    <!-- 导入数据弹出窗 -->
+    <!-- 导入数据弹出窗 (选文件即可) -->
     <div class="modal-overlay" id="importModalOverlay">
         <div class="modal-content">
             <div class="modal-title">导入数据</div>
             <p class="import-modal-text">
-                <b> 非常简单，三步搞定：</b><br>
-                1. 在旧手机点【导出文件】，下载 <b>.json</b> 数据。<br>
-                2. 用微信把这个 <b>.json</b> 文件发到新手机上。<br>
-                3. 点击下方<b>黄色虚线框</b>，选择微信里接收的文件即可自动导入。
+                <b> 简单三步，无需复制粘贴：</b><br>
+                1. 旧手机点【导出文件】下载好 `.json` 文件。<br>
+                2. 用微信把这个文件发到新手机。<br>
+                3. 点击下方<b>黄色虚线框</b>，选中文件，瞬间恢复！
             </p>
             <div class="import-modal-file-wrapper">
                 <span class="file-status" id="importFileStatus"> 点击选择 .json 数据文件</span>
@@ -283,31 +283,64 @@
             }
         });
 
-        // 导出
+        // ====== 导出修复 (解决点击没反应) ======
         document.getElementById('exportDataBtn').addEventListener('click', function() {
-            const data = localStorage.getItem('coc_layouts') || '[]';
-            const blob = new Blob([data], {type: 'application/json;charset=utf-8'});
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `coc_backup_${new Date().getTime()}.json`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(link.href);
-            showToast('✅ 数据文件已下载！请用微信发送到新手机');
+            // 1. 安全读取数据，防止 localStorage 报错导致静默死机
+            let data = '[]';
+            try {
+                data = localStorage.getItem('coc_layouts') || '[]';
+            } catch (e) {
+                showToast('⚠️ 环境异常，请用手机自带浏览器打开此页');
+                return;
+            }
+
+            if (data === '[]') {
+                showToast('当前还没有阵型可以导出');
+                return;
+            }
+
+            // 2. 尝试用系统分享（最稳定，有原生界面）
+            try {
+                if (navigator.share) {
+                    // 针对大型 JSON 可能引发的分享失败，用 try catch 兜底
+                    navigator.share({ title: 'COC阵型数据', text: data }).catch(() => {});
+                    return;
+                }
+            } catch (e) {}
+
+            // 3. 尝试直接下载文件
+            try {
+                const blob = new Blob([data], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `coc_backup_${Date.now()}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 3000);
+                showToast('✅ 文件已开始下载');
+                return;
+            } catch (e) {
+                // 如果这里捕获到异常（典型是在 content:// 协议下）
+                // 直接提示用户去系统浏览器，不弹复杂的复制框
+                showToast('⚠️ 当前环境无法下载，请用系统自带浏览器打开此页面导出');
+            }
         });
 
-        // 导入
+        // ====== 导入修复 ======
         const importModal = document.getElementById('importModalOverlay');
         const importFileInput = document.getElementById('importFileInput');
         const importFileStatus = document.getElementById('importFileStatus');
 
         document.getElementById('importDataBtn').addEventListener('click', function() {
+            // 打开窗口的时候重置，防止选错了看不到反馈
             importModal.classList.add('active');
             importFileInput.value = '';
             importFileStatus.innerText = ' 点击选择 .json 数据文件';
             importFileStatus.style.color = '#faad14';
         });
+        
         document.getElementById('importCancelBtn').addEventListener('click', () => {
             importModal.classList.remove('active');
         });
