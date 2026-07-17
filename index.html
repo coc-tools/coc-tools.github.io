@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>COC 部落冲突阵型广场</title>
+    <!-- 引入 Bmob SDK -->
     <script src="https://cdn.jsdelivr.net/npm/hydrogen-js-sdk/dist/Bmob-2.2.5.min.js"></script>
+    <!-- 引入 Viewer.js 图片查看器 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
     
@@ -22,12 +24,22 @@
         .btn-open { background-color: #3a9df5; }
         .btn-clear { background-color: #f46262; }
 
-        .extra-area { display: flex; flex-direction: column; gap: 18px; padding-bottom: 20px; }
+        .extra-area { display: flex; flex-direction: column; gap: 16px; padding-bottom: 20px; }
         .extra-card { background: #ffffff; border-radius: 12px; padding: 16px 18px; border: 1px solid #f0f0f0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); }
         .top-info-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 16px; }
         .row-title { display: flex; align-items: center; gap: 10px; justify-content: center; }
         .blue-text { color: #3a9df5; font-size: 16px; cursor: pointer; }
         .blue-text:active { opacity: 0.8; }
+
+        .tab-box { display: flex; background: #ffffff; padding: 6px; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 6px rgba(0,0,0,0.02);}
+        .tab-item { flex: 1; text-align: center; padding: 10px 0; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; color: #666; transition: all 0.2s;}
+        .tab-item.active { background: #3a9df5; color: #fff; box-shadow: 0 2px 8px rgba(58, 157, 245, 0.3);}
+
+        .filter-container { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 4px; scrollbar-width: none; -ms-overflow-style: none; align-items: center;}
+        .filter-container::-webkit-scrollbar { display: none; }
+        .filter-tab { padding: 8px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; background: #fff; border: 1px solid #e0e0e0; color: #666; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .filter-tab.active { background: #3a9df5; color: #fff; border-color: #3a9df5; }
+        .filter-tab-special { background: #f0f7ff; color: #3a9df5; border: 1px solid #3a9df5; font-weight: 600; display: flex; align-items: center; gap: 4px;}
 
         /* 卡片区 */
         .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -36,54 +48,61 @@
         .card-img-wrapper img { width: 100%; height: 100%; object-fit: cover; cursor: zoom-in; }
         .badge-server { position: absolute; bottom: 8px; right: 8px; background: #8b5cf6; color: #fff; padding: 2px 6px; border-radius: 12px; font-size: 9px; font-weight: 500; z-index: 10; pointer-events: none; }
         .card-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .card-title { font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-title { font-size: 14px; font-weight: 500; color: #202124; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 20px;}
         .card-time { font-size: 10px; color: #999; margin-bottom: 6px; }
         .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; min-height: 24px; }
-        .tag { display: inline-block; padding: 1px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; }
+        
+        .tag { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 10px; font-weight: 500; cursor: pointer; transition: opacity 0.2s;}
+        .tag:active { opacity: 0.6; }
         .tag-blue { background-color: #E6F4FF; color: #1677FF; }
         .tag-green { background-color: #F6FFED; color: #52C41A; }
         .tag-orange { background-color: #FFFBE6; color: #D48806; }
-        .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f5f5f5; padding-top: 8px; }
-        .action-group-left { display: flex; gap: 12px; }
-        .action-group-right { display: flex; align-items: center; gap: 12px; }
-        .action-btn { font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        
+        .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f5f5f5; padding-top: 10px; }
+        .action-group-left { display: flex; gap: 15px; } 
+        .action-group-right { display: flex; align-items: center; gap: 12px; } 
+        
+        .action-btn { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 4px; color: #3a9df5; padding: 6px 0; }
         .action-btn:active { opacity: 0.7; }
-        .action-copy { color: #3a9df5; }
-        .action-open { color: #34a853; }
-        .like-btn { font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 2px; color: #ff4d4f; }
-        .like-btn:active { transform: scale(0.9); }
-        .like-count { font-size: 11px; color: #666; }
-        .delete-btn { color: #ff4d4f; font-size: 15px; cursor: pointer; font-weight: bold; padding: 0 4px; line-height: 1; }
+        .delete-btn { color: #ff4d4f; font-size: 16px; cursor: pointer; font-weight: bold; padding: 6px 4px; line-height: 1; }
         .delete-btn:active { opacity: 0.6; }
+        .edit-btn { font-size: 15px; cursor: pointer; color: #888; padding: 6px 4px; }
+        .edit-btn:active { opacity: 0.6; transform: scale(0.9); }
+        .star-btn { font-size: 15px; color: #faad14; cursor: pointer; display: flex; align-items: center; padding: 6px 4px;}
+        .star-btn:active { transform: scale(0.9); }
+        
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px 0; color: #999; font-size: 14px; }
 
-        /* 模态框区 */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
         .modal-overlay.active { display: flex; }
         .modal-content { background: #fff; width: 90%; max-width: 380px; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; text-align: center; }
-        .modal-input { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; }
-        .modal-input:focus { border-color: #3a9df5; }
+        
+        .bottom-sheet { align-items: flex-end; }
+        .bottom-sheet .modal-content { border-radius: 20px 20px 0 0; width: 100%; max-width: 450px; margin: 0 auto; transform: translateY(100%); transition: transform 0.3s ease-out; padding-bottom: 30px; animation: slideUp 0.3s forwards;}
+        @keyframes slideUp { to { transform: translateY(0); } }
+
+        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 16px; text-align: center; color: #333;}
+        .modal-input { width: 100%; padding: 12px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; background: #f9f9f9;}
+        .modal-input:focus { border-color: #3a9df5; background: #fff;}
         
         .tag-picker-wrapper { background: #f7f8fa; border-radius: 8px; padding: 10px; margin-bottom: 12px; }
-        .tag-group-title { font-size: 12px; font-weight: bold; color: #666; margin: 8px 0 6px 0; display: block; }
-        .tag-group-title:first-of-type { margin-top: 0; }
+        .tag-group-title { font-size: 13px; font-weight: bold; color: #333; margin: 12px 0 8px 0; display: block; }
+        .tag-group-title:first-of-type { margin-top: 4px; }
         .tag-group-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-        .tag-option { display: inline-block; padding: 4px 12px; border: 1px solid #ddd; border-radius: 14px; font-size: 12px; color: #333; cursor: pointer; background: #f9f9f9; transition: all 0.2s; }
+        .tag-option { display: inline-block; padding: 6px 14px; border: 1px solid #ddd; border-radius: 16px; font-size: 12px; color: #555; cursor: pointer; background: #fff; transition: all 0.2s; }
         .tag-option:active { transform: scale(0.95); }
         .tag-option.active { background: #3a9df5; color: #fff; border-color: #3a9df5; }
 
         .modal-file-wrapper { border: 1px dashed #3a9df5; border-radius: 8px; padding: 20px; text-align: center; color: #3a9df5; background: #f0f7ff; margin-bottom: 12px; cursor: pointer; position: relative; }
         .modal-file-wrapper input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
         .file-status { color: #333; font-size: 14px; display: block; }
-        .modal-btn-group { display: flex; gap: 12px; margin-top: 10px; }
-        .modal-btn { flex: 1; padding: 10px 0; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; }
+        .modal-btn-group { display: flex; gap: 12px; margin-top: 15px; }
+        .modal-btn { flex: 1; padding: 12px 0; border: none; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; }
         .modal-btn-cancel { background: #f0f0f0; color: #666; }
         .modal-btn-confirm { background: #3a9df5; color: #fff; }
 
         .fab-add { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background: #3a9df5; border-radius: 50%; color: #fff; font-size: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(58, 157, 245, 0.4); border: none; cursor: pointer; z-index: 998; transition: transform 0.2s; }
         .fab-add:active { transform: scale(0.95); }
-
         #toast { visibility: hidden; min-width: 200px; background-color: #323232; color: #fff; text-align: center; border-radius: 8px; padding: 12px 16px; position: fixed; z-index: 9999; bottom: 100px; left: 50%; transform: translateX(-50%); font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
         #toast.show { visibility: visible; opacity: 1; }
     </style>
@@ -106,8 +125,22 @@
                 </div>
             </div>
 
+            <div class="tab-box" id="mainTab">
+                <div class="tab-item active" onclick="switchTab('square', this)">广场大厅</div>
+                <div class="tab-item" onclick="switchTab('myStar', this)">我的收藏</div>
+            </div>
+
+            <!-- ★ 新增的自用和搬运放在这里 -->
+            <div class="filter-container" id="quickFilterContainer">
+                <div class="filter-tab active" onclick="setQuickFilter('全部', this)">全部</div>
+                <div class="filter-tab" onclick="setQuickFilter('18本', this)">18本</div>
+                <div class="filter-tab" onclick="setQuickFilter('自用', this)">自用</div>
+                <div class="filter-tab" onclick="setQuickFilter('搬运', this)">搬运</div>
+                <div class="filter-tab filter-tab-special" id="advancedFilterBtn" onclick="openAdvancedFilter()">筛选 ▾</div>
+            </div>
+
             <div class="grid-container" id="gridContainer">
-                <div class="empty-state">正在连接云端服务器，请稍候...</div>
+                <div class="empty-state">拼命加载数据中...</div>
             </div>
         </div>
     </div>
@@ -115,17 +148,51 @@
     <div id="toast"></div>
     <button class="fab-add" id="addBtn">+</button>
 
+    <div class="modal-overlay" id="starModal">
+        <div class="modal-content">
+            <div class="modal-title">加入我的收藏</div>
+            <p style="font-size: 13px; color: #666; margin-bottom: 12px; text-align: center;">此阵型将保存在手机本地，永不丢失</p>
+            <input class="modal-input" id="starTitle" placeholder="你可以给它起个备注（如：冲杯防三专用）" />
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" onclick="document.getElementById('starModal').classList.remove('active')">取消</button>
+                <button class="modal-btn modal-btn-confirm" id="confirmStarBtn">确定收藏</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay bottom-sheet" id="advancedFilterModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="font-size: 18px; font-weight: bold; color: #333;">高级筛选</span>
+                <span id="closeFilterModal" style="font-size: 24px; color: #999; cursor: pointer; padding: 0 8px;">&times;</span>
+            </div>
+            
+            <div class="tag-picker-wrapper" id="filterTagContainer" style="background: transparent; padding: 0; max-height: 50vh; overflow-y: auto;">
+            </div>
+            
+            <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+                <span class="tag-group-title" style="margin-top: 0;">自定义标签 / 标题搜索</span>
+                <input class="modal-input" id="filterCustomTagInput" placeholder="输入自定义标签或关键字快速过滤..." style="margin-bottom: 0;" />
+            </div>
+
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" onclick="resetFilter()">重置</button>
+                <button class="modal-btn modal-btn-confirm" onclick="applyFilter()">查看结果</button>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content">
-            <div class="modal-title">上传新阵型 (同步至全网)</div>
-            <input class="modal-input" id="modalTitle" placeholder="阵型标题 / 援兵推荐" />
-            <div class="tag-picker-wrapper" id="tagPickerWrapper"></div>
+            <div class="modal-title" id="uploadModalTitle">上传阵型</div>
+            <input class="modal-input" id="modalTitle" placeholder="标题 / 援兵推荐" />
+            <div class="tag-picker-wrapper" id="uploadTagContainer"></div>
             <input class="modal-input" id="customTagInput" placeholder="自定义标签" />
             <div class="modal-file-wrapper">
-                <span class="file-status" id="fileStatus">点击选择阵型截图</span>
+                <span class="file-status" id="fileStatus">点击选择截图</span>
                 <input type="file" id="modalImage" accept="image/*" />
             </div>
-            <input class="modal-input" id="modalLink" placeholder="阵型复制链接 (https://link.clashofclans.com...)" />
+            <input class="modal-input" id="modalLink" placeholder="阵型复制链接..." />
             <div class="modal-btn-group">
                 <button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button>
                 <button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button>
@@ -133,116 +200,69 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="deleteModalOverlay">
+    <div class="modal-overlay" id="passwordModalOverlay">
         <div class="modal-content">
-            <div class="modal-title" style="color: #ff4d4f;">删除云端阵型</div>
-            <p style="font-size: 14px; color: #666; text-align: center; margin-bottom: 12px;">此操作将从全网删除，请输入管理密码</p>
-            <input class="modal-input" id="deletePasswordInput" type="password" placeholder="请输入管理密码" autocomplete="off" />
+            <div class="modal-title" id="passwordModalTitle" style="color: #ff4d4f;">操作验证</div>
+            <p style="font-size: 14px; color: #666; text-align: center; margin-bottom: 12px;">请输入管理密码</p>
+            <input class="modal-input" id="actionPasswordInput" type="password" placeholder="请输入管理密码" autocomplete="off" />
             <div class="modal-btn-group">
-                <button class="modal-btn modal-btn-cancel" id="deleteCancelBtn">取消</button>
-                <button class="modal-btn" id="deleteConfirmBtn" style="background: #ff4d4f; color: #fff; border: none;">确认删除</button>
+                <button class="modal-btn modal-btn-cancel" id="passwordCancelBtn">取消</button>
+                <button class="modal-btn" id="passwordConfirmBtn" style="background: #ff4d4f; color: #fff; border: none;">确认</button>
             </div>
         </div>
     </div>
 
     <div class="modal-overlay" id="downloadAppModal">
         <div class="modal-content" style="padding: 20px 20px 10px 20px; border-radius: 14px; width: 85%; max-width: 320px;">
-            <div style="font-size: 15px; font-weight: bold; text-align: center; margin-bottom: 15px;">
-                来自 https://coc-tools.github.io 的网页显示:
-            </div>
+            <div style="font-size: 15px; font-weight: bold; text-align: center; margin-bottom: 15px;">来自网页显示:</div>
             <div style="font-size: 14px; color: #333; line-height: 1.6;">
                 <p style="margin-bottom: 10px;">● APP可以添加快捷方式</p>
-                <p style="margin-bottom: 5px;">● <strong>Android:</strong></p>
-                <button id="androidDlBtn" style="background: #3a9df5; color: #fff; border: none; padding: 8px; width: 100%; border-radius: 6px; font-size: 14px; margin-bottom: 12px; cursor: pointer;">跳转浏览器下载 APK</button>
-                
-                <p style="margin-bottom: 5px;">● <strong>iPhone:</strong></p>
-                <p style="color: #666; font-size: 13px; margin-bottom: 8px;">用 Safari 打开 → 分享按钮 → '添加到主屏幕'</p>
+                <button id="androidDlBtn" style="background: #3a9df5; color: #fff; border: none; padding: 10px; width: 100%; border-radius: 6px; font-size: 14px; margin-bottom: 12px; cursor: pointer;">安卓跳转浏览器下载</button>
+                <p style="font-size: 13px; color: #666; margin-bottom: 8px;">iPhone: Safari → 分享 → 添加到主屏幕</p>
                 <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 15px;">
                     <span style="font-size: 12px; color: #666; white-space: nowrap;">链接：</span>
                     <input type="text" id="iosLinkVal" value="https://coc-tools.github.io" readonly style="flex: 1; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; outline: none; background: #f9f9f9;" />
                     <span onclick="copyIosLink()" style="color: #3a9df5; font-size: 13px; cursor: pointer; white-space: nowrap; padding: 4px;">复制</span>
                 </div>
             </div>
-            <div style="border-top: 1px solid #eee; text-align: center; padding-top: 10px;">
-                <span id="closeDownloadAppModal" style="color: #1677FF; font-size: 16px; font-weight: 500; cursor: pointer; display: block; padding: 5px 0;">确定</span>
-            </div>
+            <span id="closeDownloadAppModal" style="color: #1677FF; font-weight: bold; cursor: pointer; display: block; text-align: center; padding: 10px;">确定</span>
         </div>
     </div>
-
+<!-- ！！！上半部分结束，下面紧接着贴下半部分的 <script> 逻辑 ！！！ --><!-- ！！！从这里开始接在第一部分后面 ！！！ -->
     <script>
         Bmob.initialize("7d02e5a27eb27ee9", "123456");
-
-        // ★★★ 终极配置区：ImgBB API 密钥，用于存储超清图片 ★★★
         const IMGBB_API_KEY = "a2062137421eb1609a508bff675756e1"; 
-
+        const ADMIN_PASSWORD = '1212'; 
+        
         let imageViewer = null;
+        let allLayoutsCache = []; 
+        let activeQueryTags = []; 
+        let customSearchKeyword = ''; 
+        let currentTab = 'square'; 
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 2500);
-        }
+        function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.className = "show"; setTimeout(() => { t.className = t.className.replace("show", ""); }, 2500); }
 
         const isAndroid = /android/i.test(navigator.userAgent);
         function processUrl(url) {
             if (!url) { showToast('链接无效！'); return; }
             if (isAndroid && url.startsWith('https://link.clashofclans.com')) {
                 let params = url.split('?')[1] || '';
-                if (!params && url.includes('action=')) {
-                    const match = url.match(/action=([^&]+)/);
-                    if (match) params = 'action=' + match[1];
-                }
+                if (!params && url.includes('action=')) { const match = url.match(/action=([^&]+)/); if (match) params = 'action=' + match[1]; }
                 url = `intent://open_layout?${params}#Intent;scheme=clashofclans;package=com.supercell.clashofclans;end;`;
             }
             window.location.href = url;
         }
 
-        document.getElementById('openBtn').addEventListener('click', function() { 
-            let url = document.getElementById('linkInput').value.trim(); 
-            if (!url) return showToast('请先输入链接！'); 
-            processUrl(url); 
-        });
-        document.getElementById('clearBtn').addEventListener('click', function() { document.getElementById('linkInput').value = ''; });
-
-        function jumpToExternalBrowser(url) {
-            if (isAndroid) {
-                const intentUrl = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;';
-                window.location.href = intentUrl;
-            } else { window.open(url, '_blank'); }
-        }
-        document.querySelector('.timer-link').addEventListener('click', function() { jumpToExternalBrowser('https://cungu.aiyige.ren/#download'); });
-        document.querySelector('.intl-link').addEventListener('click', function() { jumpToExternalBrowser('https://pan.xingchencoc.com/'); });
-
-        // ===== 自定义下载APP弹窗的逻辑 =====
-        document.getElementById('downloadAppBtn').addEventListener('click', function() {
-            document.getElementById('downloadAppModal').classList.add('active');
-        });
-        
-        document.getElementById('closeDownloadAppModal').addEventListener('click', function() {
-            document.getElementById('downloadAppModal').classList.remove('active');
-        });
-
-        // 安卓点击下载按钮，复用之前隐藏跳转浏览器的逻辑
-        document.getElementById('androidDlBtn').addEventListener('click', function() {
-            jumpToExternalBrowser('https://dogpan.com/f/d/1jrvcq/%E5%9B%BD%E9%99%85%E6%9C%8D%E9%93%BE%E6%8E%A5%E5%B7%A5%E5%85%B7_coc.apk');
-        });
-
-        // 苹果复制专属链接功能
-        window.copyIosLink = function() {
-            const input = document.getElementById('iosLinkVal');
-            input.select();
-            document.execCommand('copy');
-            showToast('链接复制成功！');
-        };
-
-        // 点击遮罩层也可以关闭弹窗
-        document.getElementById('downloadAppModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.remove('active');
-            }
-        });
-        // ================================
+        document.getElementById('openBtn').addEventListener('click', () => processUrl(document.getElementById('linkInput').value.trim()));
+        document.getElementById('clearBtn').addEventListener('click', () => document.getElementById('linkInput').value = '');
+        function jumpToExternalBrowser(url) { if (isAndroid) { window.location.href = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;action=android.intent.action.VIEW;end;'; } else window.open(url, '_blank'); }
+        document.querySelector('.timer-link').addEventListener('click', () => jumpToExternalBrowser('https://cungu.aiyige.ren/#download'));
+        document.querySelector('.intl-link').addEventListener('click', () => jumpToExternalBrowser('https://pan.xingchencoc.com/'));
+        document.getElementById('downloadAppBtn').addEventListener('click', () => document.getElementById('downloadAppModal').classList.add('active'));
+        document.getElementById('closeDownloadAppModal').addEventListener('click', () => document.getElementById('downloadAppModal').classList.remove('active'));
+        document.getElementById('androidDlBtn').addEventListener('click', () => jumpToExternalBrowser('https://dogpan.com/f/d/1jrvcq/%E5%9B%BD%E9%99%85%E6%9C%8D%E9%93%BE%E6%8E%A5%E5%B7%A5%E5%85%B7_coc.apk'));
+        window.copyIosLink = function() { const input = document.getElementById('iosLinkVal'); input.select(); document.execCommand('copy'); showToast('链接复制成功！'); };
+        document.getElementById('downloadAppModal').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
 
         function getTagClass(tag) {
             if (tag.includes('本')) return 'tag-blue';
@@ -250,208 +270,214 @@
             return 'tag-orange';
         }
 
-        function copyLink(link) {
-            if (!link) { showToast('暂无链接可复制！'); return; }
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(link).then(() => { showToast('复制成功！'); }).catch(() => { fallbackCopy(link); });
-            } else { fallbackCopy(link); }
-        }
-        function fallbackCopy(text) { 
-            const input = document.createElement('input'); 
-            document.body.appendChild(input); 
-            input.value = text; input.select(); 
-            document.execCommand('copy'); 
-            document.body.removeChild(input); 
-            showToast('复制成功！'); 
-        }
-        function openLayout(link) { if (!link) { showToast('链接无效！'); return; } processUrl(link); }
+        function copyLink(link) { if (!link) return showToast('暂无链接！'); if (navigator.clipboard) { navigator.clipboard.writeText(link).then(() => showToast('复制成功！')).catch(() => fallbackCopy(link)); } else fallbackCopy(link); }
+        function fallbackCopy(text) { const input = document.createElement('input'); document.body.appendChild(input); input.value = text; input.select(); document.execCommand('copy'); document.body.removeChild(input); showToast('复制成功！'); }
+        function openLayout(link) { if (!link) return showToast('链接无效！'); processUrl(link); }
 
-        let layouts = [];
         const gridContainer = document.getElementById('gridContainer');
 
+        window.switchTab = function(type, el) {
+            document.querySelectorAll('.tab-item').forEach(i => i.classList.remove('active'));
+            if(el) el.classList.add('active');
+            currentTab = type;
+            if (type === 'myStar') document.getElementById('quickFilterContainer').style.display = 'none';
+            else document.getElementById('quickFilterContainer').style.display = 'flex';
+            renderLayouts();
+        };
+
+        let pendingStarData = null;
+        window.openStarModal = function(img, originalTitle, link) {
+            pendingStarData = { img, title: originalTitle || '未命名阵型', link, time: new Date().toLocaleString() };
+            document.getElementById('starTitle').value = ''; 
+            document.getElementById('starModal').classList.add('active');
+        };
+
+        document.getElementById('confirmStarBtn').onclick = () => {
+            const customTitle = document.getElementById('starTitle').value.trim() || pendingStarData.title;
+            let stars = JSON.parse(localStorage.getItem('myStars') || '[]');
+            if(stars.some(s => s.link === pendingStarData.link)) { showToast('已经在收藏库啦！'); } 
+            else { stars.unshift({ ...pendingStarData, title: customTitle }); localStorage.setItem('myStars', JSON.stringify(stars)); showToast('已收藏！'); }
+            document.getElementById('starModal').classList.remove('active');
+        };
+
+        window.removeStar = function(link) {
+            let stars = JSON.parse(localStorage.getItem('myStars') || '[]');
+            stars = stars.filter(i => i.link !== link);
+            localStorage.setItem('myStars', JSON.stringify(stars));
+            showToast('已移出收藏');
+            renderLayouts(); 
+        };
+
         function loadCloudLayouts() {
-            const query = Bmob.Query("LayoutData");
-            query.order("-createdAt");
-            query.limit(50);
+            if(allLayoutsCache.length === 0) gridContainer.innerHTML = `<div class="empty-state">加载中...</div>`;
+            const query = Bmob.Query("LayoutData"); query.order("-createdAt"); query.limit(200); 
             query.find().then(res => {
-                layouts = res.map(item => ({
-                    objectId: item.objectId,
-                    title: item.title,
-                    tags: item.tags || [],
-                    imageUrl: item.imageUrl,
-                    link: item.link,
-                    likes: item.likes || 0,
-                    createdAt: item.createdAt 
-                }));
-                renderLayouts();
-            }).catch(err => {
-                console.log("刷新云端数据失败", err);
-                if(layouts.length === 0) gridContainer.innerHTML = `<div class="empty-state">暂无阵型或网络异常</div>`;
+                allLayoutsCache = res.map(item => ({ objectId: item.objectId, title: item.title, tags: item.tags || [], imageUrl: item.imageUrl, link: item.link, createdAt: item.createdAt }));
+                if (currentTab === 'square') renderLayouts(); 
+            }).catch(() => { if(allLayoutsCache.length === 0) gridContainer.innerHTML = `<div class="empty-state">网络异常</div>`; });
+        }
+        loadCloudLayouts(); 
+
+        // ★★★ 核心升级：动态自定义标签过滤放入大厅 ★★★
+        window.clickTagFilter = function(tag) {
+            if (currentTab !== 'square') switchTab('square', document.querySelector('.tab-item:nth-child(1)')); 
+            
+            activeQueryTags = [tag];
+            customSearchKeyword = ''; 
+            document.getElementById('filterCustomTagInput').value = '';
+            
+            document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active'));
+            const specialBtn = document.getElementById('advancedFilterBtn');
+            
+            let foundInQuick = false;
+            document.querySelectorAll('#quickFilterContainer .filter-tab:not(.filter-tab-special)').forEach(t => {
+                if (t.innerText === tag) { t.classList.add('active'); foundInQuick = true; }
             });
-        }
 
-        loadCloudLayouts();
-        setInterval(loadCloudLayouts, 8000); 
+            // 如果点的标签在快捷栏里找不到，我们就动态把它生成在“筛选”按钮的前面！
+            if (!foundInQuick && tag !== '全部') {
+                const existingCustom = document.getElementById('dynamic-quick-tag');
+                if (existingCustom) existingCustom.remove();
 
-        function toggleLike(objectId) {
-            const layout = layouts.find(item => item.objectId === objectId);
-            if (layout) {
-                layout.likes += 1;
-                renderLayouts(); 
-                showToast('感谢你的点赞 ❤️');
-                const query = Bmob.Query('LayoutData');
-                query.get(objectId).then(res => {
-                    res.set('likes', layout.likes);
-                    res.save();
-                });
+                const newTab = document.createElement('div');
+                newTab.className = 'filter-tab active';
+                newTab.id = 'dynamic-quick-tag';
+                newTab.innerText = tag;
+                newTab.onclick = function() { setQuickFilter(tag, this); };
+                
+                document.getElementById('quickFilterContainer').insertBefore(newTab, specialBtn);
+                
+                specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
+            } else {
+                const existingCustom = document.getElementById('dynamic-quick-tag');
+                if (existingCustom) existingCustom.remove();
+                specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
             }
-        }
+            
+            renderLayouts(); 
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        };
 
-        const DELETE_PASSWORD = '123'; 
-        let pendingDeleteId = null;
+        window.setQuickFilter = function(tag, el) {
+            document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            activeQueryTags = tag === '全部' ? [] : [tag];
+            customSearchKeyword = ''; 
+            document.getElementById('filterCustomTagInput').value = '';
 
-        function deleteLayout(objectId) {
-            pendingDeleteId = objectId;
-            document.getElementById('deleteModalOverlay').classList.add('active');
-            document.getElementById('deletePasswordInput').value = '';
-            document.getElementById('deletePasswordInput').focus();
-        }
-
-        document.getElementById('deleteCancelBtn').addEventListener('click', () => {
-            document.getElementById('deleteModalOverlay').classList.remove('active');
-            pendingDeleteId = null;
-        });
-
-        document.getElementById('deleteConfirmBtn').addEventListener('click', () => {
-            const pwd = document.getElementById('deletePasswordInput').value.trim();
-            if (pwd !== DELETE_PASSWORD) {
-                showToast('密码错误，删除失败！');
-                document.getElementById('deletePasswordInput').value = '';
-                return;
+            // 如果点击的不是动态标签，把它清理掉保持清爽
+            if (el.id !== 'dynamic-quick-tag') {
+                const existingCustom = document.getElementById('dynamic-quick-tag');
+                if (existingCustom) existingCustom.remove();
             }
-            if (pendingDeleteId !== null) {
-                showToast('正在删除...');
-                const query = Bmob.Query('LayoutData');
-                query.destroy(pendingDeleteId).then(res => {
-                    showToast('已成功从云端删除');
-                    document.getElementById('deleteModalOverlay').classList.remove('active');
-                    pendingDeleteId = null;
-                    loadCloudLayouts(); 
-                }).catch(err => {
-                    showToast('删除失败，请检查网络');
-                });
-            }
-        });
+
+            const specialBtn = document.getElementById('advancedFilterBtn');
+            specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
+            renderLayouts(); 
+        };
 
         function renderLayouts() {
-            if (layouts.length === 0) {
-                gridContainer.innerHTML = `<div class="empty-state">暂无阵型，点击右下角➕上传你的阵型吧</div>`;
+            let displayLayouts = [];
+            
+            if (currentTab === 'square') {
+                displayLayouts = allLayoutsCache.filter(item => {
+                    let passTags = true;
+                    if (activeQueryTags.length > 0) passTags = activeQueryTags.every(tag => item.tags.includes(tag));
+                    let passCustom = true;
+                    if (customSearchKeyword) {
+                        const kw = customSearchKeyword.toLowerCase();
+                        passCustom = (item.title || '').toLowerCase().includes(kw) || (item.tags || []).some(t => t.toLowerCase().includes(kw));
+                    }
+                    return passTags && passCustom;
+                });
+            } else { displayLayouts = JSON.parse(localStorage.getItem('myStars') || '[]'); }
+
+            if (displayLayouts.length === 0) {
+                gridContainer.innerHTML = currentTab === 'square' ? `<div class="empty-state">暂无阵型~</div>` : `<div class="empty-state">你的收藏库空空如也~<br>去广场点击 ⭐ 添加几个吧！</div>`;
                 return;
             }
-            let html = '';
-            layouts.forEach((item) => {
-                let tagsHtml = '';
-                if (item.tags && item.tags.length > 0) {
-                    tagsHtml = item.tags.map(tag => `<span class="tag ${getTagClass(tag)}">${tag}</span>`).join('');
-                }
-                const titleHtml = item.title ? `<div class="card-title">${item.title}</div>` : '';
-                const timeStr = item.createdAt ? item.createdAt.substring(0, 16) : '';
+            
+            gridContainer.innerHTML = displayLayouts.map(item => {
+                let imgUrl = item.imageUrl || item.img;
+                let titleStr = item.title || '';
+                let linkStr = item.link;
+                let objId = item.objectId;
+                let timeStr = item.createdAt ? item.createdAt.substring(0, 16) : (item.time ? '收藏于: ' + item.time.substring(0, 16) : '');
+                let tagsHtml = (item.tags || []).map(tag => `<span class="tag ${getTagClass(tag)}" onclick="clickTagFilter('${tag}')">${tag}</span>`).join('');
+                
+                let actionsHtml = currentTab === 'square' ? `
+                    <span class="star-btn" onclick="openStarModal('${imgUrl}', '${titleStr}', '${linkStr}')">⭐</span>
+                    <span class="edit-btn" onclick="openPasswordPrompt('edit', '${objId}')">✏️</span>
+                    <span class="delete-btn" onclick="openPasswordPrompt('delete', '${objId}')">✕</span>
+                ` : `<span class="delete-btn" style="font-size:13px; font-weight:normal;" onclick="removeStar('${linkStr}')">移出收藏</span>`;
 
-                html += `
-                    <div class="layout-card">
+                return `
+                    <div class="layout-card" ${currentTab === 'myStar' ? 'style="border: 1px solid #ffd591;"' : ''}>
                         <div class="card-img-wrapper">
-                            <img class="preview-image" src="${item.imageUrl}" alt="阵型图" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iI2UwZTBlMCIvPjwvc3ZnPg=='" />
-                            <span class="badge-server">国际服</span>
+                            <img class="preview-image" src="${imgUrl}" />
+                            <span class="badge-server" ${currentTab === 'myStar' ? 'style="background:#faad14;"' : ''}>${currentTab === 'myStar' ? '⭐ 已收藏' : '国际服'}</span>
                         </div>
                         <div class="card-info">
-                            <div>
-                                ${titleHtml}
-                                <div class="card-time">${timeStr}</div>
-                                <div class="card-tags">${tagsHtml}</div>
-                            </div>
+                            <div><div class="card-title">${titleStr}</div><div class="card-time">${timeStr}</div><div class="card-tags">${tagsHtml}</div></div>
                             <div class="card-actions">
-                                <div class="action-group-left">
-                                    <span class="action-btn action-copy" onclick="copyLink('${item.link}')">复制阵型</span>
-                                    <span class="action-btn action-open" onclick="openLayout('${item.link}')">打开游戏</span>
-                                </div>
-                                <div class="action-group-right">
-                                    <span class="like-btn" onclick="toggleLike('${item.objectId}')">❤️ <span class="like-count">${item.likes || 0}</span></span>
-                                    <span class="delete-btn" onclick="deleteLayout('${item.objectId}')">✕</span>
-                                </div>
+                                <div class="action-group-left"><span class="action-btn" onclick="copyLink('${linkStr}')">复制</span><span class="action-btn" onclick="openLayout('${linkStr}')">打开</span></div>
+                                <div class="action-group-right">${actionsHtml}</div>
                             </div>
                         </div>
-                    </div>
-                `;
-            });
-            gridContainer.innerHTML = html;
-
-            if (imageViewer) {
-                imageViewer.destroy();
-            }
-            imageViewer = new Viewer(document.getElementById('gridContainer'), {
-                filter(image) {
-                    return image.classList.contains('preview-image');
-                },
-                toolbar: false, 
-                navbar: false
-            });
+                    </div>`;
+            }).join('');
+            
+            initImageViewer();
         }
 
+        function initImageViewer() {
+            if (imageViewer) imageViewer.destroy();
+            imageViewer = new Viewer(document.getElementById('gridContainer'), { filter(i) { return i.classList.contains('preview-image'); }, toolbar: false, navbar: false });
+        }
+
+        let pendingAction = null; let pendingTargetId = null;
+        window.openPasswordPrompt = function(action, objectId) {
+            pendingAction = action; pendingTargetId = objectId;
+            const modalTitle = document.getElementById('passwordModalTitle');
+            if(action === 'delete') { modalTitle.innerText = "删除云端阵型"; modalTitle.style.color = "#ff4d4f"; document.getElementById('passwordConfirmBtn').style.background = "#ff4d4f"; } 
+            else { modalTitle.innerText = "修改阵型信息"; modalTitle.style.color = "#3a9df5"; document.getElementById('passwordConfirmBtn').style.background = "#3a9df5"; }
+            document.getElementById('passwordModalOverlay').classList.add('active'); document.getElementById('actionPasswordInput').value = '';
+        }
+
+        document.getElementById('passwordCancelBtn').addEventListener('click', () => { document.getElementById('passwordModalOverlay').classList.remove('active'); });
+
+        document.getElementById('passwordConfirmBtn').addEventListener('click', () => {
+            if (document.getElementById('actionPasswordInput').value.trim() !== ADMIN_PASSWORD) return showToast('管理密码错误！');
+            document.getElementById('passwordModalOverlay').classList.remove('active');
+            if (pendingAction === 'delete') {
+                showToast('正在删除...'); Bmob.Query('LayoutData').destroy(pendingTargetId).then(() => { showToast('已删除'); loadCloudLayouts(); });
+            } else if (pendingAction === 'edit') { openEditModal(pendingTargetId); }
+        });
+
         const tagGroups = [
-            { name: "阵型类型", items: ["搬运", "自用"], single: true },
-            { name: "大本营", items: ["18本"], single: true },
+            { name: "大本营", items: ["18本"], single: true }, { name: "阵型类型", items: ["搬运", "自用"], single: true },
             { name: "精工防御", items: ["熔岩火炮", "空中炸弹发射器", "熔岩发射器"], single: true },
             { name: "法术塔配置", items: ["双狂暴", "双隐身", "双毒药", "双地震", "一狂一隐", "一狂一毒", "一隐一毒", "一狂一地", "一毒一地", "一隐一地"], single: true },
             { name: "阵型用途", items: ["护资源", "防三星", "冲杯", "部落战"], single: false }
         ];
         
-        let selectedTags = [];
-        let groupSingleState = {};
+        let uploadSelectedTags = []; let filterSelectedTags = []; let currentEditId = null; let currentEditImageUrl = null;
 
-        function initTagPicker() {
-            const wrapper = document.getElementById('tagPickerWrapper');
-            wrapper.innerHTML = '';
-            selectedTags = [];
-            groupSingleState = {};
-            
+        function renderTagsToContainer(containerId, isFilterMode) {
+            const wrapper = document.getElementById(containerId); wrapper.innerHTML = '';
+            let selectedArray = isFilterMode ? filterSelectedTags : uploadSelectedTags; let groupState = {}; 
             tagGroups.forEach(group => {
-                const titleEl = document.createElement('span');
-                titleEl.className = 'tag-group-title';
-                titleEl.innerText = group.name;
-                wrapper.appendChild(titleEl);
-                
-                const container = document.createElement('div');
-                container.className = 'tag-group-container';
-                if (group.single) { groupSingleState[group.name] = ''; }
-                
+                const titleEl = document.createElement('span'); titleEl.className = 'tag-group-title'; titleEl.innerText = group.name; wrapper.appendChild(titleEl);
+                const container = document.createElement('div'); container.className = 'tag-group-container';
+                if (group.single) groupState[group.name] = ''; 
                 group.items.forEach(tag => {
-                    const el = document.createElement('span');
-                    el.className = 'tag-option';
-                    el.innerText = tag;
+                    const el = document.createElement('span'); el.className = 'tag-option'; el.innerText = tag;
+                    if (selectedArray.includes(tag)) { el.classList.add('active'); if (group.single) groupState[group.name] = tag; }
                     el.onclick = function() {
                         if (group.single) {
-                            if (this.classList.contains('active')) {
-                                this.classList.remove('active');
-                                const idx = selectedTags.indexOf(tag);
-                                if (idx > -1) selectedTags.splice(idx, 1);
-                                groupSingleState[group.name] = '';
-                            } else {
-                                container.querySelectorAll('.tag-option').forEach(t => t.classList.remove('active'));
-                                this.classList.add('active');
-                                const oldTag = groupSingleState[group.name];
-                                if (oldTag) {
-                                    const idx = selectedTags.indexOf(oldTag);
-                                    if (idx > -1) selectedTags.splice(idx, 1);
-                                }
-                                selectedTags.push(tag);
-                                groupSingleState[group.name] = tag;
-                            }
-                        } else {
-                            this.classList.toggle('active');
-                            const index = selectedTags.indexOf(tag);
-                            if (index > -1) selectedTags.splice(index, 1);
-                            else selectedTags.push(tag);
-                        }
+                            if (this.classList.contains('active')) { this.classList.remove('active'); selectedArray.splice(selectedArray.indexOf(tag), 1); groupState[group.name] = ''; } 
+                            else { container.querySelectorAll('.tag-option').forEach(t => t.classList.remove('active')); this.classList.add('active'); const oldTag = groupState[group.name]; if (oldTag) selectedArray.splice(selectedArray.indexOf(oldTag), 1); selectedArray.push(tag); groupState[group.name] = tag; }
+                        } else { this.classList.toggle('active'); const index = selectedArray.indexOf(tag); if (index > -1) selectedArray.splice(index, 1); else selectedArray.push(tag); }
                     };
                     container.appendChild(el);
                 });
@@ -459,127 +485,84 @@
             });
         }
 
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalImage = document.getElementById('modalImage');
-        const fileStatus = document.getElementById('fileStatus');
-        const modalConfirm = document.getElementById('modalConfirm');
+        const filterModal = document.getElementById('advancedFilterModal');
+        window.openAdvancedFilter = function() { filterSelectedTags = [...activeQueryTags]; renderTagsToContainer('filterTagContainer', true); document.getElementById('filterCustomTagInput').value = customSearchKeyword; filterModal.classList.add('active'); }
+        document.getElementById('closeFilterModal').addEventListener('click', () => filterModal.classList.remove('active'));
+        window.resetFilter = function() { filterSelectedTags = []; document.getElementById('filterCustomTagInput').value = ''; renderTagsToContainer('filterTagContainer', true); }
         
+        window.applyFilter = function() {
+            activeQueryTags = [...filterSelectedTags]; customSearchKeyword = document.getElementById('filterCustomTagInput').value.trim(); filterModal.classList.remove('active');
+            document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active'));
+            const specialBtn = document.getElementById('advancedFilterBtn');
+            const existingCustom = document.getElementById('dynamic-quick-tag'); if (existingCustom) existingCustom.remove();
+            
+            if (activeQueryTags.length > 0 || customSearchKeyword) { 
+                if (activeQueryTags.length === 0 && customSearchKeyword) {
+                    const newTab = document.createElement('div'); newTab.className = 'filter-tab active'; newTab.id = 'dynamic-quick-tag'; newTab.innerText = customSearchKeyword;
+                    newTab.onclick = function() { customSearchKeyword = this.innerText; activeQueryTags = []; document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active')); this.classList.add('active'); renderLayouts(); };
+                    document.getElementById('quickFilterContainer').insertBefore(newTab, specialBtn); specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
+                } else { specialBtn.style.background = '#3a9df5'; specialBtn.style.color = '#fff'; }
+            } else { specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5'; document.querySelector('#quickFilterContainer .filter-tab').classList.add('active'); }
+            renderLayouts(); 
+        }
+
+        const modalOverlay = document.getElementById('modalOverlay'); const modalImage = document.getElementById('modalImage'); const fileStatus = document.getElementById('fileStatus'); const modalConfirm = document.getElementById('modalConfirm');
         let readyToUploadFile = null; 
 
         document.getElementById('addBtn').addEventListener('click', () => {
-            modalOverlay.classList.add('active');
-            document.getElementById('modalTitle').value = ''; 
-            document.getElementById('modalLink').value = ''; 
-            document.getElementById('customTagInput').value = '';
-            modalImage.value = '';
-            readyToUploadFile = null;
-            
-            fileStatus.innerText = '点击选择阵型截图';
-            fileStatus.style.color = '#3a9df5';
-            
-            modalConfirm.innerText = '保存发布';
-            modalConfirm.disabled = false;
-            modalConfirm.style.opacity = '1';
-            
-            initTagPicker();
+            currentEditId = null; currentEditImageUrl = null; document.getElementById('uploadModalTitle').innerText = '上传阵型'; document.getElementById('modalTitle').value = ''; document.getElementById('modalLink').value = ''; document.getElementById('customTagInput').value = ''; modalImage.value = ''; readyToUploadFile = null; fileStatus.innerText = '点击选择截图'; fileStatus.style.color = '#3a9df5'; modalConfirm.innerText = '保存发布'; modalConfirm.disabled = false;
+            uploadSelectedTags = []; renderTagsToContainer('uploadTagContainer', false); modalOverlay.classList.add('active');
         });
+
+        function openEditModal(objectId) {
+            const layout = allLayoutsCache.find(i => i.objectId === objectId); if(!layout) return;
+            currentEditId = objectId; currentEditImageUrl = layout.imageUrl; document.getElementById('uploadModalTitle').innerText = '修改阵型信息'; document.getElementById('modalTitle').value = layout.title || ''; document.getElementById('modalLink').value = layout.link || '';
+            let standardTags = []; let customTags = []; const allStandardTags = tagGroups.flatMap(g => g.items);
+            layout.tags.forEach(t => { if(allStandardTags.includes(t)) standardTags.push(t); else customTags.push(t); });
+            document.getElementById('customTagInput').value = customTags.join(' ');
+            uploadSelectedTags = [...standardTags]; renderTagsToContainer('uploadTagContainer', false);
+            modalImage.value = ''; readyToUploadFile = null; fileStatus.innerText = '✅ 原图已保留'; fileStatus.style.color = '#52c41a'; modalConfirm.innerText = '保存修改'; modalConfirm.disabled = false; modalOverlay.classList.add('active');
+        }
         
         document.getElementById('modalCancel').addEventListener('click', () => modalOverlay.classList.remove('active'));
-        // 发布阵型的遮罩关闭监听需要单独处理，防止和其他弹窗冲突
-        modalOverlay.addEventListener('click', (e) => { 
-            if (e.target === modalOverlay) modalOverlay.classList.remove('active'); 
-        });
 
         modalImage.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                fileStatus.innerText = `处理中...`;
-                fileStatus.style.color = '#3a9df5'; 
-                
+                fileStatus.innerText = `处理中...`; fileStatus.style.color = '#3a9df5'; 
                 const reader = new FileReader();
                 reader.onload = function(ev) { 
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        
-                        const MAX_WIDTH = 1200;
-                        let w = img.width;
-                        let h = img.height;
-                        if (w > MAX_WIDTH) {
-                            h = Math.round((h * MAX_WIDTH) / w);
-                            w = MAX_WIDTH;
-                        }
-                        
-                        canvas.width = w;
-                        canvas.height = h;
-                        ctx.drawImage(img, 0, 0, w, h);
-                        
-                        canvas.toBlob(function(blob) {
-                            readyToUploadFile = new File([blob], "layout.jpg", { type: "image/jpeg" });
-                            fileStatus.innerText = `✅ 图片已就绪 (超清 HTTPS 模式)`;
-                            fileStatus.style.color = '#52c41a';
-                        }, 'image/jpeg', 0.85);
-                    };
-                    img.src = ev.target.result;
-                };
-                reader.readAsDataURL(file);
+                    const img = new Image(); img.onload = function() {
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); const MAX_WIDTH = 1200; let w = img.width; let h = img.height;
+                        if (w > MAX_WIDTH) { h = Math.round((h * MAX_WIDTH) / w); w = MAX_WIDTH; }
+                        canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
+                        canvas.toBlob(function(blob) { readyToUploadFile = new File([blob], "layout.jpg", { type: "image/jpeg" }); fileStatus.innerText = `✅ 新图片已就绪`; fileStatus.style.color = '#52c41a'; }, 'image/jpeg', 0.85);
+                    }; img.src = ev.target.result;
+                }; reader.readAsDataURL(file);
             }
         });
 
         modalConfirm.addEventListener('click', () => {
-            const title = document.getElementById('modalTitle').value.trim();
-            const link = document.getElementById('modalLink').value.trim();
-            const customTag = document.getElementById('customTagInput').value.trim();
+            const title = document.getElementById('modalTitle').value.trim(); const link = document.getElementById('modalLink').value.trim(); const customTagStr = document.getElementById('customTagInput').value.trim();
+            if (!link) return showToast('请填写链接！'); if (!readyToUploadFile && !currentEditId) return showToast('请选择截图！');
+            let finalTags = [...uploadSelectedTags]; if (customTagStr) finalTags.push(...customTagStr.split(' ').filter(t=>t)); 
+            modalConfirm.innerText = '正在处理...'; modalConfirm.disabled = true;
 
-            if (!link) return showToast('请填写阵型链接！');
-            if (!readyToUploadFile) return showToast('请先选择一张阵型截图！');
+            const saveToBmob = (imageUrl) => {
+                modalConfirm.innerText = '保存数据...'; const query = Bmob.Query('LayoutData');
+                if (currentEditId) { query.get(currentEditId).then(res => { res.set("title", title); res.set("tags", finalTags); res.set("imageUrl", imageUrl); res.set("link", link); return res.save(); }).then(() => finishSave()).catch(handleSaveError);
+                } else { query.set("title", title); query.set("tags", finalTags); query.set("imageUrl", imageUrl); query.set("link", link); query.save().then(() => finishSave()).catch(handleSaveError); }
+            };
 
-            let finalTags = [...selectedTags];
-            if (customTag) finalTags.push(customTag);
+            const finishSave = () => { modalOverlay.classList.remove('active'); showToast('成功！'); loadCloudLayouts(); };
+            const handleSaveError = () => { showToast('失败'); modalConfirm.innerText = '保存'; modalConfirm.disabled = false; };
 
-            modalConfirm.innerText = '正在上传安全图片...';
-            modalConfirm.disabled = true;
-            modalConfirm.style.opacity = '0.7';
-            
-            const formData = new FormData();
-            formData.append('image', readyToUploadFile);
-
-            fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    const secureUrl = result.data.url; 
-
-                    modalConfirm.innerText = '正在保存阵型数据...';
-                    
-                    const query = Bmob.Query('LayoutData');
-                    query.set("title", title);
-       query.set("tags", finalTags);
-                    query.set("imageUrl", secureUrl); 
-                    query.set("link", link);
-                    query.set("likes", 0);
-                    return query.save();
-                } else {
-                    throw new Error('图床服务器上传失败');
-                }
-            })
-            .then(() => {
-                modalOverlay.classList.remove('active');
-                showToast('发布成功！刷新列表中...');
-                loadCloudLayouts(); 
-            })
-            .catch(err => {
-                showToast('发布失败，请检查网络');
-                console.error(err);
-                modalConfirm.innerText = '保存发布';
-                modalConfirm.disabled = false;
-                modalConfirm.style.opacity = '1';
-            });
+            if (readyToUploadFile) {
+                modalConfirm.innerText = '传图中...'; const formData = new FormData(); formData.append('image', readyToUploadFile);
+                fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: formData }).then(r => r.json()).then(res => { if (res.success) saveToBmob(res.data.url); else throw new Error(); }).catch(handleSaveError);
+            } else { saveToBmob(currentEditImageUrl); }
         });
     </script>
 </body>
 </html>
+
