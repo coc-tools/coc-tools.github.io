@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>COC 阵型广场</title>
+    <!-- 引入 Bmob SDK 和图片查看器 -->
     <script src="https://cdn.jsdelivr.net/npm/hydrogen-js-sdk/dist/Bmob-2.2.5.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
@@ -11,26 +12,39 @@
         *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
         body{font-family:-apple-system,sans-serif;background:#f4f7f9;color:#333;display:flex;justify-content:center;padding-bottom:30px}
         .container{max-width:400px;width:100%;padding:16px}
+        
+        /* 顶部导航栏 */
         .header-bar{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:12px;height:38px}
         .view-toggle{display:flex;background:#eef1f4;border-radius:16px;padding:3px;width:180px;box-shadow:inset 0 1px 3px rgba(0,0,0,0.02)}
-        .toggle-item{flex:1;text-align:center;font-size:13px;font-weight:bold;padding:6px 0;border-radius:14px;color:#888;cursor:pointer;transition:.2s}
+        .toggle-item{flex:1;text-align:center;font-size:13px;font-weight:bold;padding:6px 0;border-radius:14px;color:#888;cursor:pointer;transition:all 0.2s}
         .toggle-item.active{background:#fff;color:#3a9df5;box-shadow:0 1px 5px rgba(0,0,0,0.06)}
-        .gift-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:18px;cursor:pointer;background:#fff;border-radius:50%;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,0.06);width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #f0f0f0;transition:.2s}
+        .gift-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:18px;cursor:pointer;background:#fff;border-radius:50%;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,0.06);width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #f0f0f0;transition:0.2s}
         .gift-btn:active{transform:translateY(-50%) scale(0.9)}
-        .input-area{width:100%;height:48px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:0 15px;font-size:14px;box-shadow:inset 0 1px 4px rgba(0,0,0,0.02);outline:none;margin-bottom:10px;transition:border .3s;font-family:inherit}
+
+        /* 输入区与快捷键 */
+        .input-area{width:100%;height:48px;background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:0 15px;font-size:14px;box-shadow:inset 0 1px 4px rgba(0,0,0,0.02);outline:none;margin-bottom:10px;transition:border 0.3s;font-family:inherit;}
         .input-area:focus{border-color:#3a9df5}
-        .links-bar{display:flex;justify-content:center;gap:20px;margin-bottom:16px;font-size:12px;color:#3a9df5;font-weight:600}
-        .links-bar span{cursor:pointer} .links-bar span:active{opacity:.7}
+        
+        .links-bar{display:flex;justify-content:center;gap:20px;margin-bottom:16px;font-size:12px;color:#3a9df5;font-weight:600;}
+        .links-bar span{cursor:pointer;}
+        .links-bar span:active{opacity:0.7}
+
+        /* 按钮区 */
         .btn-group{display:flex;gap:12px;margin-bottom:16px}
-        .btn{padding:10px 0;border:none;border-radius:10px;font-weight:bold;cursor:pointer;transition:.2s;font-size:14px;flex:1}
-        .btn-open{background:#3a9df5;color:white;flex:2} .btn-clear{background:#f0f0f0;color:#666;flex:1}
+        .btn{padding:10px 0;border:none;border-radius:10px;font-weight:bold;cursor:pointer;transition:0.2s;font-size:14px;flex:1}
+        .btn-open{background:#3a9df5;color:white;flex:2} 
+        .btn-clear{background:#f0f0f0;color:#666;flex:1} 
+
+        /* 快捷筛选栏 */
         .filter-container{display:flex;overflow-x:auto;gap:8px;padding-bottom:10px;margin-bottom:10px;scrollbar-width:none;align-items:center}
         .filter-container::-webkit-scrollbar{display:none}
         .filter-tab{padding:6px 16px;border-radius:18px;font-size:13px;font-weight:600;background:#fff;border:1px solid #eee;color:#555;cursor:pointer;white-space:nowrap}
         .filter-tab.active{background:#3a9df5;color:#fff;border-color:#3a9df5}
         .filter-tab-special{background:#f0f7ff;color:#3a9df5;border:1px solid #3a9df5;display:flex;align-items:center;gap:4px}
+        
+        /* 卡片区 */
         .grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .layout-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.05);transition:.3s;border:1px solid rgba(0,0,0,0.02);display:flex;flex-direction:column}
+        .layout-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.05);transition:0.3s;border:1px solid rgba(0,0,0,0.02);display:flex;flex-direction:column}
         .card-img-wrapper{position:relative;width:100%;height:110px;background:#f0f0f0}
         .card-img-wrapper img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
         .badge-server{position:absolute;bottom:8px;right:8px;background:#8b5cf6;color:#fff;padding:2px 6px;border-radius:12px;font-size:9px;font-weight:500;z-index:10;pointer-events:none}
@@ -38,52 +52,75 @@
         .card-title{font-size:13px;font-weight:700;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
         .card-time{font-size:10px;color:#999;margin-bottom:6px}
         .card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;min-height:20px}
-        .tag{padding:3px 6px;border-radius:8px;font-size:10px;cursor:pointer;background:#f0f0f0;font-weight:500;transition:.2s} .tag:active{opacity:.6}
-        .tag-blue{background-color:#E6F4FF;color:#1677FF} .tag-green{background-color:#F6FFED;color:#52C41A} .tag-orange{background-color:#FFFBE6;color:#D48806}
-        .skeleton-img{width:100%;height:110px;background:#e0e0e0;animation:pulse 1.5s infinite}
-        .skeleton-info{padding:10px} .skeleton-line{height:12px;background:#e0e0e0;margin-bottom:8px;border-radius:4px;animation:pulse 1.5s infinite}
-        .skeleton-line.short{width:60%} @keyframes pulse{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
+        .tag{padding:3px 6px;border-radius:8px;font-size:10px;cursor:pointer;background:#f0f0f0;font-weight:500;transition:opacity 0.2s}
+        .tag:active{opacity:0.6}
+        .tag-blue{background-color:#E6F4FF;color:#1677FF}
+        .tag-green{background-color:#F6FFED;color:#52C41A}
+        .tag-orange{background-color:#FFFBE6;color:#D48806}
+        
+        /* 骨架屏动画 */
+        .skeleton-img { width: 100%; height: 110px; background: #e0e0e0; animation: pulse 1.5s infinite; }
+        .skeleton-info { padding: 10px; }
+        .skeleton-line { height: 12px; background: #e0e0e0; margin-bottom: 8px; border-radius: 4px; animation: pulse 1.5s infinite; }
+        .skeleton-line.short { width: 60%; }
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        /* 操作栏 */
         .card-actions{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f9f9f9;padding-top:10px;padding-bottom:4px}
         .action-group{display:flex;gap:12px;align-items:center}
-        .action-btn{font-size:12px;cursor:pointer;color:#3a9df5;font-weight:500;padding:4px 0} .action-btn:active{opacity:.7}
-        .icon-btn{font-size:15px;cursor:pointer;opacity:.7;transition:.2s;padding:4px} .icon-btn:active{opacity:1;transform:scale(1.1)}
+        .action-btn{font-size:12px;cursor:pointer;color:#3a9df5;font-weight:500;padding:4px 0}
+        .action-btn:active{opacity:0.7}
+        .icon-btn{font-size:15px;cursor:pointer;opacity:0.7;transition:0.2s;padding:4px}
+        .icon-btn:active{opacity:1;transform:scale(1.1)}
         .delete-btn{color:#ff4d4f;font-size:15px;cursor:pointer;font-weight:bold;padding:4px}
+        
         .fab-add{position:fixed;bottom:30px;right:20px;width:56px;height:56px;background:#3a9df5;border-radius:50%;color:white;font-size:28px;box-shadow:0 6px 20px rgba(58,157,245,0.4);border:none;cursor:pointer;z-index:998;display:flex;align-items:center;justify-content:center}
         .fab-add:active{transform:scale(0.95)}
-        .empty-state{grid-column:1/-1;text-align:center;padding:40px 0;color:#999;font-size:14px}
+        .empty-state{grid-column:1 / -1;text-align:center;padding:40px 0;color:#999;font-size:14px}
+        
+        /* 弹窗通用样式 */
         .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center}
         .modal-overlay.active{display:flex}
         .modal-content{background:#fff;width:92%;max-width:360px;border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,0.2);max-height:85vh;overflow-y:auto}
         .bottom-sheet{align-items:flex-end}
-        .bottom-sheet .modal-content{border-radius:20px 20px 0 0;width:100%;max-width:450px;margin:0 auto;transform:translateY(100%);transition:transform .3s ease-out;padding-bottom:30px;animation:slideUp .3s forwards}
+        .bottom-sheet .modal-content{border-radius:20px 20px 0 0;width:100%;max-width:450px;margin:0 auto;transform:translateY(100%);transition:transform 0.3s ease-out;padding-bottom:30px;animation:slideUp 0.3s forwards}
         @keyframes slideUp{to{transform:translateY(0)}}
+        
         .modal-title{font-size:16px;font-weight:600;margin-bottom:12px;text-align:center;color:#333}
-        .modal-input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:8px;outline:none;background:#f9f9f9;transition:border .3s}
+        .modal-input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:13px;margin-bottom:8px;outline:none;background:#f9f9f9;transition:border 0.3s}
         .modal-input:focus{border-color:#3a9df5;background:#fff}
         .tag-picker-wrapper{background:#f7f8fa;border-radius:8px;padding:8px;margin-bottom:8px}
-        .tag-group-title{font-size:12px;font-weight:bold;color:#333;margin:8px 0 4px 0;display:block} .tag-group-title:first-of-type{margin-top:2px}
+        .tag-group-title{font-size:12px;font-weight:bold;color:#333;margin:8px 0 4px 0;display:block}
+        .tag-group-title:first-of-type{margin-top:2px}
         .tag-group-container{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:4px}
-        .tag-option{display:inline-block;padding:4px 10px;border:1px solid #ddd;border-radius:14px;font-size:11px;color:#555;cursor:pointer;background:#fff;transition:all .2s}
+        .tag-option{display:inline-block;padding:4px 10px;border:1px solid #ddd;border-radius:14px;font-size:11px;color:#555;cursor:pointer;background:#fff;transition:all 0.2s}
         .tag-option.active{background:#3a9df5;color:#fff;border-color:#3a9df5}
         .modal-file-wrapper{border:1px dashed #3a9df5;border-radius:8px;padding:12px;text-align:center;color:#3a9df5;background:#f0f7ff;margin-bottom:8px;cursor:pointer;position:relative}
         .modal-file-wrapper input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
         .file-status{color:#333;font-size:13px;display:block}
         .modal-btn-group{display:flex;gap:10px;margin-top:10px}
         .modal-btn{flex:1;padding:10px 0;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer}
-        .modal-btn-cancel{background:#f0f0f0;color:#666} .modal-btn-confirm{background:#3a9df5;color:#fff}
-        #toast{visibility:hidden;min-width:200px;background-color:#323232;color:#fff;text-align:center;border-radius:8px;padding:12px 16px;position:fixed;z-index:9999;bottom:100px;left:50%;transform:translateX(-50%);font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);opacity:0;transition:.3s}
+        .modal-btn-cancel{background:#f0f0f0;color:#666}
+        .modal-btn-confirm{background:#3a9df5;color:#fff}
+        
+        #toast{visibility:hidden;min-width:200px;background-color:#323232;color:#fff;text-align:center;border-radius:8px;padding:12px 16px;position:fixed;z-index:9999;bottom:100px;left:50%;transform:translateX(-50%);font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);opacity:0;transition:opacity 0.3s}
         #toast.show{visibility:visible;opacity:1}
+
+        /* 福利列表专用样式 */
         .gift-item{display:flex;justify-content:space-between;align-items:center;background:#f0f7ff;padding:14px;border-radius:12px;margin-bottom:12px;border:1px solid #cce4ff}
         .gift-info{display:flex;flex-direction:column;gap:6px}
-        .gift-name{font-size:15px;font-weight:bold;color:#333} .gift-time{font-size:12px;color:#ff4d4f;font-weight:500}
+        .gift-name{font-size:15px;font-weight:bold;color:#333}
+        .gift-time{font-size:12px;color:#ff4d4f;font-weight:500}
         .gift-poster{width:100%;border-radius:12px;margin-top:10px;border:1px solid #eee;display:block}
-        .custom-modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:9999}
-        .custom-modal{background:#fff;width:85%;max-width:320px;border-radius:16px;padding:24px;text-align:center}
-        .custom-modal h3{margin-bottom:12px;font-size:16px;color:#333}
-        .custom-modal p{font-size:13px;color:#666;margin-bottom:15px;text-align:left;line-height:1.6}
-        .dl-modal-btns{display:flex;flex-direction:column;gap:10px;margin-top:15px}
-        .dl-modal-btn{padding:12px;border-radius:10px;border:none;font-weight:bold;cursor:pointer;font-size:14px}
-        .copy-area{background:#f7f8fa;padding:10px;border-radius:8px;font-size:13px;word-break:break-all;margin:5px 0 10px;border:1px dashed #c0c4cc;color:#333}
+
+        /* 自定义下载弹窗样式 */
+        .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 9999; }
+        .custom-modal { background: #fff; width: 85%; max-width: 320px; border-radius: 16px; padding: 24px; text-align: center; }
+        .custom-modal h3 { margin-bottom: 12px; font-size: 16px; color: #333; }
+        .custom-modal p { font-size: 13px; color: #666; margin-bottom: 15px; text-align: left; line-height: 1.6; }
+        .dl-modal-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .dl-modal-btn { padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .copy-area { background: #f7f8fa; padding: 10px; border-radius: 8px; font-size: 13px; word-break: break-all; margin: 5px 0 10px; border: 1px dashed #c0c4cc; color: #333; }
     </style>
 </head>
 <body>
@@ -99,10 +136,10 @@
 
         <input type="text" class="input-area" id="linkInput" placeholder="这里输入阵型或配兵的链接..." autocomplete="off"/>
         
-        <!-- 外跳浏览器唤醒区 -->
+        <!-- 三个导航链接：点击直接通过 window.open 唤起系统浏览器外跳 -->
         <div class="links-bar">
-            <span onclick="wakeUpBrowser('https://cungu.aiyige.ren/')">部落冲突计时器</span>
-            <span onclick="wakeUpBrowser('https://pan.xingchencoc.com/')">国际服</span>
+            <span onclick="window.open('https://cungu.aiyige.ren/', '_blank')">部落冲突计时器</span>
+            <span onclick="window.open('https://pan.xingchencoc.com/', '_blank')">国际服</span>
             <span onclick="showDownloadModal()">下载</span>
         </div>
 
@@ -131,16 +168,23 @@
     <div id="toast"></div>
     <button class="fab-add" id="addBtn">+</button>
 
-    <!-- 自定义下载/复制APP弹窗 -->
+    <!-- 自定义下载/复制APP弹窗（带外跳浏览器的安卓下载按钮） -->
     <div class="custom-modal-overlay" id="downloadModal">
         <div class="custom-modal">
             <h3>来自 coc-tools.github.io 的网页显示：</h3>
-            <p>建议使用APP操作，以获得最佳体验。<br>● <strong>Android：</strong><br>点击浏览器菜单 → '添加到主屏幕'<br>● <strong>iPhone：</strong><br>用Safari打开 → 分享按钮 → '添加到主屏幕'</p>
+            <p>
+                建议使用APP操作，以获得最佳体验。<br>
+                ● <strong>Android：</strong><br>
+                点击浏览器菜单 → '添加到主屏幕'<br>
+                ● <strong>iPhone：</strong><br>
+                用Safari打开 → 分享按钮 → '添加到主屏幕'
+            </p>
             <div class="dl-modal-btns">
-                <button class="dl-modal-btn" style="background:#3a9df5; color:#fff;" onclick="wakeUpBrowser('https://dogpan.com/f/d/1jrvcq/%E5%9B%BD%E9%99%85%E6%9C%8D%E9%93%BE%E6%8E%A5%E5%B7%A5%E5%85%B7_coc.apk')">安卓极速下载</button>
-                <div style="text-align:left; font-size:12px; color:#ff4d4f; margin-top:5px; font-weight:bold;">(若点击没反应，请一键复制以下链接去自带浏览器打开)</div>
+                <!-- 点击“安卓下载APP”会自动跳出APP并在浏览器中打开下载地址 -->
+                <button class="dl-modal-btn" style="background:#3a9df5; color:#fff;" onclick="window.open('https://dogpan.com/f/d/1jrvcq/%E5%9B%BD%E9%99%85%E6%9C%8D%E9%93%BE%E6%8E%A5%E5%B7%A5%E5%85%B7_coc.apk', '_blank')">安卓下载APP</button>
+                <div style="text-align:left; font-size:12px; color:#555; margin-top:5px;">iPhone请复制链接用Safari打开：</div>
                 <div class="copy-area" id="copyText">https://coc-tools.github.io</div>
-                <button class="dl-modal-btn" style="background:#52c41a; color:#fff;" onclick="copyDownloadUrl()">一键复制链接</button>
+                <button class="dl-modal-btn" style="background:#52c41a; color:#fff;" onclick="copyDownloadUrl()">复制链接</button>
                 <button class="dl-modal-btn" style="background:#f0f0f0; color:#333;" onclick="document.getElementById('downloadModal').style.display='none'">关闭</button>
             </div>
         </div>
@@ -152,12 +196,17 @@
             <div class="modal-title">官方免费福利 🎁</div>
             <div class="gift-list">
                 <div class="gift-item">
-                    <div class="gift-info"><div class="gift-name">免费城堡蛋糕*1</div><div class="gift-time">截止日期：2026年7月20日</div></div>
+                    <div class="gift-info">
+                        <div class="gift-name">免费城堡蛋糕*1</div>
+                        <div class="gift-time">截止日期：2026年7月20日</div>
+                    </div>
                     <button class="btn btn-open" style="flex:none;padding:8px 16px;font-size:14px;border-radius:8px" onclick="processUrl('https://link.clashofclans.com/?action=voucher&code=a87864b9-e337-42e0-abbe-8344f4204929')">领 取</button>
                 </div>
                 <img src="./10746.png" class="gift-poster" alt="福利时间记录表" onerror="this.style.display='none'">
             </div>
-            <div class="modal-btn-group" style="margin-top:10px;"><button class="modal-btn modal-btn-cancel" style="background:#f0f0f0;color:#333" onclick="document.getElementById('giftModal').classList.remove('active')">关 闭</button></div>
+            <div class="modal-btn-group" style="margin-top:10px;">
+                <button class="modal-btn modal-btn-cancel" style="background:#f0f0f0;color:#333" onclick="document.getElementById('giftModal').classList.remove('active')">关 闭</button>
+            </div>
         </div>
     </div>
 
@@ -167,17 +216,29 @@
             <div class="modal-title">加入我的收藏</div>
             <p style="font-size: 12px; color: #666; margin-bottom: 8px; text-align: center;">阵型保存在手机本地，永不丢失</p>
             <input class="modal-input" id="starTitle" placeholder="给它起个备注（如：冲杯专用）" autocomplete="off"/>
-            <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="document.getElementById('starModal').classList.remove('active')">取消</button><button class="modal-btn modal-btn-confirm" id="confirmStarBtn">确定收藏</button></div>
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" onclick="document.getElementById('starModal').classList.remove('active')">取消</button>
+                <button class="modal-btn modal-btn-confirm" id="confirmStarBtn">确定收藏</button>
+            </div>
         </div>
     </div>
 
     <!-- 高级筛选底部弹窗 -->
     <div class="modal-overlay bottom-sheet" id="advancedFilterModal">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"><span style="font-size: 16px; font-weight: bold; color: #333;">高级筛选</span><span id="closeFilterModal" style="font-size: 22px; color: #999; cursor: pointer; padding: 0 4px;">&times;</span></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 16px; font-weight: bold; color: #333;">高级筛选</span>
+                <span id="closeFilterModal" style="font-size: 22px; color: #999; cursor: pointer; padding: 0 4px;">&times;</span>
+            </div>
             <div class="tag-picker-wrapper" id="filterTagContainer" style="background: transparent; padding: 0; max-height: 45vh; overflow-y: auto;"></div>
-            <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px;"><span class="tag-group-title" style="margin-top: 0;">自定义标签 / 标题搜索</span><input class="modal-input" id="filterCustomTagInput" placeholder="输入关键字快速过滤..." style="margin-bottom: 0;" autocomplete="off"/></div>
-            <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" onclick="resetFilter()">重置</button><button class="modal-btn modal-btn-confirm" onclick="applyFilter()">查看结果</button></div>
+            <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                <span class="tag-group-title" style="margin-top: 0;">自定义标签 / 标题搜索</span>
+                <input class="modal-input" id="filterCustomTagInput" placeholder="输入关键字快速过滤..." style="margin-bottom: 0;" autocomplete="off"/>
+            </div>
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" onclick="resetFilter()">重置</button>
+                <button class="modal-btn modal-btn-confirm" onclick="applyFilter()">查看结果</button>
+            </div>
         </div>
     </div>
 
@@ -188,9 +249,15 @@
             <input class="modal-input" id="modalTitle" placeholder="标题 / 援兵推荐" autocomplete="off"/>
             <div class="tag-picker-wrapper" id="uploadTagContainer"></div>
             <input class="modal-input" id="customTagInput" placeholder="自定义标签" autocomplete="off"/>
-            <div class="modal-file-wrapper"><span class="file-status" id="fileStatus">点击选择截图</span><input type="file" id="modalImage" accept="image/*" /></div>
+            <div class="modal-file-wrapper">
+                <span class="file-status" id="fileStatus">点击选择截图</span>
+                <input type="file" id="modalImage" accept="image/*" />
+            </div>
             <input class="modal-input" id="modalLink" placeholder="阵型复制链接..." autocomplete="off"/>
-            <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button><button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button></div>
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button>
+                <button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button>
+            </div>
         </div>
     </div>
 
@@ -200,7 +267,10 @@
             <div class="modal-title" id="passwordModalTitle" style="color: #ff4d4f;">操作验证</div>
             <p style="font-size: 13px; color: #666; text-align: center; margin-bottom: 10px;">请输入管理密码</p>
             <input class="modal-input" id="actionPasswordInput" type="password" placeholder="请输入密码" autocomplete="off" />
-            <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" id="passwordCancelBtn">取消</button><button class="modal-btn" id="passwordConfirmBtn" style="background: #ff4d4f; color: #fff; border: none;">确认</button></div>
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" id="passwordCancelBtn">取消</button>
+                <button class="modal-btn" id="passwordConfirmBtn" style="background: #ff4d4f; color: #fff; border: none;">确认</button>
+            </div>
         </div>
     </div>
 
@@ -208,13 +278,19 @@
         Bmob.initialize("7d02e5a27eb27ee9", "123456");
         const IMGBB_API_KEY = "a2062137421eb1609a508bff675756e1"; 
         const ADMIN_PASSWORD = '1212'; 
+        
         let allLayoutsCache = [], activeQueryTags = [], customSearchKeyword = '', currentTab = 'square'; 
 
-        function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.className = "show"; setTimeout(() => { t.className = t.className.replace("show", ""); }, 2500); }
+        function showToast(m) { 
+            const t = document.getElementById('toast'); 
+            t.textContent = m; 
+            t.className = "show"; 
+            setTimeout(() => { t.className = t.className.replace("show", ""); }, 2500); 
+        }
 
         const isAndroid = /android/i.test(navigator.userAgent);
         function processUrl(url) {
-            if (!url) return showToast('链接无效！');
+            if (!url) { showToast('链接无效！'); return; }
             if (isAndroid && url.startsWith('https://link.clashofclans.com')) {
                 let params = url.split('?')[1] || '';
                 if (!params && url.includes('action=')) { const match = url.match(/action=([^&]+)/); if (match) params = 'action=' + match[1]; }
@@ -222,22 +298,6 @@
             }
             window.location.href = url;
         }
-
-        // ==========================================
-        // 【核心】终极外跳浏览器方案
-        // ==========================================
-        window.wakeUpBrowser = function(url) {
-            showToast('正在尝试拉起外部浏览器...');
-            let a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            if (/android/i.test(navigator.userAgent)) {
-                setTimeout(() => {
-                    let cleanUrl = url.replace(/^https?:\/\//, ''); let scheme = url.startsWith('https') ? 'https' : 'http';
-                    let intentStr = `intent://${cleanUrl}#Intent;scheme=${scheme};action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end;`;
-                    let iframe = document.createElement("iframe"); iframe.style.display = "none"; iframe.src = intentStr; document.body.appendChild(iframe);
-                    setTimeout(() => document.body.removeChild(iframe), 1000);
-                }, 300);
-            }
-        };
 
         document.getElementById('openBtn').addEventListener('click', () => processUrl(document.getElementById('linkInput').value.trim()));
         document.getElementById('clearBtn').addEventListener('click', () => document.getElementById('linkInput').value = '');
@@ -249,7 +309,9 @@
         function showDownloadModal() { document.getElementById('downloadModal').style.display = 'flex'; }
         function copyDownloadUrl() {
             const text = document.getElementById('copyText').innerText;
-            if (navigator.clipboard) { navigator.clipboard.writeText(text).then(() => { showToast('已复制！请前往手机浏览器打开'); }).catch(() => fallbackCopy(text)); } else { fallbackCopy(text); }
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => { showToast('已复制！请前往Safari打开'); }).catch(() => fallbackCopy(text));
+            } else { fallbackCopy(text); }
         }
 
         function getTagClass(tag) {
@@ -281,42 +343,53 @@
         };
 
         window.removeStar = function(link) {
-            let stars = JSON.parse(localStorage.getItem('myStars') || '[]'); stars = stars.filter(i => i.link !== link); localStorage.setItem('myStars', JSON.stringify(stars));
+            let stars = JSON.parse(localStorage.getItem('myStars') || '[]');
+            stars = stars.filter(i => i.link !== link);
+            localStorage.setItem('myStars', JSON.stringify(stars));
             showToast('已移出收藏'); renderLayouts(); 
         };
 
         const gridContainer = document.getElementById('gridContainer');
 
         function loadCloudLayouts() {
-            const query = Bmob.Query("LayoutData"); query.order("-createdAt"); query.limit(200); 
+            const query = Bmob.Query("LayoutData"); 
+            query.order("-createdAt"); 
+            query.limit(200); 
             query.find().then(res => {
                 allLayoutsCache = res.map(item => ({ objectId: item.objectId, title: item.title, tags: item.tags || [], imageUrl: item.imageUrl, link: item.link, createdAt: item.createdAt }));
                 if (currentTab === 'square') renderLayouts(); 
             }).catch(err => { 
                 if(allLayoutsCache.length === 0) gridContainer.innerHTML = `<div class="empty-state">网络或数据库异常，请稍后重试</div>`; 
+                console.error("Bmob 加载失败:", err);
             });
         }
+        
         loadCloudLayouts(); 
 
         window.clickTagFilter = function(tag) {
             if (currentTab !== 'square') switchTab('square'); 
             activeQueryTags = [tag]; customSearchKeyword = ''; document.getElementById('filterCustomTagInput').value = '';
             document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active'));
-            const specialBtn = document.getElementById('advancedFilterBtn'); let foundInQuick = false;
+            const specialBtn = document.getElementById('advancedFilterBtn');
+            let foundInQuick = false;
             document.querySelectorAll('#quickFilterContainer .filter-tab:not(.filter-tab-special)').forEach(t => { if (t.innerText === tag) { t.classList.add('active'); foundInQuick = true; } });
+            
             const existingCustom = document.getElementById('dynamic-quick-tag'); if (existingCustom) existingCustom.remove();
             if (!foundInQuick && tag !== '全部') {
                 const newTab = document.createElement('div'); newTab.className = 'filter-tab active'; newTab.id = 'dynamic-quick-tag'; newTab.innerText = tag;
-                newTab.onclick = function() { setQuickFilter(tag, this); }; document.getElementById('quickFilterContainer').insertBefore(newTab, specialBtn);
+                newTab.onclick = function() { setQuickFilter(tag, this); };
+                document.getElementById('quickFilterContainer').insertBefore(newTab, specialBtn);
             }
-            specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5'; renderLayouts(); window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
+            renderLayouts(); window.scrollTo({ top: 0, behavior: 'smooth' }); 
         };
 
         window.setQuickFilter = function(tag, el) {
             document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active'); activeQueryTags = tag === '全部' ? [] : [tag]; customSearchKeyword = ''; document.getElementById('filterCustomTagInput').value = '';
             if (el.id !== 'dynamic-quick-tag') { const existingCustom = document.getElementById('dynamic-quick-tag'); if (existingCustom) existingCustom.remove(); }
-            const specialBtn = document.getElementById('advancedFilterBtn'); specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5'; renderLayouts(); 
+            const specialBtn = document.getElementById('advancedFilterBtn'); specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
+            renderLayouts(); 
         };
 
         function renderLayouts() {
@@ -326,27 +399,49 @@
                     let passTags = activeQueryTags.length > 0 ? activeQueryTags.every(tag => item.tags.includes(tag)) : true;
                     let passCustom = true;
                     if (customSearchKeyword) {
-                        const kw = customSearchKeyword.toLowerCase(); passCustom = (item.title || '').toLowerCase().includes(kw) || (item.tags || []).some(t => t.toLowerCase().includes(kw));
+                        const kw = customSearchKeyword.toLowerCase();
+                        passCustom = (item.title || '').toLowerCase().includes(kw) || (item.tags || []).some(t => t.toLowerCase().includes(kw));
                     }
                     return passTags && passCustom;
                 });
             } else { displayLayouts = JSON.parse(localStorage.getItem('myStars') || '[]'); }
 
-            if (displayLayouts.length === 0) { gridContainer.innerHTML = currentTab === 'square' ? `<div class="empty-state">当前暂无符合条件的阵型~</div>` : `<div class="empty-state">收藏库为空~<br>去广场点击 ⭐ 添加吧！</div>`; return; }
+            if (displayLayouts.length === 0) {
+                gridContainer.innerHTML = currentTab === 'square' ? `<div class="empty-state">当前暂无符合条件的阵型~</div>` : `<div class="empty-state">收藏库为空~<br>去广场点击 ⭐ 添加吧！</div>`;
+                return;
+            }
             
             gridContainer.innerHTML = displayLayouts.map(item => {
                 let imgUrl = item.imageUrl || item.img; let titleStr = item.title || '未命名阵型'; let linkStr = item.link; let objId = item.objectId;
                 let timeStr = item.createdAt ? item.createdAt.substring(0, 16) : (item.time ? item.time.substring(0, 16) : '');
                 let tagsHtml = (item.tags || []).map(tag => `<span class="tag ${getTagClass(tag)}" onclick="clickTagFilter('${tag}')">${tag}</span>`).join('');
-                let actionsHtml = currentTab === 'square' ? `<span class="icon-btn" style="color: #faad14;" onclick="openStarModal('${imgUrl}', '${titleStr}', '${linkStr}')">⭐</span><span class="icon-btn" style="color: #888;" onclick="openPasswordPrompt('edit', '${objId}')">✏️</span><span class="delete-btn" onclick="openPasswordPrompt('delete', '${objId}')">✕</span>` : `<span class="delete-btn" style="font-size:13px; font-weight:normal;" onclick="removeStar('${linkStr}')">移出收藏</span>`;
-                return `<div class="layout-card" ${currentTab === 'myStar' ? 'style="border: 1px solid #ffd591;"' : ''}><div class="card-img-wrapper"><img class="preview-image" src="${imgUrl}" loading="lazy" /><span class="badge-server" ${currentTab === 'myStar' ? 'style="background:#faad14;"' : ''}>${currentTab === 'myStar' ? '⭐ 已收藏' : '国际服'}</span></div><div class="card-info"><div><div class="card-title">${titleStr}</div><div class="card-time">${timeStr}</div><div class="card-tags">${tagsHtml}</div></div><div class="card-actions"><div class="action-group"><span class="action-btn" onclick="copyLink('${linkStr}')">复制</span><span class="action-btn" onclick="openLayout('${linkStr}')">打开</span></div><div class="action-group">${actionsHtml}</div></div></div></div>`;
+                
+                let actionsHtml = currentTab === 'square' ? `
+                    <span class="icon-btn" style="color: #faad14;" onclick="openStarModal('${imgUrl}', '${titleStr}', '${linkStr}')">⭐</span>
+                    <span class="icon-btn" style="color: #888;" onclick="openPasswordPrompt('edit', '${objId}')">✏️</span>
+                    <span class="delete-btn" onclick="openPasswordPrompt('delete', '${objId}')">✕</span>
+                ` : `<span class="delete-btn" style="font-size:13px; font-weight:normal;" onclick="removeStar('${linkStr}')">移出收藏</span>`;
+
+                return `<div class="layout-card" ${currentTab === 'myStar' ? 'style="border: 1px solid #ffd591;"' : ''}>
+                        <div class="card-img-wrapper"><img class="preview-image" src="${imgUrl}" loading="lazy" />
+                            <span class="badge-server" ${currentTab === 'myStar' ? 'style="background:#faad14;"' : ''}>${currentTab === 'myStar' ? '⭐ 已收藏' : '国际服'}</span></div>
+                        <div class="card-info">
+                            <div><div class="card-title">${titleStr}</div><div class="card-time">${timeStr}</div><div class="card-tags">${tagsHtml}</div></div>
+                            <div class="card-actions">
+                                <div class="action-group"><span class="action-btn" onclick="copyLink('${linkStr}')">复制</span><span class="action-btn" onclick="openLayout('${linkStr}')">打开</span></div>
+                                <div class="action-group">${actionsHtml}</div>
+                            </div>
+                        </div></div>`;
             }).join('');
-            if(window.viewer) window.viewer.destroy(); window.viewer = new Viewer(gridContainer, { filter(i) { return i.classList.contains('preview-image'); }, toolbar: false, navbar: false });
+            
+            if(window.viewer) window.viewer.destroy();
+            window.viewer = new Viewer(gridContainer, { filter(i) { return i.classList.contains('preview-image'); }, toolbar: false, navbar: false });
         }
 
         let pendingAction = null; let pendingTargetId = null;
         window.openPasswordPrompt = function(action, objectId) {
-            pendingAction = action; pendingTargetId = objectId; const modalTitle = document.getElementById('passwordModalTitle');
+            pendingAction = action; pendingTargetId = objectId;
+            const modalTitle = document.getElementById('passwordModalTitle');
             if(action === 'delete') { modalTitle.innerText = "删除阵型"; modalTitle.style.color = "#ff4d4f"; document.getElementById('passwordConfirmBtn').style.background = "#ff4d4f"; } 
             else { modalTitle.innerText = "修改阵型"; modalTitle.style.color = "#3a9df5"; document.getElementById('passwordConfirmBtn').style.background = "#3a9df5"; }
             document.getElementById('passwordModalOverlay').classList.add('active'); document.getElementById('actionPasswordInput').value = '';
@@ -359,21 +454,123 @@
             } else if (pendingAction === 'edit') { openEditModal(pendingTargetId); }
         });
 
-        const tagGroups=[{name:"大本营",items:["18本"],single:true},{name:"阵型类型",items:["搬运","自用"],single:true},{name:"精工防御",items:["熔岩火炮","空中炸弹发射器","熔岩发射器"],single:true},{name:"法术塔",items:["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"],single:true},{name:"用途",items:["护资源","防三星","冲杯","部落战"],single:false}];
-        let uploadSelectedTags=[],filterSelectedTags=[],currentEditId=null,currentEditImageUrl=null;
-        function renderTagsToContainer(containerId,isFilterMode){const wrapper=document.getElementById(containerId);wrapper.innerHTML='';let selectedArray=isFilterMode?filterSelectedTags:uploadSelectedTags;let groupState={};tagGroups.forEach(group=>{const titleEl=document.createElement('span');titleEl.className='tag-group-title';titleEl.innerText=group.name;wrapper.appendChild(titleEl);const container=document.createElement('div');container.className='tag-group-container';if(group.single)groupState[group.name]='';group.items.forEach(tag=>{const el=document.createElement('span');el.className='tag-option';el.innerText=tag;if(selectedArray.includes(tag)){el.classList.add('active');if(group.single)groupState[group.name]=tag;}el.onclick=function(){if(group.single){if(this.classList.contains('active')){this.classList.remove('active');selectedArray.splice(selectedArray.indexOf(tag),1);groupState[group.name]='';}else{container.querySelectorAll('.tag-option').forEach(t=>t.classList.remove('active'));this.classList.add('active');const oldTag=groupState[group.name];if(oldTag)selectedArray.splice(selectedArray.indexOf(oldTag),1);selectedArray.push(tag);groupState[group.name]=tag;}}else{this.classList.toggle('active');const index=selectedArray.indexOf(tag);if(index>-1)selectedArray.splice(index,1);else selectedArray.push(tag);}};container.appendChild(el);});wrapper.appendChild(container);});}
-        const filterModal=document.getElementById('advancedFilterModal');
-        window.openAdvancedFilter=function(){filterSelectedTags=[...activeQueryTags];renderTagsToContainer('filterTagContainer',true);document.getElementById('filterCustomTagInput').value=customSearchKeyword;filterModal.classList.add('active');}
-        document.getElementById('closeFilterModal').addEventListener('click',()=>filterModal.classList.remove('active'));
-        window.resetFilter=function(){filterSelectedTags=[];document.getElementById('filterCustomTagInput').value='';renderTagsToContainer('filterTagContainer',true);}
-        window.applyFilter=function(){activeQueryTags=[...filterSelectedTags];customSearchKeyword=document.getElementById('filterCustomTagInput').value.trim();filterModal.classList.remove('active');document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t=>t.classList.remove('active'));const specialBtn=document.getElementById('advancedFilterBtn');const existingCustom=document.getElementById('dynamic-quick-tag');if(existingCustom)existingCustom.remove();if(activeQueryTags.length>0||customSearchKeyword){if(activeQueryTags.length===0&&customSearchKeyword){const newTab=document.createElement('div');newTab.className='filter-tab active';newTab.id='dynamic-quick-tag';newTab.innerText=customSearchKeyword;newTab.onclick=function(){customSearchKeyword=this.innerText;activeQueryTags=[];document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');renderLayouts();};document.getElementById('quickFilterContainer').insertBefore(newTab,specialBtn);specialBtn.style.background='#f0f7ff';specialBtn.style.color='#3a9df5';}else{specialBtn.style.background='#3a9df5';specialBtn.style.color='#fff';}}else{specialBtn.style.background='#f0f7ff';specialBtn.style.color='#3a9df5';document.querySelector('#quickFilterContainer .filter-tab').classList.add('active');}renderLayouts();}
-        const modalOverlay=document.getElementById('modalOverlay');const modalImage=document.getElementById('modalImage');const fileStatus=document.getElementById('fileStatus');const modalConfirm=document.getElementById('modalConfirm');
-        document.getElementById('addBtn').addEventListener('click',()=>{currentEditId=null;currentEditImageUrl=null;document.getElementById('uploadModalTitle').innerText='上传阵型';document.getElementById('modalTitle').value='';document.getElementById('modalLink').value='';document.getElementById('modalLink').style.borderColor='#ddd';document.getElementById('customTagInput').value='';modalImage.value='';readyToUploadFile=null;fileStatus.innerText='点击选择截图';fileStatus.style.color='#3a9df5';modalConfirm.innerText='保存发布';modalConfirm.disabled=false;uploadSelectedTags=[];renderTagsToContainer('uploadTagContainer',false);modalOverlay.classList.add('active');});
-        function openEditModal(objectId){const layout=allLayoutsCache.find(i=>i.objectId===objectId);if(!layout)return;currentEditId=objectId;currentEditImageUrl=layout.imageUrl;document.getElementById('uploadModalTitle').innerText='修改阵型信息';document.getElementById('modalTitle').value=layout.title||'';document.getElementById('modalLink').value=layout.link||'';document.getElementById('modalLink').style.borderColor='#ddd';let standardTags=[];let customTags=[];const allStandardTags=tagGroups.flatMap(g=>g.items);layout.tags.forEach(t=>{if(allStandardTags.includes(t))standardTags.push(t);else customTags.push(t);});document.getElementById('customTagInput').value=customTags.join(' ');uploadSelectedTags=[...standardTags];renderTagsToContainer('uploadTagContainer',false);modalImage.value='';readyToUploadFile=null;fileStatus.innerText='✅ 原图已保留';fileStatus.style.color='#52c41a';modalConfirm.innerText='保存修改';modalConfirm.disabled=false;modalOverlay.classList.add('active');}
-        document.getElementById('modalCancel').addEventListener('click',()=>modalOverlay.classList.remove('active'));
-        document.getElementById('modalLink').addEventListener('input',function(){const link=this.value.trim();if(!link){this.style.borderColor='#ddd';return;}const validLinkPattern=/^https:\/\/link\.clashofclans\.com\//i;this.style.borderColor=validLinkPattern.test(link)?'#52c41a':'#ff4d4f';});
-        modalImage.addEventListener('change',function(e){const file=e.target.files[0];if(file){fileStatus.innerText=`图片处理中...`;fileStatus.style.color='#3a9df5';const reader=new FileReader();reader.onload=function(ev){const img=new Image();img.onload=function(){const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');const MAX_WIDTH=1200;let w=img.width;let h=img.height;if(w>MAX_WIDTH){h=Math.round((h*MAX_WIDTH)/w);w=MAX_WIDTH;}canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);canvas.toBlob(function(blob){readyToUploadFile=new File([blob],"layout.jpg",{type:"image/jpeg"});fileStatus.innerText=`✅ 图片已就绪`;fileStatus.style.color='#52c41a';},'image/jpeg',0.85);};img.src=ev.target.result;};reader.readAsDataURL(file);}});
-        modalConfirm.addEventListener('click',()=>{const title=document.getElementById('modalTitle').value.trim();const link=document.getElementById('modalLink').value.trim();const customTagStr=document.getElementById('customTagInput').value.trim();if(!link)return showToast('请填写链接！');const validLinkPattern=/^https:\/\/link\.clashofclans\.com\//i;if(!validLinkPattern.test(link))return showToast('❌ 只能填写官方阵型链接！');if(!readyToUploadFile&&!currentEditId)return showToast('请选择截图！');let finalTags=[...uploadSelectedTags];if(customTagStr)finalTags.push(...customTagStr.split(' ').filter(t=>t));modalConfirm.innerText='处理中...';modalConfirm.disabled=true;const saveToBmob=(imageUrl)=>{modalConfirm.innerText='数据保存中...';const query=Bmob.Query('LayoutData');if(currentEditId){query.get(currentEditId).then(res=>{res.set("title",title);res.set("tags",finalTags);res.set("imageUrl",imageUrl);res.set("link",link);return res.save();}).then(()=>finishSave()).catch(e=>handleSaveError('数据库保存失败'));}else{query.set("title",title);query.set("tags",finalTags);query.set("imageUrl",imageUrl);query.set("link",link);query.save().then(()=>finishSave()).catch(e=>handleSaveError('数据库保存失败'));}};const finishSave=()=>{modalOverlay.classList.remove('active');showToast('成功！');loadCloudLayouts();};const handleSaveError=(msg)=>{showToast(msg||'保存失败');modalConfirm.innerText=currentEditId?'保存修改':'保存发布';modalConfirm.disabled=false;};if(readyToUploadFile){modalConfirm.innerText='图片上传中...';const formData=new FormData();formData.append('image',readyToUploadFile);fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:formData}).then(r=>r.json()).then(res=>{if(res.success)saveToBmob(res.data.url);else throw new Error();}).catch(e=>handleSaveError('图床上传超时，请重试'));}else{saveToBmob(currentEditImageUrl);}});
+        const tagGroups = [
+            { name: "大本营", items: ["18本"], single: true }, { name: "阵型类型", items: ["搬运", "自用"], single: true },
+            { name: "精工防御", items: ["熔岩火炮", "空中炸弹发射器", "熔岩发射器"], single: true },
+            { name: "法术塔", items: ["双狂暴", "双隐身", "双毒药", "双地震", "一狂一隐", "一狂一毒", "一隐一毒", "一狂一地", "一毒一地", "一隐一地"], single: true },
+            { name: "用途", items: ["护资源", "防三星", "冲杯", "部落战"], single: false }
+        ];
+        let uploadSelectedTags = []; let filterSelectedTags = []; let currentEditId = null; let currentEditImageUrl = null;
+
+        function renderTagsToContainer(containerId, isFilterMode) {
+            const wrapper = document.getElementById(containerId); wrapper.innerHTML = '';
+            let selectedArray = isFilterMode ? filterSelectedTags : uploadSelectedTags; let groupState = {}; 
+            tagGroups.forEach(group => {
+                const titleEl = document.createElement('span'); titleEl.className = 'tag-group-title'; titleEl.innerText = group.name; wrapper.appendChild(titleEl);
+                const container = document.createElement('div'); container.className = 'tag-group-container';
+                if (group.single) groupState[group.name] = ''; 
+                group.items.forEach(tag => {
+                    const el = document.createElement('span'); el.className = 'tag-option'; el.innerText = tag;
+                    if (selectedArray.includes(tag)) { el.classList.add('active'); if (group.single) groupState[group.name] = tag; }
+                    el.onclick = function() {
+                        if (group.single) {
+                            if (this.classList.contains('active')) { this.classList.remove('active'); selectedArray.splice(selectedArray.indexOf(tag), 1); groupState[group.name] = ''; } 
+                            else { container.querySelectorAll('.tag-option').forEach(t => t.classList.remove('active')); this.classList.add('active'); const oldTag = groupState[group.name]; if (oldTag) selectedArray.splice(selectedArray.indexOf(oldTag), 1); selectedArray.push(tag); groupState[group.name] = tag; }
+                        } else { this.classList.toggle('active'); const index = selectedArray.indexOf(tag); if (index > -1) selectedArray.splice(index, 1); else selectedArray.push(tag); }
+                    };
+                    container.appendChild(el);
+                });
+                wrapper.appendChild(container);
+            });
+        }
+
+        const filterModal = document.getElementById('advancedFilterModal');
+        window.openAdvancedFilter = function() { filterSelectedTags = [...activeQueryTags]; renderTagsToContainer('filterTagContainer', true); document.getElementById('filterCustomTagInput').value = customSearchKeyword; filterModal.classList.add('active'); }
+        document.getElementById('closeFilterModal').addEventListener('click', () => filterModal.classList.remove('active'));
+        window.resetFilter = function() { filterSelectedTags = []; document.getElementById('filterCustomTagInput').value = ''; renderTagsToContainer('filterTagContainer', true); }
+        window.applyFilter = function() {
+            activeQueryTags = [...filterSelectedTags]; customSearchKeyword = document.getElementById('filterCustomTagInput').value.trim(); filterModal.classList.remove('active');
+            document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active'));
+            const specialBtn = document.getElementById('advancedFilterBtn'); const existingCustom = document.getElementById('dynamic-quick-tag'); if (existingCustom) existingCustom.remove();
+            if (activeQueryTags.length > 0 || customSearchKeyword) { 
+                if (activeQueryTags.length === 0 && customSearchKeyword) {
+                    const newTab = document.createElement('div'); newTab.className = 'filter-tab active'; newTab.id = 'dynamic-quick-tag'; newTab.innerText = customSearchKeyword;
+                    newTab.onclick = function() { customSearchKeyword = this.innerText; activeQueryTags = []; document.querySelectorAll('#quickFilterContainer .filter-tab').forEach(t => t.classList.remove('active')); this.classList.add('active'); renderLayouts(); };
+                    document.getElementById('quickFilterContainer').insertBefore(newTab, specialBtn); specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5';
+                } else { specialBtn.style.background = '#3a9df5'; specialBtn.style.color = '#fff'; }
+            } else { specialBtn.style.background = '#f0f7ff'; specialBtn.style.color = '#3a9df5'; document.querySelector('#quickFilterContainer .filter-tab').classList.add('active'); }
+            renderLayouts(); 
+        }
+
+        const modalOverlay = document.getElementById('modalOverlay'); const modalImage = document.getElementById('modalImage'); const fileStatus = document.getElementById('fileStatus'); const modalConfirm = document.getElementById('modalConfirm');
+        let readyToUploadFile = null; 
+
+        document.getElementById('addBtn').addEventListener('click', () => {
+            currentEditId = null; currentEditImageUrl = null; document.getElementById('uploadModalTitle').innerText = '上传阵型'; document.getElementById('modalTitle').value = ''; document.getElementById('modalLink').value = ''; document.getElementById('modalLink').style.borderColor = '#ddd'; document.getElementById('customTagInput').value = ''; modalImage.value = ''; readyToUploadFile = null; fileStatus.innerText = '点击选择截图'; fileStatus.style.color = '#3a9df5'; modalConfirm.innerText = '保存发布'; modalConfirm.disabled = false;
+            uploadSelectedTags = []; renderTagsToContainer('uploadTagContainer', false); modalOverlay.classList.add('active');
+        });
+
+        function openEditModal(objectId) {
+            const layout = allLayoutsCache.find(i => i.objectId === objectId); if(!layout) return;
+            currentEditId = objectId; currentEditImageUrl = layout.imageUrl; document.getElementById('uploadModalTitle').innerText = '修改阵型信息'; document.getElementById('modalTitle').value = layout.title || ''; document.getElementById('modalLink').value = layout.link || ''; document.getElementById('modalLink').style.borderColor = '#ddd';
+            let standardTags = []; let customTags = []; const allStandardTags = tagGroups.flatMap(g => g.items);
+            layout.tags.forEach(t => { if(allStandardTags.includes(t)) standardTags.push(t); else customTags.push(t); });
+            document.getElementById('customTagInput').value = customTags.join(' ');
+            uploadSelectedTags = [...standardTags]; renderTagsToContainer('uploadTagContainer', false);
+            modalImage.value = ''; readyToUploadFile = null; fileStatus.innerText = '✅ 原图已保留'; fileStatus.style.color = '#52c41a'; modalConfirm.innerText = '保存修改'; modalConfirm.disabled = false; modalOverlay.classList.add('active');
+        }
+        document.getElementById('modalCancel').addEventListener('click', () => modalOverlay.classList.remove('active'));
+
+        document.getElementById('modalLink').addEventListener('input', function() {
+            const link = this.value.trim();
+            if(!link) { this.style.borderColor = '#ddd'; return; }
+            const validLinkPattern = /^https:\/\/link\.clashofclans\.com\//i;
+            this.style.borderColor = validLinkPattern.test(link) ? '#52c41a' : '#ff4d4f';
+        });
+
+        modalImage.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileStatus.innerText = `图片处理中...`; fileStatus.style.color = '#3a9df5'; 
+                const reader = new FileReader(); reader.onload = function(ev) { 
+                    const img = new Image(); img.onload = function() {
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); 
+                        const MAX_WIDTH = 1200; 
+                        let w = img.width; let h = img.height;
+                        if (w > MAX_WIDTH) { h = Math.round((h * MAX_WIDTH) / w); w = MAX_WIDTH; }
+                        canvas.width = w; canvas.height = h; ctx.drawImage(img, 0, 0, w, h);
+                        canvas.toBlob(function(blob) { 
+                            readyToUploadFile = new File([blob], "layout.jpg", { type: "image/jpeg" }); 
+                            fileStatus.innerText = `✅ 图片已就绪`; 
+                            fileStatus.style.color = '#52c41a'; 
+                        }, 'image/jpeg', 0.85);
+                    }; img.src = ev.target.result;
+                }; reader.readAsDataURL(file);
+            }
+        });
+
+        modalConfirm.addEventListener('click', () => {
+            const title = document.getElementById('modalTitle').value.trim(); const link = document.getElementById('modalLink').value.trim(); const customTagStr = document.getElementById('customTagInput').value.trim();
+            if (!link) return showToast('请填写链接！'); const validLinkPattern = /^https:\/\/link\.clashofclans\.com\//i;
+            if (!validLinkPattern.test(link)) return showToast('❌ 只能填写官方阵型链接！');
+            if (!readyToUploadFile && !currentEditId) return showToast('请选择截图！');
+            let finalTags = [...uploadSelectedTags]; if (customTagStr) finalTags.push(...customTagStr.split(' ').filter(t=>t)); 
+            modalConfirm.innerText = '处理中...'; modalConfirm.disabled = true;
+
+            const saveToBmob = (imageUrl) => {
+                modalConfirm.innerText = '数据保存中...'; const query = Bmob.Query('LayoutData');
+                if (currentEditId) { query.get(currentEditId).then(res => { res.set("title", title); res.set("tags", finalTags); res.set("imageUrl", imageUrl); res.set("link", link); return res.save(); }).then(() => finishSave()).catch(e => handleSaveError('数据库保存失败'));
+                } else { query.set("title", title); query.set("tags", finalTags); query.set("imageUrl", imageUrl); query.set("link", link); query.save().then(() => finishSave()).catch(e => handleSaveError('数据库保存失败')); }
+            };
+
+            const finishSave = () => { modalOverlay.classList.remove('active'); showToast('成功！'); loadCloudLayouts(); };
+            const handleSaveError = (msg) => { showToast(msg || '保存失败'); modalConfirm.innerText = currentEditId ? '保存修改' : '保存发布'; modalConfirm.disabled = false; };
+
+            if (readyToUploadFile) {
+                modalConfirm.innerText = '图片上传中...'; const formData = new FormData(); formData.append('image', readyToUploadFile);
+                fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: 'POST', body: formData }).then(r => r.json()).then(res => { if (res.success) saveToBmob(res.data.url); else throw new Error(); }).catch(e => handleSaveError('图床上传超时，请重试'));
+            } else { saveToBmob(currentEditImageUrl); }
+        });
     </script>
 </body>
 </html>
