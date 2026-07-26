@@ -33,7 +33,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 .card-img-wrapper{position:relative;width:100%;height:112px;background:#f1f5f9}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
 .badge-server{position:absolute;bottom:6px;right:6px;background:rgba(15,23,42,0.65);backdrop-filter:blur(4px);color:#fff;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:600}
-/* 清透星标 */
 .img-fav-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;background:rgba(15,23,42,0.45);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;color:#fff;transition:.2s}
 .img-fav-btn.active{background:#fef3c7;color:#d97706;border:1px solid #fcd34d}
 .card-info{padding:9px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
@@ -55,11 +54,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 .empty-state{grid-column:1/-1;text-align:center;padding:45px 0;color:#94a3b8;font-size:13px}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(3px);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
-.modal-content{background:#fff;width:92%;max-width:350px;border-radius:20px;padding:18px;box-shadow:0 20px 40px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto}
+.modal-content{background:#fff;width:92%;max-width:350px;border-radius:20px;padding:18px;box-shadow:0 20px 40px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
 .bottom-sheet{align-items:flex-end}.bottom-sheet .modal-content{border-radius:24px 24px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:32px}
 .modal-title{font-size:15px;font-weight:700;margin-bottom:12px;text-align:center;color:#0f172a}
 .modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:12px;font-size:13px;margin-bottom:10px;outline:none;background:#f8fafc}
-.tag-picker-wrapper{background:#f8fafc;border-radius:12px;padding:10px;margin-bottom:10px;border:1px solid #e2e8f0}
+.modal-input-error {border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);}
+.input-hint {font-size: 11px; color: #64748b; margin-top: -6px; margin-bottom: 10px; display: block; padding-left: 4px;}
+.error-hint {color: #ef4444; font-weight: 500;}
+.tag-picker-wrapper{background:#f8fafc;border-radius:12px;padding:10px;margin-bottom:10px;border:1px solid #e2e8f0;max-height:40vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
 .tag-group-title{font-size:11px;font-weight:700;color:#475569;margin:6px 0 4px;display:block}
 .tag-group-container{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
 .tag-option{display:inline-block;padding:3px 9px;border:1px solid #cbd5e1;border-radius:10px;font-size:10.5px;color:#334155;cursor:pointer;background:#fff}
@@ -69,28 +71,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 .modal-btn-group{display:flex;gap:8px;margin-top:10px}
 .modal-btn{flex:1;padding:10px 0;border:none;border-radius:12px;font-size:13.5px;font-weight:600;cursor:pointer}
 .modal-btn-cancel{background:#f1f5f9;color:#64748b}.modal-btn-confirm{background:#2563eb;color:#fff}
-#toast{visibility:hidden;min-width:180px;background:rgba(15,23,42,0.85);backdrop-filter:blur(4px);color:#fff;text-align:center;border-radius:12px;padding:10px 16px;position:fixed;z-index:9999;bottom:90px;left:50%;transform:translateX(-50%);font-size:13px;opacity:0;transition:.3s}
+#toast{visibility:hidden;min-width:180px;background:rgba(15,23,42,0.92);backdrop-filter:blur(4px);color:#fff;text-align:center;border-radius:12px;padding:10px 16px;position:fixed;z-index:9999;bottom:90px;left:50%;transform:translateX(-50%);font-size:13px;opacity:0;transition:.3s}
 #toast.show{visibility:visible;opacity:1}
 .copy-area{background:#f8fafc;padding:8px;border-radius:10px;font-size:12px;word-break:break-all;margin:4px 0 8px;border:1px dashed #cbd5e1;color:#334155}
+
+/* 一本村庄页面样式 */
+.village-section { margin-bottom: 20px; }
+.village-section-title { font-size: 14px; font-weight: bold; color: #1e293b; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+.village-btn-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;}
+.village-btn { background: #eff6ff; color: #2563eb; border: none; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap;}
+.village-btn:active { background: #dbeafe; }
+.village-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; font-size: 13px; color: #475569; line-height: 1.6; }
+.village-card p { margin-bottom: 10px; }
+.village-card strong { color: #0f172a; }
+.village-link-text { color: #2563eb; text-decoration: none; word-break: break-all; }
+.action-link { display: inline-block; color: #2563eb; font-weight: bold; margin-top: 5px; cursor: pointer;}
+.close-modal-x { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #94a3b8; cursor: pointer; line-height: 1; }
 </style>
 </head>
 <body>
 <div class="container">
     <div class="header-bar">
+        <div style="width: 34px; position: absolute; left: 0;"></div>
         <div class="view-toggle">
             <div class="toggle-item active" id="navSquare" onclick="switchTab('square')">广场大厅</div>
             <div class="toggle-item" id="navStar" onclick="switchTab('myStar')">我的收藏</div>
         </div>
-        <div class="gift-btn" onclick="document.getElementById('giftModal').classList.add('active')">🎁</div>
+        <div class="gift-btn" onclick="document.getElementById('villageModal').classList.add('active')">🎁</div>
     </div>
 
     <div class="input-wrapper">
         <input type="text" class="input-area" id="linkInput" placeholder="粘贴阵型/配兵链接..." autocomplete="off"/>
-        <span class="input-clear" id="clearBtn" onclick="document.getElementById('linkInput').value=''">✕</span>
+        <span class="input-clear" id="clearBtn" onclick="document.getElementById('linkInput').value=''; validateMainInput();">✕</span>
         <button class="input-open-btn" id="openBtn">打开</button>
     </div>
+    <span class="input-hint" id="mainInputHint" style="display:none; margin-top: -6px; margin-bottom: 10px;"></span>
     
     <div class="links-bar">
+        <span onclick="document.getElementById('tutorialModal').classList.add('active')">使用教程</span>
         <span onclick="openExternalLink('https://cungu.aiyige.ren/')">计时器工具</span>
         <span onclick="openExternalLink('https://pan.xingchencoc.com/')">国际服专区</span>
         <span onclick="document.getElementById('downloadModal').style.display='flex'">下载App</span>
@@ -130,15 +148,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
     </div>
 </div>
 
-<div class="modal-overlay" id="giftModal">
-    <div class="modal-content">
-        <div class="modal-title">官方福利专区 🎁</div>
-        <div style="display:flex;justify-content:space-between;align-items:center;background:#eff6ff;padding:12px;border-radius:12px;border:1px solid #dbeafe">
-            <div><div style="font-size:13.5px;font-weight:700;">免费城堡蛋糕*1</div><div style="font-size:11px;color:#ef4444;font-weight:600;">截止日期：2026年7月20日</div></div>
-            <button class="input-open-btn" style="height:30px;padding:0 10px;font-size:12px;" onclick="processUrl('https://link.clashofclans.com/?action=voucher&code=a87864b9-e337-42e0-abbe-8344f4204929')">领 取</button>
+<div class="modal-overlay" id="villageModal">
+    <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+        <span class="close-modal-x" onclick="document.getElementById('villageModal').classList.remove('active')">✕</span>
+        
+        <div class="village-section">
+            <div class="village-section-title">制作一本村庄</div>
+            <div class="village-btn-grid">
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenSCID')">注册SCID</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en?action=OpenShop')">打开商城</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenLayoutEditor')">阵型(清障碍)</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenEvents')">打开活动</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en?action=OpenMoreSettings')">打开更多设置</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en?action=OpenNews')">打开新闻</button>
+                <button class="village-btn" onclick="openExternalLink('https://id.supercell.com/zh-CN/clashofclans/')">SCID网页商城</button>
+            </div>
         </div>
-        <img src="./10746.png" style="width:100%;border-radius:12px;margin-top:10px;border:1px solid #e2e8f0;" onerror="this.style.display='none'">
-        <div class="modal-btn-group" style="margin-top:12px;"><button class="modal-btn modal-btn-cancel" onclick="document.getElementById('giftModal').classList.remove('active')">关 闭</button></div>
+
+        <div class="village-card">
+            <div class="village-section-title" style="color: #d97706;">⚡ 新手教程与快速升级</div>
+            <p><strong>1、</strong>在进行新手教程中，起名字后提示1本升级2本时停止操作，直接用链接打开游戏铲树和刷单人模式。</p>
+            <p><strong>2、</strong>将账号弄到10级就会自动跳过新手教程。</p>
+            <p><strong>3、建城堡：</strong>需要超上限的圣水，通过官网以及赛事预测旁木节等获取资源，此处只例赛事官网 <a href="#" class="village-link-text" onclick="openExternalLink('https://event.supercell.com/clashofclans/zh-tc')">https://event.supercell.com/clashofclans/zh-tc</a></p>
+            
+            <p style="margin-top: 15px;"><strong>重点为以下重复操作：</strong></p>
+            <p><strong>4、</strong>通过浏览器输入以下链接跳转到游戏内：</p>
+            <div style="margin-left: 10px; margin-bottom: 15px;">
+                用以下链接跳转到游戏内编辑阵型进行铲树<br>
+                <span class="action-link" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenLayoutEditor')">点击跳转 ➔</span>
+            </div>
+            <div style="margin-left: 10px;">
+                用以下链接跳转至进攻界面切换到单人模式进攻哥布林营地，使用20个野蛮人爆本后立刻关闭游戏（重复此操作直至10级）<br>
+                <span class="action-link" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenAttackScreen')">点击跳转 ➔</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -162,13 +205,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
-        <div class="modal-title" id="uploadModalTitle">上传阵型</div>
+        <div class="modal-title" id="uploadModalTitle">上传阵型/配兵</div>
         <input class="modal-input" id="modalTitle" placeholder="阵型标题 / 援兵说明" autocomplete="off"/>
         <div class="tag-picker-wrapper" id="uploadTagContainer"></div>
         <input class="modal-input" id="customTagInput" placeholder="自定义标签（空格隔开）" autocomplete="off"/>
         <div class="modal-file-wrapper"><span id="fileStatus" style="font-size:12.5px;font-weight:500;">📸 点击选择阵型截图</span><input type="file" id="modalImage" accept="image/*" /></div>
-        <input class="modal-input" id="modalLink" placeholder="粘贴官方阵型分享链接..." autocomplete="off"/>
+        
+        <input class="modal-input" id="modalLink" placeholder="粘贴官方分享链接..." autocomplete="off" oninput="validateModalLinkInput()"/>
+        <span class="input-hint" id="linkHint" style="margin-top: -6px; margin-bottom: 10px; display: block;">💡 仅支持游戏内复制的以 <b>https://link.clashofclans.com</b> 开头的链接</span>
+
         <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button><button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button></div>
+    </div>
+</div>
+
+
+<div class="modal-overlay" id="tutorialModal">
+    <div class="modal-content" style="max-height: 85vh; overflow-y: auto;">
+        <span class="close-modal-x" onclick="document.getElementById('tutorialModal').classList.remove('active')">✕</span>
+        <div class="modal-title">新手使用指南 📖</div>
+        <div class="village-card" style="margin-top: 10px;">
+            <p style="color: #2563eb; font-weight: bold; margin-bottom: 5px;">📍 1. 如何使用别人的阵型？</p>
+            <p>在广场看到喜欢的阵型，点击 <b>“打开”</b> 即可直接拉起游戏应用并导入。<br>如果需要发给别人，点击 <b>“复制”</b> 即可获取链接。</p>
+            
+            <p style="color: #16a34a; font-weight: bold; margin-bottom: 5px; margin-top: 15px;">📍 2. 如何分享/上传我的阵型配兵？</p>
+            <p><b>第一步：</b>在游戏内阵型界面，点击分享 ➔ <b>作为链接分享</b>，或者配兵分享<br>
+            <b>第二步：</b>在游戏内截取一张清晰的<b>阵型配兵全景图</b>。<br>
+            <b>第三步：</b>回到本网页，点击右下角的 <b style="color: #2563eb;">蓝色“+”号</b>。<br>
+            <b>第四步：</b>选择刚才的截图、粘贴游戏链接、选好标签，点击发布即可！<br>
+            <b>提示：</b>自己发布的阵型可以删除修改，别人不能。</p>
+        </div>
+        <div class="modal-btn-group" style="margin-top:15px;">
+            <button class="modal-btn modal-btn-confirm" onclick="document.getElementById('tutorialModal').classList.remove('active')">我明白了，去逛逛</button>
+        </div>
     </div>
 </div>
 
@@ -188,6 +256,90 @@ let allLayoutsCache=[],activeQueryTags=[],customSearchKeyword='',currentTab='squ
 
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.className="show";setTimeout(()=>{t.className=""},2500)}
 const isAndroid=/android/i.test(navigator.userAgent);
+
+// 首次访问自动弹出新手教程
+window.addEventListener('DOMContentLoaded', () => {
+    if (!localStorage.getItem('hasSeenTutorial')) {
+        setTimeout(() => {
+            document.getElementById('tutorialModal').classList.add('active');
+            localStorage.setItem('hasSeenTutorial', 'true');
+        }, 500); // 延迟0.5秒弹出，体验更好
+    }
+});
+
+
+function extractOfficialCocLink(inputStr){
+    if(!inputStr) return '';
+    const match = inputStr.match(/https:\/\/link\.clashofclans\.com\/[^\s]+/i);
+    return match ? match[0] : inputStr.trim();
+}
+
+function isValidCocLink(u){
+    if(!u) return false;
+    const lower = u.toLowerCase();
+    if(!lower.includes('link.clashofclans.com')) return false;
+    const allowedActions = [
+        'action=openlayout', 'action=copyarmy', 'action=voucher',
+        'action=openscid', 'action=openlayouteditor', 'action=openevents',
+        'action=opentraining', 'action=openplayerprofile', 'action=openmoresettings',
+        'action=opensettings', 'action=openshop', 'action=opennews', 'action=openattackscreen'
+    ];
+    return allowedActions.some(action => lower.includes(action));
+}
+
+function validateMainInput() {
+    const inputEl = document.getElementById('linkInput');
+    const wrapperEl = document.querySelector('.input-wrapper');
+    const hintEl = document.getElementById('mainInputHint');
+    const rawValue = inputEl.value;
+    if(!rawValue) {
+        wrapperEl.style.borderColor = '#cbd5e1';
+        wrapperEl.style.boxShadow = '0 2px 6px rgba(0,0,0,0.02)';
+        hintEl.style.display = 'none';
+        return;
+    }
+    const extractedLink = extractOfficialCocLink(rawValue);
+    if(isValidCocLink(extractedLink)) {
+        wrapperEl.style.borderColor = '#16a34a';
+        wrapperEl.style.boxShadow = '0 0 0 2px rgba(22, 163, 74, 0.2)';
+        hintEl.style.display = 'block';
+        hintEl.innerHTML = '✅ 链接格式正确';
+        hintEl.style.color = '#16a34a';
+    } else {
+        wrapperEl.style.borderColor = '#ef4444';
+        wrapperEl.style.boxShadow = '0 0 0 2px rgba(239, 68, 68, 0.2)';
+        hintEl.style.display = 'block';
+        hintEl.innerHTML = '❌ 格式错误，请输入游戏内分享的 https://link.clashofclans.com 链接';
+        hintEl.style.color = '#ef4444';
+    }
+}
+document.getElementById('linkInput').addEventListener('input', validateMainInput);
+
+function validateModalLinkInput() {
+    const inputEl = document.getElementById('modalLink');
+    const hintEl = document.getElementById('linkHint');
+    if(!inputEl || !hintEl) return;
+    const rawValue = inputEl.value;
+    if(!rawValue) {
+        inputEl.classList.remove('modal-input-error');
+        hintEl.className = 'input-hint';
+        hintEl.innerHTML = '💡 仅支持游戏内复制的以 <b>https://link.clashofclans.com</b> 开头的链接';
+        return;
+    }
+    const extractedLink = extractOfficialCocLink(rawValue);
+    if(isValidCocLink(extractedLink)) {
+        inputEl.classList.remove('modal-input-error');
+        hintEl.className = 'input-hint';
+        hintEl.innerHTML = '✅ 链接格式正确';
+        hintEl.style.color = '#16a34a';
+    } else {
+        inputEl.classList.add('modal-input-error');
+        hintEl.className = 'input-hint error-hint';
+        hintEl.innerHTML = '❌ 格式错误，请粘贴正确的官方游戏分享链接';
+        hintEl.style.color = '#ef4444';
+    }
+}
+
 function processUrl(u){
     if(!u)return showToast('链接无效！');
     if(isAndroid&&u.startsWith('https://link.clashofclans.com')){
@@ -208,7 +360,15 @@ function copyDownloadUrl(){
     if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>showToast('已复制，请前往Safari打开！')).catch(()=>fallbackCopy(t))}
     else fallbackCopy(t);
 }
-document.getElementById('openBtn').onclick=()=>processUrl(document.getElementById('linkInput').value.trim());
+
+document.getElementById('openBtn').onclick=()=>{
+    const rawInput = document.getElementById('linkInput').value;
+    const extracted = extractOfficialCocLink(rawInput);
+    if(!extracted) return showToast('请输入链接');
+    if(!isValidCocLink(extracted)) return showToast('⚠️ 格式错误！请输入正确的官方游戏链接');
+    processUrl(extracted);
+};
+
 function copyLink(l){if(!l)return showToast('暂无链接！');if(navigator.clipboard){navigator.clipboard.writeText(l).then(()=>showToast('复制成功！')).catch(()=>fallbackCopy(l))}else fallbackCopy(l)}
 function fallbackCopy(t){const i=document.createElement('input');document.body.appendChild(i);i.value=t;i.select();document.execCommand('copy');document.body.removeChild(i);showToast('复制成功！')}
 function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
@@ -353,7 +513,7 @@ const tagGroups=[
     {name:"阵型类型",items:["搬运","自用"],single:true},
     {name:"精工防御",items:["熔岩火炮","空中炸弹发射器","熔岩发射器"],single:true},
     {name:"法术塔",items:["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"],single:true},
-    {name:"用途",items:["护资源","防三星","冲杯","部落战"],single:false}
+    {name:"用途",items:["护资源","防三星","冲杯","部落战","世锦赛","金票赛","传奇杯"],single:false}
 ];
 let uploadSelectedTags=[],filterSelectedTags=[];
 
@@ -400,21 +560,34 @@ function applyFilter(){
 }
 
 const modalOverlay=document.getElementById('modalOverlay'),modalImage=document.getElementById('modalImage'),fileStatus=document.getElementById('fileStatus'),modalConfirm=document.getElementById('modalConfirm');
+
+// 重点修复：+号按钮点击逻辑
 document.getElementById('addBtn').onclick=()=>{
     currentEditId=null;currentEditImageUrl=null;
-    document.getElementById('uploadModalTitle').innerText='上传阵型';
-    document.getElementById('modalTitle').value='';document.getElementById('modalLink').value='';document.getElementById('customTagInput').value='';
+    document.getElementById('uploadModalTitle').innerText='上传阵型/配兵';
+    document.getElementById('modalTitle').value='';
+    document.getElementById('modalLink').value='';
+    document.getElementById('customTagInput').value='';
+    
+    // 清空错误提示状态
+    validateModalLinkInput(); 
+    
     modalImage.value='';readyToUploadFile=null;
     fileStatus.innerText='📸 点击选择阵型截图';fileStatus.style.color='#2563eb';
     modalConfirm.innerText='保存发布';modalConfirm.disabled=false;
     uploadSelectedTags=[];renderTagsToContainer('uploadTagContainer',false);
     modalOverlay.classList.add('active');
 };
+
 function openEditModal(objId){
     const item=allLayoutsCache.find(i=>i.objectId===objId);if(!item)return;
     currentEditId=objId;currentEditImageUrl=item.imageUrl;
-    document.getElementById('uploadModalTitle').innerText='修改阵型信息';
-    document.getElementById('modalTitle').value=item.title||'';document.getElementById('modalLink').value=item.link||'';
+    document.getElementById('uploadModalTitle').innerText='修改阵型/配兵信息';
+    document.getElementById('modalTitle').value=item.title||'';
+    document.getElementById('modalLink').value=item.link||'';
+    
+    validateModalLinkInput(); 
+    
     let stdTags=[],custTags=[],allStd=tagGroups.flatMap(g=>g.items);
     item.tags.forEach(t=>{if(allStd.includes(t))stdTags.push(t);else custTags.push(t)});
     document.getElementById('customTagInput').value=custTags.join(' ');
@@ -426,6 +599,7 @@ function openEditModal(objId){
 }
 document.getElementById('modalCancel').onclick=()=>modalOverlay.classList.remove('active');
 
+// 保留的最稳定 ImgBB 图片上传代码
 modalImage.onchange=function(e){
     const file=e.target.files[0];
     if(file){
@@ -446,12 +620,24 @@ modalImage.onchange=function(e){
 };
 
 modalConfirm.onclick=()=>{
-    const title=document.getElementById('modalTitle').value.trim(),link=document.getElementById('modalLink').value.trim(),customTagStr=document.getElementById('customTagInput').value.trim();
+    const title=document.getElementById('modalTitle').value.trim();
+    const rawLink=document.getElementById('modalLink').value.trim();
+    const customTagStr=document.getElementById('customTagInput').value.trim();
+    
+    const link = extractOfficialCocLink(rawLink);
+
     if(!link)return showToast('请填写官方阵型链接！');
+    if(!isValidCocLink(link)) {
+        const linkEl = document.getElementById('modalLink');
+        if(linkEl) linkEl.classList.add('modal-input-error');
+        return showToast('⚠️ 格式错误！请填写官方游戏分享链接');
+    }
+    
     if(!readyToUploadFile&&!currentEditId)return showToast('请选择阵型截图！');
     let finalTags=[...uploadSelectedTags];if(customTagStr)finalTags.push(...customTagStr.split(' ').filter(t=>t));
     modalConfirm.innerText='处理中...';modalConfirm.disabled=true;
 
+    // 修复：确保所有 Bmob 操作都在不影响 ImgBB 主流程的情况下运行
     const saveToBmob=(imageUrl)=>{
         modalConfirm.innerText='正在同步数据...';const q=Bmob.Query('LayoutData');
         if(currentEditId){
@@ -462,15 +648,31 @@ modalConfirm.onclick=()=>{
             q.save().then(()=>finishSave()).catch(()=>handleSaveError('数据库保存失败'));
         }
     };
+    
     const finishSave=()=>{modalOverlay.classList.remove('active');showToast('发布成功！');loadCloudLayouts()};
     const handleSaveError=(msg)=>{showToast(msg||'保存失败');modalConfirm.innerText=currentEditId?'保存修改':'保存发布';modalConfirm.disabled=false};
 
     if(readyToUploadFile){
         modalConfirm.innerText='上传图片中...';const fd=new FormData();fd.append('image',readyToUploadFile);
         fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd})
-        .then(r=>r.json()).then(res=>{if(res.success)saveToBmob(res.data.url);else throw new Error()})
-        .catch(()=>handleSaveError('图床上传超时，请重试'));
-    }else saveToBmob(currentEditImageUrl);
+        .then(r=>{
+            if (!r.ok) { throw new Error('Network response was not ok'); }
+            return r.json();
+        })
+        .then(res=>{
+            if(res.success) {
+                saveToBmob(res.data.url);
+            } else { 
+                throw new Error('API returned false'); 
+            }
+        })
+        .catch((error)=>{
+             console.error("ImgBB Upload Error:", error);
+             handleSaveError('图床上传超时，请重试');
+        });
+    }else {
+        saveToBmob(currentEditImageUrl);
+    }
 };
 </script>
 </body>
