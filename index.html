@@ -15,21 +15,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 .toggle-item{flex:1;text-align:center;font-size:13px;font-weight:600;padding:6px 0;border-radius:17px;color:#64748b;cursor:pointer;transition:.2s}
 .toggle-item.active{background:#fff;color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,0.12)}
 .gift-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:15px;cursor:pointer;background:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
-.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:10px;background:#fff;border:1px solid #cbd5e1;border-radius:14px;padding:3px 4px 3px 12px;box-shadow:0 2px 6px rgba(0,0,0,0.02)}
+.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:10px;background:#fff;border:1px solid #cbd5e1;border-radius:16px;padding:4px 4px 4px 14px;box-shadow:0 4px 10px rgba(0,0,0,0.03);transition:.2s}
 .input-wrapper:focus-within{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
 .input-area{flex:1;border:none;outline:none;font-size:13px;height:38px;background:transparent;color:#0f172a}
 .input-clear{font-size:13px;color:#94a3b8;cursor:pointer;padding:0 6px;display:none}
 .input-wrapper input:not(:placeholder-shown)+.input-clear{display:block}
-.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 14px;height:34px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0}
-.links-bar{display:flex;justify-content:center;gap:8px;margin-bottom:12px}
-.links-bar span{font-size:11.5px;color:#2563eb;background:#eff6ff;padding:5px 10px;border-radius:12px;font-weight:600;cursor:pointer;border:1px solid #dbeafe}
+.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 16px;height:36px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(37,99,235,0.2)}
+.links-bar{display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.links-bar span{font-size:11.5px;color:#2563eb;background:#eff6ff;padding:6px 12px;border-radius:14px;font-weight:600;cursor:pointer;border:1px solid #dbeafe;box-shadow:0 2px 4px rgba(37,99,235,0.04);transition:.2s}
 .filter-container{display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
 .filter-container::-webkit-scrollbar{display:none}
 .filter-tab{padding:5px 14px;border-radius:16px;font-size:12.5px;font-weight:600;background:#fff;border:1px solid #e2e8f0;color:#475569;cursor:pointer;white-space:nowrap}
 .filter-tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
 .filter-tab-special{background:#eff6ff;color:#2563eb;border-color:#bfdbfe}
 .grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.layout-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.04);border:1px solid rgba(226,232,240,0.8);display:flex;flex-direction:column}
+.layout-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 6px 18px rgba(15,23,42,0.06);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .2s ease, box-shadow .2s ease}
 .card-img-wrapper{position:relative;width:100%;height:112px;background:#f1f5f9}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
 .badge-server{position:absolute;bottom:6px;right:6px;background:rgba(15,23,42,0.65);backdrop-filter:blur(4px);color:#fff;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:600}
@@ -45,7 +45,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 .tag{padding:2px 5px;border-radius:5px;font-size:9px;cursor:pointer;font-weight:500;white-space:nowrap;flex-shrink:0}
 .tag-blue{background:#eff6ff;color:#2563eb}.tag-green{background:#f0fdf4;color:#16a34a}.tag-orange{background:#fffbeb;color:#d97706}
 .card-actions{border-top:1px solid #f1f5f9;padding-top:7px;margin-top:auto;display:flex;gap:6px}
-.pill-action-btn{flex:1;font-size:11px;font-weight:700;padding:5px 0;text-align:center;border-radius:8px;cursor:pointer}
+.pill-action-btn{flex:1;font-size:11.5px;font-weight:700;padding:6px 0;text-align:center;border-radius:10px;cursor:pointer;transition:.2s}
 .btn-copy-action{background:#eff6ff;color:#2563eb}.btn-open-action{background:#f0fdf4;color:#16a34a}
 .skeleton-img{width:100%;height:112px;background:#e2e8f0;animation:pulse 1.5s infinite}
 .skeleton-info{padding:9px}.skeleton-line{height:10px;background:#e2e8f0;margin-bottom:6px;border-radius:4px;animation:pulse 1.5s infinite}
@@ -116,9 +116,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 
     <div class="filter-container" id="quickFilterContainer">
         <div class="filter-tab active" onclick="setQuickFilter('全部', this)">全部</div>
-        <div class="filter-tab" onclick="setQuickFilter('18本', this)">18本</div>
-        <div class="filter-tab" onclick="setQuickFilter('自用', this)">自用</div>
-        <div class="filter-tab" onclick="setQuickFilter('搬运', this)">搬运</div>
         <div class="filter-tab filter-tab-special" id="advancedFilterBtn" onclick="openAdvancedFilter()">筛选 ▾</div>
     </div>
 
@@ -509,11 +506,9 @@ document.getElementById('passwordConfirmBtn').onclick=()=>{
 };
 
 const tagGroups=[
-    {name:"大本营",items:["18本"],single:true},
-    {name:"阵型类型",items:["搬运","自用"],single:true},
-    {name:"精工防御",items:["熔岩火炮","空中炸弹发射器","熔岩发射器"],single:true},
+    {name:"精工防御",items:["熔岩火炮","空中炸弹发射器","熔岩发射器","火热蜡烛","英雄猎台","蛋糕投掷器"],single:true},
     {name:"法术塔",items:["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"],single:true},
-    {name:"用途",items:["护资源","防三星","冲杯","部落战","世锦赛","金票赛","传奇杯"],single:false}
+    {name:"用途",items:["护资源","防三星","部落战","世锦赛","金票赛","传奇杯"],single:false}
 ];
 let uploadSelectedTags=[],filterSelectedTags=[];
 
