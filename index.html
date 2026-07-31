@@ -391,7 +391,7 @@ function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
 function getTagClass(t){
     const spells = ["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"];
     if(spells.includes(t)) return 'tag-purple';
-    const defs = ["熔岩火炮","空中炸弹发射器","熔岩发射器","火热蜡烛","英雄猎台","蛋糕投掷器"];
+    const defs = ["火热蜡烛","英雄猎台","蛋糕投掷器"];
     if(defs.includes(t) || t.includes('炮') || t.includes('发射器') || t.includes('防御')) return 'tag-green';
     if(t.includes('本')) return 'tag-blue';
     return 'tag-orange';
@@ -532,7 +532,7 @@ document.getElementById('passwordConfirmBtn').onclick=()=>{
 };
 
 const tagGroups=[
-    {name:"精工防御",items:["熔岩火炮","空中炸弹发射器","熔岩发射器","火热蜡烛","英雄猎台","蛋糕投掷器"],single:true},
+    {name:"精工防御",items:["火热蜡烛","英雄猎台","蛋糕投掷器"],single:true},
     {name:"法术塔",items:["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"],single:true},
     {name:"用途",items:["护资源","防三星","部落战","世锦赛","金票赛","传奇杯"],single:false}
 ];
