@@ -313,7 +313,7 @@ function validateMainInput() {
         return;
     }
     const extractedLink = extractOfficialCocLink(rawValue);
-    if(isValidCocLink(extractedLink)) {
+    if(extractedLink && extractedLink.toLowerCase().includes('link.clashofclans.com')) {
         wrapperEl.style.borderColor = '#16a34a';
         wrapperEl.style.boxShadow = '0 0 0 2px rgba(22, 163, 74, 0.2)';
         hintEl.style.display = 'block';
@@ -379,7 +379,7 @@ document.getElementById('openBtn').onclick=()=>{
     const rawInput = document.getElementById('linkInput').value;
     const extracted = extractOfficialCocLink(rawInput);
     if(!extracted) return showToast('请输入链接');
-    if(!isValidCocLink(extracted)) return showToast('⚠️ 格式错误！请输入正确的官方游戏链接');
+    if(!extracted.toLowerCase().includes('link.clashofclans.com')) return showToast('⚠️ 格式错误！请输入正确的官方游戏链接');
     processUrl(extracted);
 };
 
@@ -416,7 +416,7 @@ document.getElementById('confirmStarBtn').onclick=()=>{
     else{stars.unshift({...pendingStarData,title});localStorage.setItem('myStars',JSON.stringify(stars));showToast('收藏成功！')}
     document.getElementById('starModal').classList.remove('active');
     renderLayouts();
-};
+}
 function removeStar(link){
     let stars=JSON.parse(localStorage.getItem('myStars')||'[]');
     stars=stars.filter(i=>i.link!==link);
