@@ -8,19 +8,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;color:#1e293b;display:flex;justify-content:center;padding-bottom:90px!important}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;color:#1e293b;display:flex;justify-content:center;padding-bottom:120px!important}
 .container{max-width:410px;width:100%;padding:14px}
 .header-bar{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:12px;height:38px}
 .view-toggle{display:flex;background:#e2e8f0;border-radius:20px;padding:3px;width:190px}
 .toggle-item{flex:1;text-align:center;font-size:13px;font-weight:600;padding:6px 0;border-radius:17px;color:#64748b;cursor:pointer;transition:.2s}
 .toggle-item.active{background:#fff;color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,0.12)}
 .gift-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);font-size:15px;cursor:pointer;background:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
-.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:10px;background:#fff;border:1px solid #cbd5e1;border-radius:16px;padding:4px 4px 4px 14px;box-shadow:0 4px 10px rgba(0,0,0,0.03);transition:.2s}
+.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:10px;background:#fff;border:1px solid #cbd5e1;border-radius:18px;padding:4px 4px 4px 14px;box-shadow:0 4px 10px rgba(0,0,0,0.03);transition:.2s}
 .input-wrapper:focus-within{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
 .input-area{flex:1;border:none;outline:none;font-size:13px;height:38px;background:transparent;color:#0f172a}
 .input-clear{font-size:13px;color:#94a3b8;cursor:pointer;padding:0 6px;display:none}
 .input-wrapper input:not(:placeholder-shown)+.input-clear{display:block}
-.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 16px;height:36px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(37,99,235,0.2)}
+.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 16px;height:36px;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(37,99,235,0.2)}
 .links-bar{display:flex;justify-content:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .links-bar span{font-size:11.5px;color:#2563eb;background:#eff6ff;padding:6px 12px;border-radius:14px;font-weight:600;cursor:pointer;border:1px solid #dbeafe;box-shadow:0 2px 4px rgba(37,99,235,0.04);transition:.2s}
 .filter-container{display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
@@ -33,24 +33,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 .card-img-wrapper{position:relative;width:100%;height:112px;background:#f1f5f9}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
 .badge-server{position:absolute;bottom:6px;right:6px;background:rgba(15,23,42,0.65);backdrop-filter:blur(4px);color:#fff;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:600}
-.img-fav-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;background:rgba(15,23,42,0.45);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;color:#fff;transition:.2s}
-.img-fav-btn.active{background:#fef3c7;color:#d97706;border:1px solid #fcd34d}
+.img-fav-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;background:rgba(15,23,42,0.45);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;padding-bottom:1px;cursor:pointer;color:#fff;transition:.2s}
+.img-fav-btn.active{background:#fffbeb;color:#f59e0b;border:1px solid #fcd34d}
 .card-info{padding:9px;flex:1;display:flex;flex-direction:column;justify-content:space-between}
 .card-title{font-size:12.5px;font-weight:700;color:#0f172a;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.card-time-row{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:#94a3b8;margin-bottom:6px}
-.admin-mgr-icon{cursor:pointer;padding:0 2px;opacity:0.6;font-size:10.5px;transition:.2s}
+.card-time-row{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:#64748b;margin-bottom:6px}
+.admin-mgr-icon{cursor:pointer;padding:0 2px;opacity:0.6;font-size:10.5px;transition:.2s;display:none}
 .admin-mgr-icon:hover{opacity:1}
+.admin-mode .admin-mgr-icon{display:inline-block !important}
 .card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:4px;margin-bottom:8px;height:20px;align-items:center}
 .card-tags::-webkit-scrollbar{display:none}
-.tag{padding:2px 5px;border-radius:5px;font-size:9px;cursor:pointer;font-weight:500;white-space:nowrap;flex-shrink:0}
-.tag-blue{background:#eff6ff;color:#2563eb}.tag-green{background:#f0fdf4;color:#16a34a}.tag-orange{background:#fffbeb;color:#d97706}
+.tag{padding:2px 5px;border-radius:6px;font-size:9px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0}
+.tag-blue{background:#eff6ff;color:#2563eb}
+.tag-green{background:#f0fdf4;color:#16a34a}
+.tag-purple{background:#faf5ff;color:#9333ea}
+.tag-orange{background:#fffbeb;color:#d97706}
 .card-actions{border-top:1px solid #f1f5f9;padding-top:7px;margin-top:auto;display:flex;gap:6px}
-.pill-action-btn{flex:1;font-size:11.5px;font-weight:700;padding:6px 0;text-align:center;border-radius:10px;cursor:pointer;transition:.2s}
+.pill-action-btn{flex:1;font-size:12px;font-weight:700;padding:8px 0;text-align:center;border-radius:12px;cursor:pointer;transition:.2s}
 .btn-copy-action{background:#eff6ff;color:#2563eb}.btn-open-action{background:#f0fdf4;color:#16a34a}
 .skeleton-img{width:100%;height:112px;background:#e2e8f0;animation:pulse 1.5s infinite}
 .skeleton-info{padding:9px}.skeleton-line{height:10px;background:#e2e8f0;margin-bottom:6px;border-radius:4px;animation:pulse 1.5s infinite}
 @keyframes pulse{0%{opacity:.5}50%{opacity:1}100%{opacity:.5}}
-.fab-add{position:fixed;bottom:30px;right:20px;width:52px;height:52px;background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:50%;color:#fff;font-size:24px;box-shadow:0 8px 20px rgba(37,99,235,0.35);border:none;cursor:pointer;z-index:998;display:flex;align-items:center;justify-content:center}
+.fab-add{position:fixed;bottom:30px;right:20px;width:56px;height:56px;background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:50%;color:#fff;font-size:24px;box-shadow:0 8px 20px rgba(37,99,235,0.35);border:none;cursor:pointer;z-index:998;display:flex;align-items:center;justify-content:center}
 .empty-state{grid-column:1/-1;text-align:center;padding:45px 0;color:#94a3b8;font-size:13px}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(3px);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
@@ -92,7 +96,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 <body>
 <div class="container">
     <div class="header-bar">
-        <div style="width: 34px; position: absolute; left: 0;"></div>
+        <!-- 隐藏的管理员模式开关：点击左上角空白处 3 下 -->
+        <div id="adminTrigger" style="width: 40px; position: absolute; left: 0; top: 0; bottom: 0;"></div>
         <div class="view-toggle">
             <div class="toggle-item active" id="navSquare" onclick="switchTab('square')">广场大厅</div>
             <div class="toggle-item" id="navStar" onclick="switchTab('myStar')">我的收藏</div>
@@ -111,7 +116,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
         <span onclick="document.getElementById('tutorialModal').classList.add('active')">使用教程</span>
         <span onclick="openExternalLink('https://cungu.aiyige.ren/')">计时器工具</span>
         <span onclick="openExternalLink('https://pan.xingchencoc.com/')">国际服专区</span>
-        <span onclick="document.getElementById('downloadModal').style.display='flex'">下载App</span>
+        <span style="background:#2563eb;color:#fff;border-color:#2563eb;" onclick="document.getElementById('downloadModal').style.display='flex'">下载App</span>
     </div>
 
     <div class="filter-container" id="quickFilterContainer">
@@ -136,7 +141,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
         ● <strong>Android：</strong>点击下方直接下载 APK 安装<br>
         ● <strong>iPhone：</strong>用 Safari 打开 → 共享 → '添加到主屏幕'</p>
         <div style="display:flex;flex-direction:column;gap:7px;">
-            <button class="modal-btn modal-btn-confirm" onclick="openExternalLink('https://yzycoc.com/i/1F0')">安卓极速下载</button>
+            <button class="modal-btn modal-btn-confirm" onclick="openExternalLink('https://dogpan.com/f/d/KORkt4/COC%E9%98%B5%E5%9E%8B_1.0.0.apk')">安卓极速下载</button>
             <div style="text-align:left;font-size:11px;color:#64748b;">iPhone请复制链接用Safari打开：</div>
             <div class="copy-area" id="copyText">https://coc-tools.github.io</div>
             <button class="modal-btn" style="background:#16a34a;color:#fff;" onclick="copyDownloadUrl()">一键复制链接</button>
@@ -215,7 +220,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
     </div>
 </div>
 
-
 <div class="modal-overlay" id="tutorialModal">
     <div class="modal-content" style="max-height: 85vh; overflow-y: auto;">
         <span class="close-modal-x" onclick="document.getElementById('tutorialModal').classList.remove('active')">✕</span>
@@ -247,6 +251,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f4f7fb;
 </div>
 
 <script>
+// 注意：如果下面这行的 key 不对，请改回你原本正确的 Bmob 密钥
 Bmob.initialize("7d02e5a27eb27ee9","123456");
 const IMGBB_API_KEY="a2062137421eb1609a508bff675756e1",ADMIN_PASSWORD='1212';
 let allLayoutsCache=[],activeQueryTags=[],customSearchKeyword='',currentTab='square',pendingStarData=null,readyToUploadFile=null,currentEditId=null,currentEditImageUrl=null,pendingAction=null,pendingTargetId=null;
@@ -254,16 +259,28 @@ let allLayoutsCache=[],activeQueryTags=[],customSearchKeyword='',currentTab='squ
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.className="show";setTimeout(()=>{t.className=""},2500)}
 const isAndroid=/android/i.test(navigator.userAgent);
 
-// 首次访问自动弹出新手教程
+// 管理员隐藏模式触发逻辑
+let adminClickCount = 0;
+let adminTimer = null;
+document.getElementById('adminTrigger').onclick = function() {
+    adminClickCount++;
+    clearTimeout(adminTimer);
+    adminTimer = setTimeout(() => { adminClickCount = 0; }, 1000);
+    if(adminClickCount >= 3) {
+        document.body.classList.toggle('admin-mode');
+        showToast(document.body.classList.contains('admin-mode') ? '🔧 已进入管理员模式' : '✅ 已退出管理员模式');
+        adminClickCount = 0;
+    }
+};
+
 window.addEventListener('DOMContentLoaded', () => {
     if (!localStorage.getItem('hasSeenTutorial')) {
         setTimeout(() => {
             document.getElementById('tutorialModal').classList.add('active');
             localStorage.setItem('hasSeenTutorial', 'true');
-        }, 500); // 延迟0.5秒弹出，体验更好
+        }, 500); 
     }
 });
-
 
 function extractOfficialCocLink(inputStr){
     if(!inputStr) return '';
@@ -369,7 +386,16 @@ document.getElementById('openBtn').onclick=()=>{
 function copyLink(l){if(!l)return showToast('暂无链接！');if(navigator.clipboard){navigator.clipboard.writeText(l).then(()=>showToast('复制成功！')).catch(()=>fallbackCopy(l))}else fallbackCopy(l)}
 function fallbackCopy(t){const i=document.createElement('input');document.body.appendChild(i);i.value=t;i.select();document.execCommand('copy');document.body.removeChild(i);showToast('复制成功！')}
 function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
-function getTagClass(t){if(t.includes('本'))return'tag-blue';if(t.includes('资源')||t.includes('炮')||t.includes('发射器')||t.includes('防御'))return'tag-green';return'tag-orange'}
+
+// 修改标签颜色逻辑：防御(绿)、法术(紫)、用途及其他(橙)
+function getTagClass(t){
+    const spells = ["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"];
+    if(spells.includes(t)) return 'tag-purple';
+    const defs = ["熔岩火炮","空中炸弹发射器","熔岩发射器","火热蜡烛","英雄猎台","蛋糕投掷器"];
+    if(defs.includes(t) || t.includes('炮') || t.includes('发射器') || t.includes('防御')) return 'tag-green';
+    if(t.includes('本')) return 'tag-blue';
+    return 'tag-orange';
+}
 
 function switchTab(t){
     currentTab=t;
@@ -446,7 +472,7 @@ function renderLayouts(){
     }else display=myStars;
 
     if(!display.length){
-        gridContainer.innerHTML=currentTab==='square'?`<div class="empty-state">当前暂无符合条件的阵型~</div>`:`<div class="empty-state">收藏库为空~<br>去广场点击 ⭐ 添加吧！</div>`;
+        gridContainer.innerHTML=currentTab==='square'?`<div class="empty-state">当前暂无符合条件的阵型~</div>`:`<div class="empty-state">收藏库为空~<br>去广场点击 ☆ 添加吧！</div>`;
         return;
     }
 
@@ -461,8 +487,8 @@ function renderLayouts(){
         return `<div class="layout-card" ${currentTab==='myStar'?'style="border:1px solid #fcd34d;"':''}>
             <div class="card-img-wrapper">
                 <img class="preview-image" src="${imgUrl}" loading="lazy"/>
-                <span class="badge-server" ${currentTab==='myStar'?'style="background:#f59e0b;"':''}>${currentTab==='myStar'?'⭐ 收藏':'国际服'}</span>
-                <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${linkStr}')`:`openStarModal('${imgUrl}','${titleStr}','${linkStr}')`}">⭐</span>
+                <span class="badge-server" ${currentTab==='myStar'?'style="background:#f59e0b;"':''}>${currentTab==='myStar'?'★ 收藏':'国际服'}</span>
+                <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${linkStr}')`:`openStarModal('${imgUrl}','${titleStr}','${linkStr}')`}">${isStarred?'★':'☆'}</span>
             </div>
             <div class="card-info">
                 <div>
@@ -556,17 +582,13 @@ function applyFilter(){
 
 const modalOverlay=document.getElementById('modalOverlay'),modalImage=document.getElementById('modalImage'),fileStatus=document.getElementById('fileStatus'),modalConfirm=document.getElementById('modalConfirm');
 
-// 重点修复：+号按钮点击逻辑
 document.getElementById('addBtn').onclick=()=>{
     currentEditId=null;currentEditImageUrl=null;
     document.getElementById('uploadModalTitle').innerText='上传阵型/配兵';
     document.getElementById('modalTitle').value='';
     document.getElementById('modalLink').value='';
     document.getElementById('customTagInput').value='';
-    
-    // 清空错误提示状态
     validateModalLinkInput(); 
-    
     modalImage.value='';readyToUploadFile=null;
     fileStatus.innerText='📸 点击选择阵型截图';fileStatus.style.color='#2563eb';
     modalConfirm.innerText='保存发布';modalConfirm.disabled=false;
@@ -580,9 +602,7 @@ function openEditModal(objId){
     document.getElementById('uploadModalTitle').innerText='修改阵型/配兵信息';
     document.getElementById('modalTitle').value=item.title||'';
     document.getElementById('modalLink').value=item.link||'';
-    
     validateModalLinkInput(); 
-    
     let stdTags=[],custTags=[],allStd=tagGroups.flatMap(g=>g.items);
     item.tags.forEach(t=>{if(allStd.includes(t))stdTags.push(t);else custTags.push(t)});
     document.getElementById('customTagInput').value=custTags.join(' ');
@@ -594,7 +614,6 @@ function openEditModal(objId){
 }
 document.getElementById('modalCancel').onclick=()=>modalOverlay.classList.remove('active');
 
-// 保留的最稳定 ImgBB 图片上传代码
 modalImage.onchange=function(e){
     const file=e.target.files[0];
     if(file){
@@ -618,7 +637,6 @@ modalConfirm.onclick=()=>{
     const title=document.getElementById('modalTitle').value.trim();
     const rawLink=document.getElementById('modalLink').value.trim();
     const customTagStr=document.getElementById('customTagInput').value.trim();
-    
     const link = extractOfficialCocLink(rawLink);
 
     if(!link)return showToast('请填写官方阵型链接！');
@@ -632,7 +650,6 @@ modalConfirm.onclick=()=>{
     let finalTags=[...uploadSelectedTags];if(customTagStr)finalTags.push(...customTagStr.split(' ').filter(t=>t));
     modalConfirm.innerText='处理中...';modalConfirm.disabled=true;
 
-    // 修复：确保所有 Bmob 操作都在不影响 ImgBB 主流程的情况下运行
     const saveToBmob=(imageUrl)=>{
         modalConfirm.innerText='正在同步数据...';const q=Bmob.Query('LayoutData');
         if(currentEditId){
