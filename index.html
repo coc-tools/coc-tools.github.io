@@ -68,7 +68,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .empty-state{grid-column:1/-1;text-align:center;padding:45px 0;color:#94a3b8;font-size:13px}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(3px);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
-.modal-content{background:#fff;width:92%;max-width:350px;border-radius:20px;padding:18px;box-shadow:0 20px 40px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
+.modal-content{background:#fff;width:92%;max-width:350px;border-radius:24px;padding:22px 18px;box-shadow:0 20px 40px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
 .bottom-sheet{align-items:flex-end}.bottom-sheet .modal-content{border-radius:24px 24px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:32px}
 .modal-title{font-size:15px;font-weight:700;margin-bottom:12px;text-align:center;color:#0f172a}
 .modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:12px;font-size:13px;margin-bottom:10px;outline:none;background:#f8fafc;transition:.2s;}
@@ -85,7 +85,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .modal-file-wrapper{border:2px dashed #93c5fd;border-radius:12px;padding:12px;text-align:center;color:#2563eb;background:#eff6ff;margin-bottom:10px;position:relative}
 .modal-file-wrapper input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
 .modal-btn-group{display:flex;gap:8px;margin-top:10px}
-.modal-btn{flex:1;padding:10px 0;border:none;border-radius:12px;font-size:13.5px;font-weight:600;cursor:pointer;transition: transform 0.1s;}
+.modal-btn{flex:1;padding:12px 0;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;transition: transform 0.1s;}
 .modal-btn:active {transform: scale(0.96);}
 .modal-btn-cancel{background:#f1f5f9;color:#64748b}.modal-btn-confirm{background:#2563eb;color:#fff}
 #toast{visibility:hidden;min-width:180px;background:rgba(15,23,42,0.92);backdrop-filter:blur(4px);color:#fff;text-align:center;border-radius:12px;padding:10px 16px;position:fixed;z-index:9999;bottom:90px;left:50%;transform:translateX(-50%);font-size:13px;opacity:0;transition:.3s}
@@ -103,25 +103,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .village-card strong { color: #0f172a; }
 .village-link-text { color: #2563eb; text-decoration: none; word-break: break-all; }
 .action-link { display: inline-block; color: #2563eb; font-weight: bold; margin-top: 5px; cursor: pointer;}
-.close-modal-x { position: absolute; top: 15px; right: 15px; font-size: 20px; color: #94a3b8; cursor: pointer; line-height: 1; transition: .2s; }
+.close-modal-x { position: absolute; top: 18px; right: 18px; font-size: 20px; color: #94a3b8; cursor: pointer; line-height: 1; transition: .2s; }
 .close-modal-x:active { color: #475569; transform: scale(0.85); }
 
 /* 快捷部落列表样式 */
 .clan-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 14px 16px; border-radius: 12px; border: 1px solid #e2e8f0; width: 100%; transition: all 0.2s ease; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
 .clan-item:active { transform: scale(0.97); background: #f8fafc; }
 .clan-item.pinned { border-color: #bfdbfe; background: #eff6ff; }
+.clan-item.built-in:not(.pinned) { border-color: #fde047; background: #fffbeb; }
 .clan-actions { display: none; align-items: center; gap: 14px; padding-left: 12px; border-left: 1px dashed #cbd5e1; margin-left: 8px;}
 .edit-mode .clan-actions { display: flex; }
 .edit-mode .clan-item { padding-right: 12px; }
 .action-icon-btn { font-size: 16px; padding: 4px; border-radius: 6px; cursor: pointer; transition: transform 0.1s; display: flex; align-items: center; justify-content: center;}
 .action-icon-btn:active { transform: scale(0.8); }
+.clan-enter-icon { display: block; transition: 0.2s; }
+.edit-mode .clan-enter-icon { display: none; }
 
 /* 巧妙的输入框内嵌按钮 */
-.input-with-btn { position: relative; display: flex; align-items: center; width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; transition: .2s; overflow: hidden;}
+.input-with-btn { position: relative; display: flex; align-items: center; width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 14px; transition: .2s; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.02);}
 .input-with-btn:focus-within { border-color: #2563eb; background: #fff; }
-.input-with-btn input { flex: 1; border: none; outline: none; background: transparent; padding: 10px 12px; font-size: 13px; color: #0f172a;}
-.paste-btn-inside { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 17px; cursor: pointer; color: #64748b; transition: .1s; padding: 4px; display: flex; align-items: center;}
+.input-with-btn input { flex: 1; border: none; outline: none; background: transparent; padding: 12px 14px; font-size: 13.5px; color: #0f172a;}
+.paste-btn-inside { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 18px; cursor: pointer; color: #64748b; transition: .1s; padding: 6px; display: flex; align-items: center;}
 .paste-btn-inside:active { transform: translateY(-50%) scale(0.85); color: #2563eb; }
+
+/* 分隔线 */
+.modal-divider { height: 1px; background: #e2e8f0; margin: 24px 0 18px; border-radius: 1px; }
 
 </style>
 </head>
@@ -176,25 +182,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
     <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
         <span class="close-modal-x" onclick="document.getElementById('clanModal').classList.remove('active')">✕</span>
         
-        <div style="padding-top: 2px;">
-            <div style="font-size: 16px; font-weight: 700; color: #0f172a; margin-bottom: 6px; text-align: left;">加入部落</div>
-            <p style="font-size: 11.5px; color: #64748b; margin-bottom: 16px;">长按输入框粘贴链接，系统会自动提取标签</p>
+        <div style="padding-top: 4px;">
+            <div style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px; text-align: left;">加入部落</div>
+            <p style="font-size: 12px; color: #64748b; margin-bottom: 18px;">长按输入框粘贴链接，系统会自动提取标签</p>
             
-            <div class="input-with-btn" style="margin-bottom: 10px;">
+            <div class="input-with-btn" style="margin-bottom: 14px;">
                 <input class="input-area" id="clanTagInput" placeholder="长按粘贴链接 或 输入标签" autocomplete="off" oninput="formatClanInput()"/>
                 <div class="paste-btn-inside" onclick="pasteClanTag()" title="尝试一键粘贴">📋</div>
             </div>
             
-            <input class="modal-input" id="clanRemarkInput" placeholder="部落备注 (可选，如: 大号互刷部)" autocomplete="off" style="border-radius: 12px; height: 44px; margin-bottom: 24px; border: 1px solid #cbd5e1; background: #fff; padding: 0 14px;"/>
+            <input class="modal-input" id="clanRemarkInput" placeholder="部落名称或备注 (如: 联赛主营 / FWA互刷)" autocomplete="off" style="border-radius: 14px; height: 46px; margin-bottom: 20px; border: 1px solid #cbd5e1; background: #fff; padding: 0 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);"/>
             
-            <div class="modal-btn-group" style="margin-bottom: 24px;">
-                <button class="modal-btn modal-btn-cancel" onclick="saveClanTag()" style="background: #f1f5f9; color: #64748b;">保存部落</button>
-                <button class="modal-btn modal-btn-confirm" onclick="joinClan(document.getElementById('clanTagInput').value)">前往加入 ➔</button>
+            <div class="modal-btn-group">
+                <button class="modal-btn modal-btn-cancel" onclick="saveClanTag()" style="background: #e2e8f0; color: #475569;">保存部落</button>
+                <button class="modal-btn modal-btn-confirm" onclick="joinClan(document.getElementById('clanTagInput').value)" style="background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 4px 12px rgba(37,99,235,0.25);">前往加入 ➔</button>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span style="font-size: 14px; font-weight: 700; color: #1e293b;">我保存的部落 <span id="clanCount" style="font-size: 12px; color: #94a3b8; font-weight: normal; margin-left: 4px;"></span></span>
-                <span id="manageClanBtn" style="font-size: 11.5px; color: #2563eb; cursor: pointer; padding: 4px 12px; background: #eff6ff; border-radius: 12px; font-weight: 600; transition: .2s;" onclick="toggleClanEditMode()">管理</span>
+            <div class="modal-divider"></div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <span style="font-size: 15px; font-weight: 800; color: #1e293b;">我保存的部落 <span id="clanCount" style="font-size: 12px; color: #94a3b8; font-weight: normal; margin-left: 4px;"></span></span>
+                <span id="manageClanBtn" style="font-size: 12.5px; color: #2563eb; cursor: pointer; padding: 4px 12px; background: #eff6ff; border-radius: 12px; font-weight: 700; transition: .2s;" onclick="toggleClanEditMode()">管理</span>
             </div>
             <div id="savedClansContainer" style="display: flex; flex-direction: column; gap: 10px;">
                 <!-- 由 JS 动态渲染 -->
@@ -359,7 +367,7 @@ function toggleClanEditMode() {
     isClanEditMode = !isClanEditMode;
     const btn = document.getElementById('manageClanBtn');
     btn.innerText = isClanEditMode ? '完成' : '管理';
-    btn.style.fontWeight = isClanEditMode ? 'bold' : '600';
+    btn.style.fontWeight = isClanEditMode ? 'bold' : '700';
     btn.style.background = isClanEditMode ? '#dbeafe' : '#eff6ff';
     
     const container = document.getElementById('savedClansContainer');
@@ -371,13 +379,27 @@ function toggleClanEditMode() {
 }
 
 function getSavedClans() {
-    let clans = JSON.parse(localStorage.getItem('savedClansData') || '[]');
-    let oldClans = JSON.parse(localStorage.getItem('savedClans') || '[]');
-    if (oldClans.length > 0 && typeof oldClans[0] === 'string') {
-        clans = oldClans.map((tag, idx) => ({ tag: tag, remark: '', isDefault: idx === 0 }));
-        localStorage.setItem('savedClansData', JSON.stringify(clans));
-        localStorage.removeItem('savedClans');
+    let clans = JSON.parse(localStorage.getItem('savedClansData'));
+    
+    // 初始化或兼容老版本数据
+    if (!clans) {
+        let oldClans = JSON.parse(localStorage.getItem('savedClans') || '[]');
+        if (oldClans.length > 0 && typeof oldClans[0] === 'string') {
+            clans = oldClans.map((tag, idx) => ({ tag: tag, remark: '', isDefault: false }));
+            localStorage.removeItem('savedClans');
+        } else {
+            clans = [];
+        }
     }
+
+    // 永久内置官方部落 (永远存在，不可删除)
+    const builtInTag = '2GC0000YU';
+    if (!clans.some(c => c.tag === builtInTag)) {
+        // 如果列表是空的，内置部落就是默认；否则就只是加进去
+        clans.unshift({ tag: builtInTag, remark: '奶营', isDefault: clans.length === 0, isBuiltIn: true });
+        localStorage.setItem('savedClansData', JSON.stringify(clans));
+    }
+
     return clans;
 }
 
@@ -391,12 +413,11 @@ function formatClanTag(tag) {
     return t;
 }
 
-// 重点修改：手写输入和手动长按粘贴都会触发的“智能提取”
+// 智能正则提取粘贴 (手写或原生长按都会触发)
 function formatClanInput() {
     let el = document.getElementById('clanTagInput');
     let val = el.value;
     
-    // 如果粘贴了带链接的长文本，或者带有 tag= 的文本，直接秒提取
     if(val.includes('link.clashofclans.com') || val.includes('tag=')) {
         let match = val.match(/tag=([A-Za-z0-9]+)/i);
         if(match && match[1]) {
@@ -406,43 +427,38 @@ function formatClanInput() {
         }
     }
     
-    // 正常输入或粘贴短文本的格式化（大写、去除非法字符）
     let start = el.selectionStart;
     let end = el.selectionEnd;
     el.value = val.toUpperCase().replace(/[^A-Z0-9#]/g, '');
     try { el.setSelectionRange(start, end); } catch(e) {}
 }
 
-// 终极防卡死定时器版一键粘贴
+// 终极防卡死一键粘贴
 async function pasteClanTag() {
     const el = document.getElementById('clanTagInput');
-    el.focus(); // 先自动聚焦输入框，方便用户长按
+    el.focus(); 
 
     let isResolved = false;
-    
-    // 防挂死定时器：如果 600ms 内没有结果（比如 WebView 吞了权限请求），直接提示手动粘贴
     const fallbackTimer = setTimeout(() => {
         if (!isResolved) {
             isResolved = true;
             showToast('⚠️ 浏览器拦截，请长按输入框手动粘贴');
         }
-    }, 600);
+    }, 500);
 
     try {
         if (navigator.clipboard && navigator.clipboard.readText) {
             const text = await navigator.clipboard.readText();
-            if (isResolved) return; // 如果已经超时触发了，就不再处理
+            if (isResolved) return; 
             isResolved = true;
             clearTimeout(fallbackTimer);
             
             if(text) {
                 let tag = text;
                 let match = text.match(/(?:tag=|#)([A-Z0-9]{5,12})/i);
-                if(match && match[1]) {
-                    tag = match[1];
-                } else {
-                    tag = tag.replace(/[^a-zA-Z0-9]/g, '');
-                }
+                if(match && match[1]) tag = match[1];
+                else tag = tag.replace(/[^a-zA-Z0-9]/g, '');
+                
                 el.value = formatClanTag(tag);
                 showToast('✅ 已提取标签');
             } else {
@@ -452,13 +468,13 @@ async function pasteClanTag() {
             if (isResolved) return;
             isResolved = true;
             clearTimeout(fallbackTimer);
-            showToast('⚠️ 环境不支持，请长按输入框手动粘贴');
+            showToast('⚠️ 系统限制，请长按输入框手动粘贴');
         }
     } catch(e) {
         if (isResolved) return;
         isResolved = true;
         clearTimeout(fallbackTimer);
-        showToast('⚠️ 无权限，请长按输入框手动粘贴');
+        showToast('⚠️ 剪贴板无权限，请长按手动粘贴');
     }
 }
 
@@ -479,10 +495,10 @@ function saveClanTag() {
     let existingIdx = clans.findIndex(c => c.tag === cleanTag);
     if(existingIdx > -1) {
         clans[existingIdx].remark = remark;
-        showToast('✅ 标签信息已更新');
+        showToast('✅ 部落信息已更新');
     } else {
-        if(clans.length >= 10) return showToast('最多只能保存10个部落哦！');
-        clans.push({ tag: cleanTag, remark: remark, isDefault: clans.length === 0 }); 
+        if(clans.length >= 15) return showToast('最多只能保存15个部落哦！');
+        clans.push({ tag: cleanTag, remark: remark, isDefault: false }); 
         showToast('✅ 保存成功');
     }
     
@@ -495,6 +511,7 @@ function saveClanTag() {
 
 function removeClanTag(tag, event) {
     event.stopPropagation();
+    if(tag === '2GC0000YU') return showToast('官方推荐部落，不可删除哦~');
     let clans = getSavedClans();
     clans = clans.filter(t => t.tag !== tag);
     saveClansToLocal(clans);
@@ -514,7 +531,7 @@ function editClan(tag) {
     let clans = getSavedClans();
     let clan = clans.find(c => c.tag === tag);
     if(clan) {
-        document.getElementById('clanTagInput').value = clan.tag;
+        document.getElementById('clanTagInput').value = '#' + clan.tag;
         document.getElementById('clanRemarkInput').value = clan.remark || '';
         showToast('✏️ 信息已加载至上方，修改后保存');
     }
@@ -532,7 +549,7 @@ function renderSavedClans() {
     const container = document.getElementById('savedClansContainer');
     let clans = getSavedClans();
     
-    document.getElementById('clanCount').innerText = `(${clans.length}/10)`;
+    document.getElementById('clanCount').innerText = `(${clans.length}/15)`;
 
     if(!clans.length) {
         container.innerHTML = '<div style="text-align:center; padding:25px 0; color:#94a3b8; font-size:12.5px;">暂无保存的部落</div>';
@@ -544,22 +561,35 @@ function renderSavedClans() {
     container.innerHTML = clans.map(clan => {
         let hasRemark = !!clan.remark;
         let displayName = hasRemark ? clan.remark : `#${clan.tag}`;
-        let tagDisplayHtml = hasRemark ? `<div style="font-size:11px; color:#64748b; font-family:monospace; margin-top:4px;">#${clan.tag}</div>` : '';
+        let tagDisplayHtml = hasRemark ? `<div style="font-size:11.5px; color:#64748b; font-family:monospace; margin-top:4px; letter-spacing: 0.5px;">#${clan.tag}</div>` : '';
+        let isBuiltIn = clan.tag === '2GC0000YU';
         
+        let classNames = ['clan-item'];
+        if(clan.isDefault) classNames.push('pinned');
+        else if(isBuiltIn) classNames.push('built-in');
+
         return `
-        <div class="clan-item ${clan.isDefault ? 'pinned' : ''}" onclick="handleClanItemClick('${clan.tag}')">
-           <div style="flex:1; overflow:hidden;">
-               <div style="font-size:14px; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:6px;">
+        <div class="${classNames.join(' ')}" onclick="handleClanItemClick('${clan.tag}')">
+           <div style="flex:1; overflow:hidden; display:flex; flex-direction:column; justify-content:center;">
+               <div style="font-size:14.5px; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:6px;">
                    ${displayName} 
-                   ${clan.isDefault ? '<span style="font-size:12px; margin-top:-2px;" title="默认">📌</span>' : ''}
+                   ${clan.isDefault ? '<span style="font-size:11px; background:#eff6ff; color:#2563eb; padding:2px 6px; border-radius:6px; font-weight:bold; letter-spacing:0.5px; margin-left: 4px;">默认</span>' : ''}
+                   ${isBuiltIn && !clan.isDefault ? '<span style="font-size:11px; background:linear-gradient(135deg, #fef08a, #fde047); color:#9a3412; padding:2px 6px; border-radius:6px; font-weight:bold; letter-spacing:0.5px;">捐兵部落</span>' : ''}
                </div>
                ${tagDisplayHtml}
            </div>
            
+           <!-- 正常模式：引导点击的箭头 -->
+           <div class="clan-enter-icon" style="color:#cbd5e1; font-size:16px; padding-left:10px; font-weight:bold;">➔</div>
+
+           <!-- 管理模式：操作按钮 -->
            <div class="clan-actions">
                <span class="action-icon-btn" title="编辑" style="color:#64748b;" onclick="editClan('${clan.tag}'); event.stopPropagation();">✏️</span>
                <span class="action-icon-btn" title="设为默认" style="color:${clan.isDefault ? '#2563eb' : '#94a3b8'};" onclick="setDefaultClan('${clan.tag}', event)">📌</span>
-               <span class="action-icon-btn" title="删除" style="color:#ef4444; opacity:0.8; font-size:22px; padding:0 2px;" onclick="removeClanTag('${clan.tag}', event)">×</span>
+               ${isBuiltIn ? 
+                 `<span class="action-icon-btn" title="内置不可删" style="color:#cbd5e1; font-size:22px; padding:0 2px; cursor:not-allowed;" onclick="event.stopPropagation();showToast('捐兵部落，不可删除');">×</span>` :
+                 `<span class="action-icon-btn" title="删除" style="color:#ef4444; opacity:0.8; font-size:22px; padding:0 2px;" onclick="removeClanTag('${clan.tag}', event)">×</span>`
+               }
            </div>
         </div>
         `;
