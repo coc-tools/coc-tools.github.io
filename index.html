@@ -68,7 +68,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .empty-state{grid-column:1/-1;text-align:center;padding:45px 0;color:#94a3b8;font-size:13px}
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(3px);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
-.modal-content{background:#fff;width:92%;max-width:350px;border-radius:24px;padding:22px 18px;box-shadow:0 20px 40px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
+.modal-content{background:#fff;width:92%;max-width:350px;border-radius:24px;padding:18px 16px;box-shadow:0 20px 40px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain;}
 .bottom-sheet{align-items:flex-end}.bottom-sheet .modal-content{border-radius:24px 24px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:32px}
 .modal-title{font-size:15px;font-weight:700;margin-bottom:12px;text-align:center;color:#0f172a}
 .modal-input{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:12px;font-size:13px;margin-bottom:10px;outline:none;background:#f8fafc;transition:.2s;}
@@ -85,7 +85,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .modal-file-wrapper{border:2px dashed #93c5fd;border-radius:12px;padding:12px;text-align:center;color:#2563eb;background:#eff6ff;margin-bottom:10px;position:relative}
 .modal-file-wrapper input[type="file"]{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer}
 .modal-btn-group{display:flex;gap:8px;margin-top:10px}
-.modal-btn{flex:1;padding:12px 0;border:none;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;transition: transform 0.1s;}
+.modal-btn{flex:1;padding:10px 0;border:none;border-radius:12px;font-size:13.5px;font-weight:600;cursor:pointer;transition: transform 0.1s;}
 .modal-btn:active {transform: scale(0.96);}
 .modal-btn-cancel{background:#f1f5f9;color:#64748b}.modal-btn-confirm{background:#2563eb;color:#fff}
 #toast{visibility:hidden;min-width:180px;background:rgba(15,23,42,0.92);backdrop-filter:blur(4px);color:#fff;text-align:center;border-radius:12px;padding:10px 16px;position:fixed;z-index:9999;bottom:90px;left:50%;transform:translateX(-50%);font-size:13px;opacity:0;transition:.3s}
@@ -110,7 +110,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .clan-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 14px 16px; border-radius: 12px; border: 1px solid #e2e8f0; width: 100%; transition: all 0.2s ease; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
 .clan-item:active { transform: scale(0.97); background: #f8fafc; }
 .clan-item.pinned { border-color: #bfdbfe; background: #eff6ff; }
-.clan-item.built-in:not(.pinned) { border-color: #fde047; background: #fffbeb; }
+.clan-item.built-in:not(.pinned) { border-color: #e2e8f0; background: #fff; }
 .clan-actions { display: none; align-items: center; gap: 14px; padding-left: 12px; border-left: 1px dashed #cbd5e1; margin-left: 8px;}
 .edit-mode .clan-actions { display: flex; }
 .edit-mode .clan-item { padding-right: 12px; }
@@ -120,14 +120,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 .edit-mode .clan-enter-icon { display: none; }
 
 /* 巧妙的输入框内嵌按钮 */
-.input-with-btn { position: relative; display: flex; align-items: center; width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 14px; transition: .2s; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.02);}
+.input-with-btn { position: relative; display: flex; align-items: center; width: 100%; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; transition: .2s; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.02);}
 .input-with-btn:focus-within { border-color: #2563eb; background: #fff; }
-.input-with-btn input { flex: 1; border: none; outline: none; background: transparent; padding: 12px 14px; font-size: 13.5px; color: #0f172a;}
+.input-with-btn input { flex: 1; border: none; outline: none; background: transparent; padding: 10px 12px; font-size: 13px; color: #0f172a;}
 .paste-btn-inside { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 18px; cursor: pointer; color: #64748b; transition: .1s; padding: 6px; display: flex; align-items: center;}
 .paste-btn-inside:active { transform: translateY(-50%) scale(0.85); color: #2563eb; }
 
 /* 分隔线 */
-.modal-divider { height: 1px; background: #e2e8f0; margin: 24px 0 18px; border-radius: 1px; }
+.modal-divider { height: 1px; background: #e2e8f0; margin: 16px 0 12px; border-radius: 1px; }
 
 </style>
 </head>
@@ -183,15 +183,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
         <span class="close-modal-x" onclick="document.getElementById('clanModal').classList.remove('active')">✕</span>
         
         <div style="padding-top: 4px;">
-            <div style="font-size: 18px; font-weight: 800; color: #0f172a; margin-bottom: 6px; text-align: left;">加入部落</div>
-            <p style="font-size: 12px; color: #64748b; margin-bottom: 18px;">长按输入框粘贴链接，系统会自动提取标签</p>
+            <div style="font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 4px; text-align: left;">加入部落</div>
+            <p style="font-size: 11.5px; color: #64748b; margin-bottom: 12px;">长按输入框粘贴链接，系统会自动提取标签</p>
             
             <div class="input-with-btn" style="margin-bottom: 14px;">
                 <input class="input-area" id="clanTagInput" placeholder="长按粘贴链接 或 输入标签" autocomplete="off" oninput="formatClanInput()"/>
                 <div class="paste-btn-inside" onclick="pasteClanTag()" title="尝试一键粘贴">📋</div>
             </div>
             
-            <input class="modal-input" id="clanRemarkInput" placeholder="部落名称或备注 (如: 联赛主营 / FWA互刷)" autocomplete="off" style="border-radius: 14px; height: 46px; margin-bottom: 20px; border: 1px solid #cbd5e1; background: #fff; padding: 0 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.02);"/>
+            <input class="modal-input" id="clanRemarkInput" placeholder="部落名称或备注 (如: 联赛主营 / FWA互刷)" autocomplete="off" style="border-radius: 12px; height: 40px; margin-bottom: 14px; border: 1px solid #cbd5e1; background: #fff; padding: 0 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.02); font-size: 13px;"/>
             
             <div class="modal-btn-group">
                 <button class="modal-btn modal-btn-cancel" onclick="saveClanTag()" style="background: #e2e8f0; color: #475569;">保存部落</button>
@@ -200,8 +200,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 
             <div class="modal-divider"></div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                <span style="font-size: 15px; font-weight: 800; color: #1e293b;">我保存的部落 <span id="clanCount" style="font-size: 12px; color: #94a3b8; font-weight: normal; margin-left: 4px;"></span></span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 14px; font-weight: 800; color: #1e293b;">我保存的部落 <span id="clanCount" style="font-size: 12px; color: #94a3b8; font-weight: normal; margin-left: 4px;"></span></span>
                 <span id="manageClanBtn" style="font-size: 12.5px; color: #2563eb; cursor: pointer; padding: 4px 12px; background: #eff6ff; border-radius: 12px; font-weight: 700; transition: .2s;" onclick="toggleClanEditMode()">管理</span>
             </div>
             <div id="savedClansContainer" style="display: flex; flex-direction: column; gap: 10px;">
