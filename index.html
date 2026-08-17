@@ -148,6 +148,53 @@ body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f1f5f9;
 
 /* 分隔线 */
 .modal-divider { height: 1px; background: #e2e8f0; margin: 16px 0 12px; border-radius: 1px; }
+
+/* ===== 平板 / 横屏自适应布局 ===== */
+@media (min-width: 600px) {
+  .container{max-width:760px;width:100%;padding:16px 20px 28px}
+  .header-bar{height:42px;margin-bottom:12px}
+  .view-toggle{width:220px;padding:4px}
+  .toggle-item{font-size:14px;padding:7px 0}
+  .gift-btn,.clan-btn{width:40px;height:40px;font-size:17px}
+  .input-wrapper{margin-bottom:12px;border-radius:20px;padding:4px 5px 4px 18px}
+  .input-area{font-size:14px;height:42px}
+  .input-open-btn{height:40px;padding:0 22px;border-radius:15px;font-size:14px}
+  .links-bar{gap:10px;margin-bottom:12px;overflow:visible;justify-content:flex-start}
+  .links-bar span{font-size:13px;padding:7px 16px;border-radius:16px}
+  .filter-container{margin-bottom:12px}
+  .filter-tab{font-size:13px;padding:6px 15px}
+  .sort-btn{font-size:13px;padding:6px 13px}
+  .grid-container{gap:14px}
+  .card-img-wrapper{height:auto;aspect-ratio:16/10}
+  .card-info{padding:11px 12px 13px}
+  .card-title{font-size:15px;height:21px;line-height:21px}
+  .card-time-row{font-size:11px;height:16px;margin-bottom:8px}
+  .card-tags{height:23px;margin-bottom:10px;gap:5px}
+  .tag{font-size:10.5px;height:20px;padding:2px 7px}
+  .pill-action-btn{height:42px;font-size:14px;border-radius:13px}
+  .skeleton-img{height:auto;aspect-ratio:16/10}
+  .fab-add{width:60px;height:60px;right:24px;bottom:28px;font-size:27px}
+}
+
+/* 平板横屏：四列，更充分利用宽屏 */
+@media (min-width: 900px) and (orientation: landscape) {
+  .container{max-width:1180px;padding-left:24px;padding-right:24px}
+  .grid-container{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .card-img-wrapper{aspect-ratio:16/10}
+}
+
+/* 平板竖屏：三列 */
+@media (min-width: 700px) and (orientation: portrait) {
+  .container{max-width:920px}
+  .grid-container{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+}
+
+/* 大屏横屏：五列，但限制内容宽度避免卡片过宽 */
+@media (min-width: 1400px) and (orientation: landscape) {
+  .container{max-width:1440px;padding-left:32px;padding-right:32px}
+  .grid-container{grid-template-columns:repeat(5,minmax(0,1fr));gap:18px}
+}
+
 </style>
 </head>
 <body>
