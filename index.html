@@ -140,8 +140,66 @@ body{
 .village-card strong{color:#0f172a}
 .village-link-text{color:#2563eb;text-decoration:none;word-break:break-all}
 .action-link{display:inline-block;color:#2563eb;font-weight:bold;margin-top:4px;cursor:pointer}
-.close-modal-x{position:absolute;top:14px;right:14px;font-size:18px;color:#94a3b8;cursor:line-height:1;transition:.2s}
+.close-modal-x{position:absolute;top:14px;right:14px;font-size:18px;color:#94a3b8;cursor:pointer;line-height:1;transition:.2s}
 .close-modal-x:active{color:#475569;transform:scale(0.85)}
+
+/* 玩家标签组件样式 */
+.village-tag-box {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+  display: flex;
+  gap: 6px;
+}
+.village-tag-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.village-tag-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 28px 0 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 12px;
+  outline: none;
+  background: #f8fafc;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.village-tag-input:focus {
+  background: #fff;
+  border-color: #2563eb;
+}
+.village-tag-clear {
+  position: absolute;
+  right: 6px;
+  font-size: 11px;
+  color: #94a3b8;
+  cursor: pointer;
+  display: none;
+  padding: 2px 4px;
+  user-select: none;
+}
+.village-tag-btn {
+  height: 32px;
+  padding: 0 10px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.village-tag-btn:active {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
 
 .clan-item{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:10px 12px;border-radius:10px;border:1px solid #e2e8f0;width:100%;transition:all 0.2s ease;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.02)}
 .clan-item:active{transform:scale(0.97);background:#f8fafc}
@@ -295,6 +353,13 @@ body{
                 <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en?action=OpenMoreSettings')">打开更多设置</button>
                 <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenNews')">打开新闻</button>
                 <button class="village-btn" onclick="openExternalLink('https://id.supercell.com/zh-CN/clashofclans/')">SCID网页商城</button>
+            </div>
+            <div class="village-tag-box">
+                <div class="village-tag-container">
+                    <input type="text" id="villagePlayerTagInput" class="village-tag-input" placeholder="输入标签如：#QJULU0G0V" autocomplete="off">
+                    <span class="village-tag-clear" id="villageClearTagBtn">✕</span>
+                </div>
+                <button class="village-tag-btn" id="villageOpenTagBtn">打开标签页面</button>
             </div>
         </div>
         <div class="village-card">
@@ -1013,6 +1078,37 @@ modalConfirm.onclick=()=>{
         saveToBmob(currentEditImageUrl);
     }
 };
+
+// 制作一本村庄 - 玩家标签跳转逻辑
+const vTagInput = document.getElementById('villagePlayerTagInput');
+const vClearBtn = document.getElementById('villageClearTagBtn');
+const vOpenBtn = document.getElementById('villageOpenTagBtn');
+
+vTagInput.addEventListener('input', function() {
+    vClearBtn.style.display = this.value.trim() ? 'block' : 'none';
+});
+
+vClearBtn.addEventListener('click', function() {
+    vTagInput.value = '';
+    vClearBtn.style.display = 'none';
+    vTagInput.focus();
+});
+
+vOpenBtn.addEventListener('click', function() {
+    let inputVal = vTagInput.value.trim();
+    if (!inputVal) return showToast('请输入玩家标签！');
+
+    if (inputVal.startsWith('http://') || inputVal.startsWith('https://')) {
+        return showToast('仅需填写玩家标签，无需输入完整链接！');
+    }
+
+    let tag = inputVal.replace(/#/g, '').toUpperCase();
+    if (!/^[0-9PYLQGRJCUV]+$/.test(tag)) {
+        return showToast('标签格式不正确，请核对后重试！');
+    }
+
+    processUrl(`https://link.clashofclans.com/cn?action=OpenPlayerProfile&tag=${tag}`);
+});
 </script>
 </body>
 </html>
