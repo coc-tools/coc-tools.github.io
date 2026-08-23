@@ -731,6 +731,15 @@ document.getElementById('openBtn').onclick=()=>{
     processUrl(extracted);
 };
 
+function copyLayoutLink(link) {
+    if (!link) return showToast('链接为空！');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => showToast('✅ 阵型链接已复制！')).catch(() => fallbackCopy(link));
+    } else {
+        fallbackCopy(link);
+    }
+}
+
 function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
 
 function getTagClass(t){
@@ -766,7 +775,7 @@ function removeStar(link){
 
 const gridContainer=document.getElementById('gridContainer');
 function loadCloudLayouts(){
-    const q=Bmob.Query("LayoutData");q.order("-createdAt");q.limit(200);
+    const q=Bmob.Query("LayoutData");q.order("-createdAt");q.limit(1000);
     q.find().then(res=>{
         allLayoutsCache=res.map(i=>({objectId:i.objectId,title:i.title,tags:i.tags||[],imageUrl:i.imageUrl,link:i.link,createdAt:i.createdAt}));
         document.getElementById('tab-all').innerText = `全部(${allLayoutsCache.length})`;
@@ -871,8 +880,9 @@ function renderLayouts(){
                     <div class="card-tags">${tagsHtml}</div>
                 </div>
                 <div class="card-actions">
-                    <button class="pill-action-btn" onclick="event.stopPropagation();openLayout('${escapeHtml(linkStr)}')">一键打开</button>
-                    ${currentTab==='myStar'?`<button class="pill-action-btn" style="background:#fee2e2;color:#ef4444;width:48px;flex:none;margin-left:4px;" onclick="event.stopPropagation();removeStar('${escapeHtml(linkStr)}')">移出</button>`:''}
+                    <button class="pill-action-btn" style="background:#fef3c7;color:#d97706;" onclick="event.stopPropagation();copyLayoutLink('${escapeHtml(linkStr)}')">复制</button>
+                    <button class="pill-action-btn" onclick="event.stopPropagation();openLayout('${escapeHtml(linkStr)}')">打开</button>
+                    ${currentTab==='myStar'?`<button class="pill-action-btn" style="background:#fee2e2;color:#ef4444;width:44px;flex:none;" onclick="event.stopPropagation();removeStar('${escapeHtml(linkStr)}')">移出</button>`:''}
                 </div>
             </div>
         </div>`;
