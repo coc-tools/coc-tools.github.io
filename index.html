@@ -35,7 +35,7 @@ body{
 .input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 12px;height:30px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(37,99,235,0.15);transition:transform 0.1s}
 .input-open-btn:active{transform:scale(0.95)}
 
-.compact-nav-bar{display:flex;align-items:center;margin-bottom:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:5px;padding-bottom:1px}
+.compact-nav-bar{display:flex;align-items:center;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:5px;padding-bottom:1px}
 .compact-nav-bar::-webkit-scrollbar{display:none}
 .nav-pill{padding:4px 9px;border-radius:10px;font-size:11.5px;font-weight:600;background:#fff;border:1px solid #e2e8f0;color:#475569;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform 0.1s;display:inline-flex;align-items:center;justify-content:center}
 .nav-pill:active{transform:scale(0.94)}
@@ -44,20 +44,20 @@ body{
 .nav-pill-special{background:#f8fafc;color:#2563eb;border-color:#cbd5e1}
 .nav-divider{width:1px;height:12px;background:#cbd5e1;flex-shrink:0;margin:0 1px}
 
-.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px 8px}
 .layout-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.03);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}
 .layout-card:active{transform:scale(0.98);box-shadow:0 2px 4px rgba(15,23,42,0.02)}
 
 .card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#e2e8f0;flex-shrink:0}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
 
-.img-fav-btn{position:absolute;top:4px;right:4px;width:22px;height:22px;background:rgba(15,23,42,0.45);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
+.img-fav-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
 .img-fav-btn:active{transform:scale(0.85)}
 .img-fav-btn.active{background:#fffbeb;color:#f59e0b;border:1px solid #fcd34d}
 
-.card-info{padding:6px 6px 8px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:4px}
+.card-info{padding:8px 8px 10px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px}
 .card-title-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
-.card-title{font-size:12px;font-weight:700;color:#0f172a;height:16px;line-height:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.card-title{font-size:13px;font-weight:700;color:#0f172a;height:18px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .card-date{font-size:8.5px;color:#94a3b8;flex-shrink:0}
 
 .admin-mgr-icon{cursor:pointer;padding:0 1px;opacity:0.6;font-size:10px;transition:.2s;display:none !important}
@@ -66,16 +66,20 @@ body{
 
 .card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:3px;height:18px;align-items:center}
 .card-tags::-webkit-scrollbar{display:none}
-.tag{padding:1px 5px;border-radius:4px;font-size:9px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:16px;display:inline-flex;align-items:center;user-select:none}
+.tag{padding:2px 6px;border-radius:5px;font-size:10px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:18px;display:inline-flex;align-items:center;user-select:none}
 .tag:active{transform:scale(0.9)}
 .tag-blue{background:#eff6ff;color:#2563eb}
 .tag-green{background:#f0fdf4;color:#16a34a}
 .tag-purple{background:#faf5ff;color:#9333ea}
 .tag-orange{background:#fffbeb;color:#d97706}
 
-.card-actions{margin-top:auto;display:flex;gap:4px;width:100%;padding-top:2px}
-.pill-action-btn{width:100%;background:#eff6ff;color:#2563eb;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;border:none}
+.card-actions{margin-top:auto;display:flex;gap:6px;width:100%;padding-top:4px}
+.btn-copy-icon{width:34px;height:32px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0;transition:.15s}
+.btn-copy-icon:active{transform:scale(0.92);background:#f1f5f9}
+.pill-action-btn{width:100%;background:#eff6ff;color:#2563eb;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;border:none}
 .pill-action-btn:active{transform:scale(0.95);background:#dbeafe}
+.btn-del-pill{background:#fee2e2;color:#ef4444;flex:none;width:44px}
+.btn-del-pill:active{background:#fecaca}
 
 .skeleton-img{width:100%;aspect-ratio:16/10;background:#e2e8f0;animation:pulse 1.5s infinite}
 .skeleton-info{padding:6px}.skeleton-line{height:8px;background:#e2e8f0;margin-bottom:4px;border-radius:4px;animation:pulse 1.5s infinite}
@@ -231,7 +235,7 @@ body{
   .input-wrapper{margin-bottom:10px;border-radius:16px;padding:3px 3px 3px 14px}
   .input-area{font-size:13px;height:36px}
   .input-open-btn{height:34px;padding:0 18px;border-radius:12px;font-size:13px}
-  .compact-nav-bar{gap:8px;margin-bottom:10px}
+  .compact-nav-bar{gap:8px;margin-bottom:12px}
   .nav-pill{font-size:12px;padding:5px 12px;border-radius:12px}
   .grid-container{gap:12px}
   .card-info{padding:8px 8px 10px}
@@ -880,9 +884,9 @@ function renderLayouts(){
                     <div class="card-tags">${tagsHtml}</div>
                 </div>
                 <div class="card-actions">
-                    <button class="pill-action-btn" style="background:#fef3c7;color:#d97706;" onclick="event.stopPropagation();copyLayoutLink('${escapeHtml(linkStr)}')">复制</button>
-                    <button class="pill-action-btn" onclick="event.stopPropagation();openLayout('${escapeHtml(linkStr)}')">打开</button>
-                    ${currentTab==='myStar'?`<button class="pill-action-btn" style="background:#fee2e2;color:#ef4444;width:44px;flex:none;" onclick="event.stopPropagation();removeStar('${escapeHtml(linkStr)}')">移出</button>`:''}
+                    <button class="pill-action-btn" onclick="event.stopPropagation();openLayout('${escapeHtml(linkStr)}')">一键打开</button>
+                    <button class="btn-copy-icon" title="复制链接" onclick="event.stopPropagation();copyLayoutLink('${escapeHtml(linkStr)}')">🔗</button>
+                    ${currentTab==='myStar'?`<button class="pill-action-btn btn-del-pill" onclick="event.stopPropagation();removeStar('${escapeHtml(linkStr)}')">移出</button>`:''}
                 </div>
             </div>
         </div>`;
