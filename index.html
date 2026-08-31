@@ -10,75 +10,75 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{
-  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  background:#f1f5f9;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:#f8fafc;
   color:#1e293b;
   display:flex;
   justify-content:center;
-  padding-bottom:calc(90px + env(safe-area-inset-bottom))!important;
+  padding-bottom:calc(80px + env(safe-area-inset-bottom))!important;
 }
-.container{max-width:414px;width:100%;padding:8px 10px}
-.header-bar{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:8px;height:32px}
-.view-toggle{display:flex;background:#e2e8f0;border-radius:16px;padding:2px;width:160px}
-.toggle-item{flex:1;text-align:center;font-size:12px;font-weight:600;padding:3.5px 0;border-radius:14px;color:#64748b;cursor:pointer;transition:.2s}
-.toggle-item.active{background:#fff;color:#2563eb;box-shadow:0 2px 6px rgba(37,99,235,0.1)}
-.gift-btn,.clan-btn{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;cursor:pointer;background:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;box-shadow:0 2px 4px rgba(0,0,0,0.03);transition:transform 0.1s}
+.container{max-width:414px;width:100%;padding:10px 12px}
+.header-bar{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:10px;height:36px}
+.view-toggle{display:flex;background:#e2e8f0;border-radius:20px;padding:3px;width:170px}
+.toggle-item{flex:1;text-align:center;font-size:12.5px;font-weight:600;padding:4px 0;border-radius:16px;color:#64748b;cursor:pointer;transition:.2s}
+.toggle-item.active{background:#fff;color:#2563eb;box-shadow:0 2px 6px rgba(37,99,235,0.12)}
+.gift-btn,.clan-btn{position:absolute;top:50%;transform:translateY(-50%);font-size:14px;cursor:pointer;background:#fff;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;box-shadow:0 2px 5px rgba(0,0,0,0.03);transition:transform 0.1s}
 .gift-btn{right:0}
 .clan-btn{left:0}
-.gift-btn:active,.clan-btn:active{transform:translateY(-50%) scale(0.9)}
+.gift-btn:active,.clan-btn:active{transform:translateY(-50%) scale(0.92)}
 
-.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:8px;background:#fff;border:1px solid #cbd5e1;border-radius:14px;padding:2px 2px 2px 10px;box-shadow:0 2px 6px rgba(0,0,0,0.02);transition:.2s}
-.input-wrapper:focus-within{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
-.input-area{flex:1;border:none;outline:none;font-size:12px;height:32px;background:transparent;color:#0f172a}
-.input-clear{font-size:12px;color:#94a3b8;cursor:pointer;padding:0 4px;display:none}
+.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:10px;background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:3px 3px 3px 12px;box-shadow:0 2px 6px rgba(0,0,0,0.02);transition:.2s}
+.input-wrapper:focus-within{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,0.12)}
+.input-area{flex:1;border:none;outline:none;font-size:12.5px;height:34px;background:transparent;color:#0f172a}
+.input-clear{font-size:12px;color:#94a3b8;cursor:pointer;padding:0 6px;display:none}
 .input-wrapper input:not(:placeholder-shown)+.input-clear{display:block}
-.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 12px;height:30px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(37,99,235,0.15);transition:transform 0.1s}
+.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 14px;height:32px;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(37,99,235,0.2);transition:transform 0.1s}
 .input-open-btn:active{transform:scale(0.95)}
 
-.compact-nav-bar{display:flex;align-items:center;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:5px;padding-bottom:1px}
+.compact-nav-bar{display:flex;align-items:center;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:6px;padding:2px 0}
 .compact-nav-bar::-webkit-scrollbar{display:none}
-.nav-pill{padding:4px 9px;border-radius:10px;font-size:11.5px;font-weight:600;background:#fff;border:1px solid #e2e8f0;color:#475569;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform 0.1s;display:inline-flex;align-items:center;justify-content:center}
-.nav-pill:active{transform:scale(0.94)}
-.nav-pill.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.nav-pill{padding:5px 10px;border-radius:10px;font-size:12px;font-weight:600;background:#fff;border:1px solid #e2e8f0;color:#475569;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:.15s;display:inline-flex;align-items:center;justify-content:center}
+.nav-pill:active{transform:scale(0.95)}
+.nav-pill.active{background:#2563eb;color:#fff;border-color:#2563eb;box-shadow:0 2px 6px rgba(37,99,235,0.2)}
 .nav-pill.link-pill{background:#eff6ff;color:#2563eb;border-color:#bfdbfe}
 .nav-pill-special{background:#f8fafc;color:#2563eb;border-color:#cbd5e1}
-.nav-divider{width:1px;height:12px;background:#cbd5e1;flex-shrink:0;margin:0 1px}
+.nav-divider{width:1px;height:14px;background:#cbd5e1;flex-shrink:0;margin:0 2px}
 
-.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px 8px}
-.layout-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.03);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}
-.layout-card:active{transform:scale(0.98);box-shadow:0 2px 4px rgba(15,23,42,0.02)}
+.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.layout-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.04);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .15s ease,box-shadow .15s ease;cursor:pointer}
+.layout-card:active{transform:scale(0.985)}
 
 .card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#e2e8f0;flex-shrink:0}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in}
 
-.img-fav-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
+.img-fav-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(15,23,42,0.45);backdrop-filter:blur(6px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
 .img-fav-btn:active{transform:scale(0.85)}
-.img-fav-btn.active{background:#fffbeb;color:#f59e0b;border:1px solid #fcd34d}
+.img-fav-btn.active{background:#fff;color:#f59e0b;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
 
 .card-info{padding:8px 8px 10px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px}
 .card-title-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
-.card-title{font-size:13px;font-weight:700;color:#0f172a;height:18px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.card-date{font-size:8.5px;color:#94a3b8;flex-shrink:0}
+.card-title{font-size:12.5px;font-weight:700;color:#0f172a;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.card-date{font-size:9px;color:#94a3b8;flex-shrink:0}
 
-.admin-mgr-icon{cursor:pointer;padding:0 1px;opacity:0.6;font-size:10px;transition:.2s;display:none !important}
+.admin-mgr-icon{cursor:pointer;padding:0 2px;opacity:0.6;font-size:11px;transition:.2s;display:none !important}
 .admin-mgr-icon:hover{opacity:1}
 .admin-mode .admin-mgr-icon{display:inline-block !important}
 
-.card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:3px;height:18px;align-items:center}
+.card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:4px;height:20px;align-items:center}
 .card-tags::-webkit-scrollbar{display:none}
-.tag{padding:2px 6px;border-radius:5px;font-size:10px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:18px;display:inline-flex;align-items:center;user-select:none}
-.tag:active{transform:scale(0.9)}
+.tag{padding:1px 6px;border-radius:6px;font-size:10px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:18px;display:inline-flex;align-items:center;user-select:none}
+.tag:active{transform:scale(0.92)}
 .tag-blue{background:#eff6ff;color:#2563eb}
-.tag-green{background:#f0fdf4;color:#16a34a}
+.tag-green{background:#ecfdf5;color:#059669}
 .tag-purple{background:#faf5ff;color:#9333ea}
 .tag-orange{background:#fffbeb;color:#d97706}
 
-.card-actions{margin-top:auto;display:flex;gap:6px;width:100%;padding-top:4px}
-.btn-copy-icon{width:34px;height:32px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0;transition:.15s}
-.btn-copy-icon:active{transform:scale(0.92);background:#f1f5f9}
-.pill-action-btn{width:100%;background:#eff6ff;color:#2563eb;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;text-decoration:none;border:none}
-.pill-action-btn:active{transform:scale(0.95);background:#dbeafe}
-.btn-del-pill{background:#fee2e2;color:#ef4444;flex:none;width:44px}
+.card-actions{margin-top:4px;display:flex;gap:5px;width:100%}
+.btn-copy-icon{width:32px;height:30px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;flex-shrink:0;transition:.15s;color:#475569}
+.btn-copy-icon:active{transform:scale(0.92);background:#e2e8f0}
+.pill-action-btn{flex:1;background:#eff6ff;color:#2563eb;height:30px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.15s;text-decoration:none;border:none}
+.pill-action-btn:active{transform:scale(0.96);background:#dbeafe}
+.btn-del-pill{background:#fee2e2;color:#ef4444;flex:none;width:40px}
 .btn-del-pill:active{background:#fecaca}
 
 .skeleton-img{width:100%;aspect-ratio:16/10;background:#e2e8f0;animation:pulse 1.5s infinite}
@@ -87,28 +87,28 @@ body{
 
 .fab-add{
   position:fixed;
-  bottom:calc(16px + env(safe-area-inset-bottom));
-  right:14px;
-  width:42px;
-  height:42px;
+  bottom:calc(18px + env(safe-area-inset-bottom));
+  right:16px;
+  width:46px;
+  height:46px;
   background:linear-gradient(135deg,#3b82f6,#1d4ed8);
   border-radius:50%;
   color:#fff;
-  font-size:20px;
-  box-shadow:0 4px 12px rgba(37,99,235,0.3);
+  font-size:24px;
+  box-shadow:0 6px 16px rgba(37,99,235,0.35);
   border:none;
   cursor:pointer;
   z-index:998;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:transform 0.1s;
+  transition:transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .fab-add:active{transform:scale(0.9)}
 .empty-state{grid-column:1/-1;text-align:center;padding:35px 0;color:#94a3b8;font-size:12px;line-height:1.6}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.45);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
-.modal-content{background:#fff;width:90%;max-width:330px;border-radius:20px;padding:16px 14px;box-shadow:0 16px 36px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
+.modal-content{background:#fff;width:90%;max-width:330px;border-radius:20px;padding:18px 16px;box-shadow:0 16px 36px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
 .bottom-sheet{align-items:flex-end}
 .bottom-sheet .modal-content{border-radius:20px 20px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
 .modal-title{font-size:14px;font-weight:700;margin-bottom:10px;text-align:center;color:#0f172a}
@@ -224,6 +224,12 @@ body{
 .paste-btn-inside:active{transform:translateY(-50%) scale(0.85);color:#2563eb}
 .input-clear-clan{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-size:12px;color:#94a3b8;cursor:pointer;padding:3px;display:none}
 .input-clear-clan.show{display:block}
+
+/* 弹窗内链接清除按钮 */
+.input-wrapper-modal{position:relative;display:flex;align-items:center;width:100%;margin-bottom:8px}
+.input-wrapper-modal .modal-input{margin-bottom:0;padding-right:30px}
+.input-clear-modal{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#94a3b8;cursor:pointer;padding:4px;display:none;z-index:2}
+
 .modal-divider{height:1px;background:#e2e8f0;margin:12px 0 10px;border-radius:1px}
 
 @media (min-width: 600px) {
@@ -335,7 +341,7 @@ body{
         ● <strong>Android：</strong>点击下方直接下载 APK 安装<br>
         ● <strong>iPhone：</strong>用 Safari 打开 → 共享 → '添加到主屏幕'</p>
         <div style="display:flex;flex-direction:column;gap:6px;">
-            <button class="modal-btn modal-btn-confirm" onclick="openExternalLink('https://pan.meil.wang/f/d/LrRSv/COC%20%E9%98%B5%E5%9E%8B_1.1.2.apk')">安卓极速下载</button>
+            <button class="modal-btn modal-btn-confirm" onclick="openExternalLink('https://pan.meil.wang/f/d/217Uj/%E5%9B%BD%E9%99%85%E6%9C%8D%E9%98%B5%E5%9E%8B.apk')">安卓极速下载</button>
             <div style="text-align:left;font-size:10.5px;color:#64748b;">iPhone请复制链接用Safari打开：</div>
             <div class="copy-area" id="copyText">https://coc-tools.github.io</div>
             <button class="modal-btn" style="background:#16a34a;color:#fff;" onclick="copyDownloadUrl()">一键复制链接</button>
@@ -417,7 +423,10 @@ body{
             </div>
             <input type="file" id="modalImage" accept="image/*" />
         </div>
-        <input class="modal-input" id="modalLink" placeholder="粘贴官方分享链接..." autocomplete="off" oninput="validateModalLinkInput()"/>
+        <div class="input-wrapper-modal">
+            <input class="modal-input" id="modalLink" placeholder="粘贴官方分享链接..." autocomplete="off" oninput="validateModalLinkInput()"/>
+            <span class="input-clear-modal" id="modalLinkClearBtn" onclick="clearModalLinkInput()">✕</span>
+        </div>
         <span class="input-hint" id="linkHint" style="margin-top: -4px; margin-bottom: 8px; display: block;">💡 仅支持游戏内复制的以 <b>https://link.clashofclans.com</b> 开头的链接</span>
         <div class="modal-btn-group"><button class="modal-btn modal-btn-cancel" id="modalCancel">取消</button><button class="modal-btn modal-btn-confirm" id="modalConfirm">保存发布</button></div>
     </div>
@@ -532,6 +541,13 @@ function clearClanInput() {
     document.getElementById('clanTagInput').value = '';
     document.getElementById('clanRemarkInput').value = '';
     checkClanInputState();
+}
+
+function clearModalLinkInput() {
+    const inputEl = document.getElementById('modalLink');
+    inputEl.value = '';
+    validateModalLinkInput();
+    inputEl.focus();
 }
 
 function checkClanInputState() {
@@ -671,18 +687,21 @@ function renderSavedClans() {
 }
 
 function extractOfficialCocLink(inputStr){
-    if(!inputStr) return ''; const match = inputStr.match(/https:\/\/link\.clashofclans\.com\/[^\s]+/i); return match ? match[0] : inputStr.trim();
+    if(!inputStr) return ''; 
+    const match = inputStr.match(/https:\/\/link\.clashofclans\.com\/[^\s\u4e00-\u9fa5]+/i); 
+    return match ? match[0].trim() : inputStr.trim();
 }
 
 function isValidCocLink(u){
-    if(!u) return false; const lower = u.toLowerCase(); if(!lower.includes('link.clashofclans.com')) return false;
-    const allowedActions = ['action=openlayout', 'action=copyarmy', 'action=voucher', 'action=openscid', 'action=openlayouteditor', 'action=openevents', 'action=opentraining', 'action=openplayerprofile', 'action=openmoresettings', 'action=opensettings', 'action=openshop', 'action=opennews', 'action=openattackscreen', 'action=openclanprofile'];
-    return allowedActions.some(action => lower.includes(action));
+    if(!u) return false; 
+    const lower = u.toLowerCase(); 
+    if(!lower.includes('link.clashofclans.com')) return false;
+    return lower.includes('action=') || lower.includes('tag=') || lower.includes('openlayout');
 }
 
 function validateMainInput() {
     const inputEl = document.getElementById('linkInput'), wrapperEl = document.querySelector('.input-wrapper'), hintEl = document.getElementById('mainInputHint'), rawValue = inputEl.value;
-    if(!rawValue) { wrapperEl.style.borderColor = '#cbd5e1'; wrapperEl.style.boxShadow = '0 2px 6px rgba(0,0,0,0.02)'; hintEl.style.display = 'none'; return; }
+    if(!rawValue) { wrapperEl.style.borderColor = '#e2e8f0'; wrapperEl.style.boxShadow = '0 2px 6px rgba(0,0,0,0.02)'; hintEl.style.display = 'none'; return; }
     const extractedLink = extractOfficialCocLink(rawValue);
     if(extractedLink && extractedLink.toLowerCase().includes('link.clashofclans.com')) {
         wrapperEl.style.borderColor = '#16a34a'; wrapperEl.style.boxShadow = '0 0 0 2px rgba(22, 163, 74, 0.2)'; hintEl.style.display = 'block'; hintEl.innerHTML = '✅ 链接格式正确'; hintEl.style.color = '#16a34a';
@@ -693,8 +712,12 @@ function validateMainInput() {
 document.getElementById('linkInput').addEventListener('input', validateMainInput);
 
 function validateModalLinkInput() {
-    const inputEl = document.getElementById('modalLink'), hintEl = document.getElementById('linkHint');
-    if(!inputEl || !hintEl) return; const rawValue = inputEl.value;
+    const inputEl = document.getElementById('modalLink'), hintEl = document.getElementById('linkHint'), clearBtn = document.getElementById('modalLinkClearBtn');
+    if(!inputEl || !hintEl) return; 
+    const rawValue = inputEl.value;
+    if(clearBtn) {
+        clearBtn.style.display = rawValue.length > 0 ? 'block' : 'none';
+    }
     if(!rawValue) { inputEl.classList.remove('modal-input-error'); hintEl.className = 'input-hint'; hintEl.innerHTML = '💡 仅支持游戏内复制的以 <b>https://link.clashofclans.com</b> 开头的链接'; return; }
     const extractedLink = extractOfficialCocLink(rawValue);
     if(isValidCocLink(extractedLink)) {
@@ -706,11 +729,20 @@ function validateModalLinkInput() {
 
 function processUrl(u){
     if(!u)return showToast('链接无效！');
-    if(isAndroid&&u.startsWith('https://link.clashofclans.com')){
-        let p=u.split('?')[1]||''; if(!p&&u.includes('action=')){const m=u.match(/action=([^&]+)/);if(m)p='action='+m[1]}
-        u=`intent://open_layout?${p}#Intent;scheme=clashofclans;package=com.supercell.clashofclans;end;`;
+    u = extractOfficialCocLink(u);
+    if(isAndroid && u.startsWith('https://link.clashofclans.com')){
+        let queryStr = '';
+        if(u.includes('?')) {
+            queryStr = u.split('?')[1] || '';
+        } else if(u.includes('action=')) {
+            queryStr = u.substring(u.indexOf('action='));
+        }
+        if(queryStr) {
+            window.location.href = `intent://open_layout?${queryStr}#Intent;scheme=clashofclans;package=com.supercell.clashofclans;end;`;
+            return;
+        }
     }
-    window.location.href=u;
+    window.location.href = u;
 }
 function openExternalLink(u){
     if(isAndroid){ try{const o=new URL(u);window.location.href=`intent://${o.host}${o.pathname}${o.search}#Intent;scheme=https;action=android.intent.action.VIEW;end;`}catch(e){window.location.href=u} }else window.open(u,'_blank');
@@ -747,7 +779,7 @@ function copyLayoutLink(link) {
 function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
 
 function getTagClass(t){
-    const spells = ["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"];
+    const spells = ["双狂暴","双隐身","双毒药","一狂一隐","一狂一毒","一隐一毒"];
     if(spells.includes(t)) return 'tag-purple';
     const defs = ["火热蜡烛","英雄猎台","蛋糕投掷器"];
     if(defs.includes(t) || t.includes('炮') || t.includes('发射器') || t.includes('防御')) return 'tag-green';
@@ -927,7 +959,7 @@ document.getElementById('passwordConfirmBtn').onclick=()=>{
 
 const tagGroups=[
     {name:"精工防御",items:["火热蜡烛","英雄猎台","蛋糕投掷器"],single:true},
-    {name:"法术塔",items:["双狂暴","双隐身","双毒药","双地震","一狂一隐","一狂一毒","一隐一毒","一狂一地","一毒一地","一隐一地"],single:true},
+    {name:"法术塔",items:["双狂暴","双隐身","双毒药","一狂一隐","一狂一毒","一隐一毒"],single:true},
     {name:"用途",items:["护资源","防三星","部落战","世锦赛","金票赛","传奇杯","联赛阵型"],single:false}
 ];
 let uploadSelectedTags=[],filterSelectedTags=[];
