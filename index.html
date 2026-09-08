@@ -337,11 +337,20 @@ body{
                 <div class="nav-pill nav-pill-special" id="advancedFilterBtn" onclick="openAdvancedFilter()">筛选 ▾</div>
             </div>
 
+            <div id="activeCardFilterChip" style="display:none;align-items:center;gap:6px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:6px 10px;margin-bottom:8px;font-size:11.5px;color:#2563eb;font-weight:600;">
+                <span>🔍 已按「<span id="activeCardFilterText"></span>」筛选</span>
+                <span style="margin-left:auto;cursor:pointer;color:#94a3b8;font-weight:700;" onclick="clearCardTagFilter()">✕ 清除</span>
+            </div>
+
             <div class="grid-container" id="gridContainer"></div>
         </div>
 
-        <div class="page-panel" id="panelUpload">
+        <div class="page-panel" id="panelUpload" style="min-height:calc(100dvh - 64px - env(safe-area-inset-bottom));justify-content:center;">
             <div class="upload-card-view">
+                <div id="editModeBanner" style="display:none;align-items:center;gap:6px;background:#fef3c7;border:1px solid #fcd34d;color:#92400e;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;margin-bottom:8px;">
+                    <span>✏️ 正在编辑已有阵型</span>
+                    <span style="margin-left:auto;cursor:pointer;text-decoration:underline;" onclick="resetUploadForm()">取消编辑</span>
+                </div>
                 <span class="form-section-title">援兵 / 备注（可选）</span>
                 <input class="form-input-compact" id="modalRemark" autocomplete="off"/>
 
@@ -504,7 +513,10 @@ body{
 
 <div class="modal-overlay bottom-sheet" id="advancedFilterModal">
     <div class="modal-content">
-        <div class="modal-title">标签筛选</div>
+        <div class="modal-title" style="display:flex;align-items:center;justify-content:space-between;">
+            <span>标签筛选</span>
+            <span class="close-modal-x" onclick="document.getElementById('advancedFilterModal').classList.remove('active')">✕</span>
+        </div>
         <div class="tag-picker-compact" id="filterTagContainer" style="background:transparent;border:none;"></div>
         <div class="modal-btn-group">
             <button class="modal-btn modal-btn-cancel" onclick="resetFilter()">重置</button>
@@ -518,7 +530,7 @@ Bmob.initialize("7d02e5a27eb27ee9","123456");
 const IMGBB_API_KEY="a2062137421eb1609a508bff675756e1";
 const isAndroid=/android/i.test(navigator.userAgent);
 
-let allLayoutsCache=[], activeQueryTags=[], readyToUploadFile=null, pendingStarData=null;
+let allLayoutsCache=[], activeQueryTags=[], readyToUploadFile=null, pendingStarData=null, editingObjectId=null, existingImageUrl='';
 let layoutViewer=null, starLayoutViewer=null;
 let currentSlideIndex = 0;
 
@@ -604,8 +616,22 @@ function copyDownloadUrl(){
 }
 function copyLayoutLink(link) {
     if (!link) return showToast('链接为空！');
+    const fallbackCopy=(text)=>{
+        try{
+            const ta=document.createElement('textarea');
+            ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+            document.body.appendChild(ta); ta.focus(); ta.select();
+            const ok=document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+        }catch(e){return false}
+    };
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(link).then(() => showToast('✅ 阵型链接已复制！'));
+        navigator.clipboard.writeText(link).then(() => showToast('✅ 阵型链接已复制！')).catch(() => {
+            if(fallbackCopy(link)) showToast('✅ 阵型链接已复制！'); else showToast('复制失败，请长按链接手动复制');
+        });
+    } else {
+        if(fallbackCopy(link)) showToast('✅ 阵型链接已复制！'); else showToast('复制失败，请长按链接手动复制');
     }
 }
 function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
@@ -656,7 +682,7 @@ function renderLayoutCard(item, isStarPage) {
     let rawTitle=(item.title||'').trim();
     let titleStr=(rawTitle&&rawTitle!=='未命名阵型')?rawTitle:((item.tags&&item.tags.length)?item.tags.slice(0,2).join(' · '):'未命名阵型');
     let timeStr=item.createdAt?item.createdAt.substring(5,10):(item.time?item.time.substring(5,10):'');
-    let tagsHtml=(item.tags||[]).map(t=>`<span class="tag ${getTagClass(t)}">${escapeHtml(t)}</span>`).join('');
+    let tagsHtml=(item.tags||[]).map(t=>`<span class="tag ${getTagClass(t)}" onclick="event.stopPropagation();filterByCardTag('${escapeHtml(t)}')">${escapeHtml(t)}</span>`).join('');
     let isStarred=myStars.some(s=>s.link===(item.link||item.img));
 
     return `<div class="layout-card">
@@ -741,6 +767,37 @@ function renderTagsToContainer(containerId,isFilterMode){
     });
 }
 renderTagsToContainer('uploadTagContainer', false);
+renderTagsToContainer('filterTagContainer', true);
+
+function openAdvancedFilter(){
+    filterSelectedTags=[...activeQueryTags];
+    renderTagsToContainer('filterTagContainer', true);
+    document.getElementById('advancedFilterModal').classList.add('active');
+}
+function resetFilter(){
+    filterSelectedTags=[];
+    renderTagsToContainer('filterTagContainer', true);
+}
+function syncFilterUiState(){
+    const btn=document.getElementById('advancedFilterBtn');
+    if(activeQueryTags.length>1 || (activeQueryTags.length===1 && !['传奇杯','联赛阵型'].includes(activeQueryTags[0]))){
+        btn.classList.add('active');
+        btn.innerText='筛选('+activeQueryTags.length+') ▾';
+    }else{
+        btn.classList.remove('active');
+        btn.innerText='筛选 ▾';
+    }
+}
+function applyFilter(){
+    activeQueryTags=[...filterSelectedTags];
+    document.querySelectorAll('#quickFilterContainer .nav-pill').forEach(t=>t.classList.remove('active'));
+    document.getElementById('activeCardFilterChip').style.display='none';
+    if(!activeQueryTags.length) document.getElementById('tab-all').classList.add('active');
+    syncFilterUiState();
+    document.getElementById('advancedFilterModal').classList.remove('active');
+    renderLayouts();
+    if(currentSlideIndex===0) window.scrollTo({top:0,behavior:'smooth'});
+}
 
 function clearModalLinkInput() {
     const inputEl = document.getElementById('modalLink');
@@ -787,43 +844,136 @@ document.getElementById('modalConfirm').onclick=()=>{
     if(!title) return showToast('请至少选择一个精工防御或法术塔标签');
     if(!link) return showToast('请填写官方阵型链接！');
     if(!isValidCocLink(link)) return showToast('⚠️ 请填写官方游戏分享链接');
-    if(!readyToUploadFile) return showToast('请选择阵型截图！');
+    if(!readyToUploadFile && !(editingObjectId && existingImageUrl)) return showToast('请选择阵型截图！');
     
     let finalTags=[...uploadSelectedTags];
     if(customTagStr) finalTags.push(...customTagStr.split(' ').filter(t=>t));
     document.getElementById('modalConfirm').innerText='处理中...';
     document.getElementById('modalConfirm').disabled=true;
 
-    const saveToBmob=(imageUrl)=>{
-        const q=Bmob.Query('LayoutData');
-        q.set("title",title);q.set("tags",finalTags);q.set("imageUrl",imageUrl);q.set("link",link);
-        q.save().then(()=>{
-            showToast('🎉 发布成功！');
-            document.getElementById('modalConfirm').innerText='立即保存发布';
-            document.getElementById('modalConfirm').disabled=false;
-            document.getElementById('modalRemark').value='';
-            document.getElementById('modalLink').value='';
-            readyToUploadFile=null;
+    const finishSave=(imageUrl)=>{
+        const afterSave=()=>{
+            showToast(editingObjectId ? '✅ 修改已保存！' : '🎉 发布成功！');
+            resetUploadForm();
             loadCloudLayouts();
             slideToPage(0);
-        }).catch(()=>{
+        };
+        const onFail=()=>{
             showToast('保存失败');
-            document.getElementById('modalConfirm').innerText='立即保存发布';
+            document.getElementById('modalConfirm').innerText=editingObjectId?'保存修改':'立即保存发布';
             document.getElementById('modalConfirm').disabled=false;
-        });
+        };
+        if(editingObjectId){
+            Bmob.Query('LayoutData').get(editingObjectId).then(obj=>{
+                obj.set("title",title);obj.set("tags",finalTags);obj.set("imageUrl",imageUrl);obj.set("link",link);
+                return obj.save();
+            }).then(afterSave).catch(onFail);
+        }else{
+            const q=Bmob.Query('LayoutData');
+            q.set("title",title);q.set("tags",finalTags);q.set("imageUrl",imageUrl);q.set("link",link);
+            q.save().then(afterSave).catch(onFail);
+        }
     };
 
-    const fd=new FormData();fd.append('image',readyToUploadFile);
-    fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd})
-    .then(r=>r.json()).then(res=>{
-        if(res.success) saveToBmob(res.data.url);
-        else throw new Error();
-    }).catch(()=>{
-        showToast('图床上传失败，请重试');
-        document.getElementById('modalConfirm').innerText='立即保存发布';
-        document.getElementById('modalConfirm').disabled=false;
-    });
+    if(readyToUploadFile){
+        const fd=new FormData();fd.append('image',readyToUploadFile);
+        fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd})
+        .then(r=>r.json()).then(res=>{
+            if(res.success) finishSave(res.data.url);
+            else throw new Error();
+        }).catch(()=>{
+            showToast('图床上传失败，请重试');
+            document.getElementById('modalConfirm').innerText=editingObjectId?'保存修改':'立即保存发布';
+            document.getElementById('modalConfirm').disabled=false;
+        });
+    }else{
+        finishSave(existingImageUrl);
+    }
 };
+
+function resetUploadForm(){
+    editingObjectId=null; existingImageUrl='';
+    document.getElementById('editModeBanner').style.display='none';
+    document.getElementById('modalRemark').value='';
+    document.getElementById('modalLink').value='';
+    validateModalLinkInput();
+    document.getElementById('customTagInput').value='';
+    uploadSelectedTags=[];
+    renderTagsToContainer('uploadTagContainer', false);
+    readyToUploadFile=null;
+    document.getElementById('modalImage').value='';
+    document.getElementById('fileStatus').innerText='📸 点击选择阵型截图';
+    document.getElementById('fileStatus').style.color='';
+    document.getElementById('modalConfirm').innerText='立即保存发布';
+    document.getElementById('modalConfirm').disabled=false;
+}
+
+function startEditLayout(item){
+    editingObjectId = item.objectId;
+    existingImageUrl = item.imageUrl || '';
+    let remark = '';
+    const titleParts = (item.title||'').split(' / ');
+    if(titleParts.length>1) remark = titleParts.slice(1).join(' / ');
+    document.getElementById('modalRemark').value = remark;
+    document.getElementById('modalLink').value = item.link || '';
+    validateModalLinkInput();
+    uploadSelectedTags = (item.tags||[]).filter(t=>tagGroups.some(g=>g.items.includes(t)));
+    document.getElementById('customTagInput').value = (item.tags||[]).filter(t=>!tagGroups.some(g=>g.items.includes(t))).join(' ');
+    renderTagsToContainer('uploadTagContainer', false);
+    readyToUploadFile = null;
+    document.getElementById('modalImage').value = '';
+    document.getElementById('fileStatus').innerText = existingImageUrl ? '✅ 已有图片（不选择则保持原图）' : '📸 点击选择阵型截图';
+    document.getElementById('fileStatus').style.color = existingImageUrl ? '#16a34a' : '';
+    document.getElementById('modalConfirm').innerText='保存修改';
+    document.getElementById('editModeBanner').style.display='flex';
+    slideToPage(1);
+    showToast('已进入编辑模式，改完点"保存修改"');
+}
+
+function deleteLayout(objId){
+    Bmob.Query('LayoutData').get(objId).then(obj=>obj.destroy()).then(()=>{
+        showToast('已删除');
+        loadCloudLayouts();
+    }).catch(()=>showToast('删除失败'));
+}
+
+function openPasswordPrompt(action, objId){
+    const item = allLayoutsCache.find(i=>i.objectId===objId);
+    if(!item) return showToast('数据不存在，请刷新后重试');
+    if(action==='delete'){
+        if(confirm('确定要删除这个阵型吗？此操作不可恢复。')) deleteLayout(objId);
+    }else if(action==='edit'){
+        startEditLayout(item);
+    }
+}
+
+const ADMIN_PASSWORD = '1212'; // 管理员密码，可自行修改
+function verifyAdminPassword(){
+    const pwd = prompt('请输入管理员密码：');
+    if(pwd === null) return false;
+    if(pwd === ADMIN_PASSWORD) return true;
+    showToast('密码错误');
+    return false;
+}
+let adminTapCount=0, adminTapTimer=null;
+document.getElementById('adminTrigger').addEventListener('click', ()=>{
+    adminTapCount++;
+    clearTimeout(adminTapTimer);
+    adminTapTimer=setTimeout(()=>{adminTapCount=0}, 2500);
+    if(adminTapCount>=3){
+        adminTapCount=0;
+        if(document.body.classList.contains('admin-mode')){
+            document.body.classList.remove('admin-mode');
+            localStorage.removeItem('adminUnlocked');
+            showToast('已退出管理模式');
+        }else if(verifyAdminPassword()){
+            document.body.classList.add('admin-mode');
+            localStorage.setItem('adminUnlocked','1');
+            showToast('✅ 已进入管理模式，卡片上会出现编辑/删除按钮');
+        }
+    }
+});
+if(localStorage.getItem('adminUnlocked')==='1') document.body.classList.add('admin-mode');
 
 let isClanEditMode = false;
 function toggleClanEditMode() {
@@ -955,6 +1105,32 @@ function setQuickFilter(tag,el){
     document.querySelectorAll('#quickFilterContainer .nav-pill').forEach(t=>t.classList.remove('active'));
     el.classList.add('active');
     activeQueryTags=tag==='全部'?[]:[tag];
+    document.getElementById('activeCardFilterChip').style.display='none';
+    filterSelectedTags=[];
+    document.getElementById('advancedFilterBtn').classList.remove('active');
+    document.getElementById('advancedFilterBtn').innerText='筛选 ▾';
+    renderLayouts();
+}
+function filterByCardTag(tag){
+    document.querySelectorAll('#quickFilterContainer .nav-pill').forEach(t=>t.classList.remove('active'));
+    activeQueryTags=[tag];
+    document.getElementById('activeCardFilterText').innerText=tag;
+    document.getElementById('activeCardFilterChip').style.display='flex';
+    filterSelectedTags=[];
+    document.getElementById('advancedFilterBtn').classList.remove('active');
+    document.getElementById('advancedFilterBtn').innerText='筛选 ▾';
+    renderLayouts();
+    slideToPage(0);
+    window.scrollTo({top:0,behavior:'smooth'});
+    showToast('已按「'+tag+'」筛选');
+}
+function clearCardTagFilter(){
+    activeQueryTags=[];
+    document.getElementById('activeCardFilterChip').style.display='none';
+    document.querySelectorAll('#quickFilterContainer .nav-pill').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-all').classList.add('active');
+    document.getElementById('advancedFilterBtn').classList.remove('active');
+    document.getElementById('advancedFilterBtn').innerText='筛选 ▾';
     renderLayouts();
 }
 </script>
