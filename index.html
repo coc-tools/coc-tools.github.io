@@ -20,6 +20,12 @@ body{
   padding-bottom:calc(54px + env(safe-area-inset-bottom))!important;
 }
 .container{max-width:414px;width:100%;padding:6px 10px;overflow:hidden}
+@media (min-width:700px){
+  .container{max-width:900px}
+}
+@media (min-width:1000px){
+  .container{max-width:1300px}
+}
 
 .pages-slider{
   display:flex;
@@ -91,7 +97,7 @@ body{
 .nav-pill-special{background:#f8fafc;color:#2563eb;border-color:#cbd5e1}
 .nav-divider{width:1px;height:12px;background:#cbd5e1;flex-shrink:0;margin:0 1px}
 
-.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px 8px}
+.grid-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px 8px}
 .layout-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.03);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .2s ease;cursor:pointer}
 .layout-card:active{transform:scale(0.98)}
 
@@ -131,6 +137,8 @@ body{
   padding:10px 10px;
   box-shadow:0 2px 8px rgba(0,0,0,0.02);
   width:100%;
+  max-width:460px;
+  margin:0 auto;
   flex-shrink:0;
 }
 .form-section-title{
@@ -407,7 +415,7 @@ body{
     <div class="dock-item" id="dock2" onclick="slideToPage(2)">
         <span class="dock-label">我的收藏</span>
     </div>
-    <div class="dock-item" id="dock3" onclick="window.open('https://clashfox.com/','_blank')">
+    <div class="dock-item" id="dock3" onclick="location.href='https://clashfox.com/'">
         <span class="dock-label">ClashFox</span>
     </div>
 </div>
