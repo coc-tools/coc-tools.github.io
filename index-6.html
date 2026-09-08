@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>COC 阵型广场</title>
+<script src="https://cdn.jsdelivr.net/npm/hydrogen-js-sdk/dist/Bmob-2.2.5.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:#f8fafc;
+  color:#1e293b;
+  display:flex;
+  justify-content:center;
+  padding-top:4px;
+  overflow-x:hidden;
+  padding-bottom:calc(54px + env(safe-area-inset-bottom))!important;
+}
+.container{max-width:414px;width:100%;padding:6px 10px;overflow:hidden}
+
+.pages-slider{
+  display:flex;
+  align-items:flex-start;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  transition:height .2s ease;
+}
+.pages-slider::-webkit-scrollbar{display:none}
+
+.page-panel{
+  flex:0 0 100%;
+  width:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  padding:0 2px;
+  display:flex;
+  flex-direction:column;
+}
+
+.header-bar-star{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:10px;
+  height:34px;
+}
+.header-star-title{font-size:15px;font-weight:800;color:#0f172a}
+.gift-btn,.clan-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:13.5px;
+  cursor:pointer;
+  background:#fff;
+  border-radius:50%;
+  width:32px;
+  height:32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #e2e8f0;
+  box-shadow:0 2px 4px rgba(0,0,0,0.03);
+  transition:transform 0.1s;
+}
+.gift-btn{right:0}
+.clan-btn{left:0}
+.gift-btn:active,.clan-btn:active{transform:translateY(-50%) scale(0.9)}
+
+.input-wrapper{position:relative;display:flex;align-items:center;margin-bottom:8px;background:#fff;border:1px solid #cbd5e1;border-radius:14px;padding:2px 2px 2px 10px;box-shadow:0 2px 6px rgba(0,0,0,0.02);transition:.2s}
+.input-wrapper:focus-within{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
+.input-area{flex:1;border:none;outline:none;font-size:12px;height:32px;background:transparent;color:#0f172a}
+.input-clear{font-size:12px;color:#94a3b8;cursor:pointer;padding:0 4px;display:none}
+.input-wrapper input:not(:placeholder-shown)+.input-clear{display:block}
+.input-open-btn{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;padding:0 12px;height:30px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;box-shadow:0 2px 6px rgba(37,99,235,0.15);transition:transform 0.1s}
+.input-open-btn:active{transform:scale(0.95)}
+
+.compact-nav-bar{display:flex;align-items:center;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:5px;padding-bottom:1px}
+.compact-nav-bar::-webkit-scrollbar{display:none}
+.nav-pill{padding:4px 9px;border-radius:10px;font-size:11.5px;font-weight:600;background:#fff;border:1px solid #e2e8f0;color:#475569;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:transform 0.1s;display:inline-flex;align-items:center;justify-content:center}
+.nav-pill:active{transform:scale(0.94)}
+.nav-pill.active{background:#2563eb;color:#fff;border-color:#2563eb}
+.nav-pill.link-pill{background:#eff6ff;color:#2563eb;border-color:#bfdbfe}
+.nav-pill-special{background:#f8fafc;color:#2563eb;border-color:#cbd5e1}
+.nav-divider{width:1px;height:12px;background:#cbd5e1;flex-shrink:0;margin:0 1px}
+
+.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:12px 8px}
+.layout-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.03);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .2s ease;cursor:pointer}
+.layout-card:active{transform:scale(0.98)}
+
+.card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#e2e8f0;flex-shrink:0}
+.card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
+
+.img-fav-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
+.img-fav-btn.active{background:#fffbeb;color:#f59e0b;border:1px solid #fcd34d}
+
+.card-info{padding:8px 8px 10px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px}
+.card-title-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
+.card-title{font-size:13px;font-weight:700;color:#0f172a;height:18px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.card-date{font-size:8.5px;color:#94a3b8;flex-shrink:0}
+
+.admin-mgr-icon{cursor:pointer;padding:0 1px;opacity:0.6;font-size:10px;transition:.2s;display:none !important}
+.admin-mode .admin-mgr-icon{display:inline-block !important}
+
+.card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:3px;height:18px;align-items:center}
+.card-tags::-webkit-scrollbar{display:none}
+.tag{padding:2px 6px;border-radius:5px;font-size:10px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:18px;display:inline-flex;align-items:center;user-select:none}
+.tag-blue{background:#eff6ff;color:#2563eb}
+.tag-green{background:#f0fdf4;color:#16a34a}
+.tag-purple{background:#faf5ff;color:#9333ea}
+.tag-orange{background:#fffbeb;color:#d97706}
+
+.card-actions{margin-top:auto;display:flex;gap:6px;width:100%;padding-top:4px}
+.btn-copy-icon{width:34px;height:32px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0;transition:.15s}
+.btn-copy-icon:active{background:#f1f5f9}
+.pill-action-btn{width:100%;background:#eff6ff;color:#2563eb;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none}
+.pill-action-btn:active{background:#dbeafe}
+.btn-del-pill{background:#fee2e2;color:#ef4444;flex:none;width:44px}
+
+.upload-card-view{
+  background:#fff;
+  border-radius:14px;
+  border:1px solid #e2e8f0;
+  padding:10px 10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.02);
+  width:100%;
+  flex-shrink:0;
+}
+.form-section-title{
+  font-size:11px;
+  font-weight:700;
+  color:#334155;
+  margin:0 0 3px;
+  display:block;
+}
+.form-input-compact{
+  width:100%;
+  height:29px;
+  padding:0 10px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  font-size:12px;
+  margin-bottom:7px;
+  outline:none;
+  background:#f8fafc;
+}
+.form-input-compact:focus{border-color:#2563eb;background:#fff}
+
+.tag-picker-compact{
+  background:#f8fafc;
+  border-radius:10px;
+  padding:6px;
+  margin-bottom:7px;
+  border:1px solid #e2e8f0;
+}
+.tag-group-caption{font-size:10px;font-weight:700;color:#64748b;margin-bottom:3px;display:block}
+.tag-group-wrap{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;gap:3px;margin-bottom:4px}
+.tag-group-wrap::-webkit-scrollbar{display:none}
+.tag-btn-opt{
+  display:inline-block;
+  padding:2.5px 7px;
+  border:1px solid #cbd5e1;
+  border-radius:6px;
+  font-size:10px;
+  color:#334155;
+  cursor:pointer;
+  background:#fff;
+  transition:.1s;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.tag-btn-opt.active{background:#2563eb;color:#fff;border-color:#2563eb}
+
+.file-box-compact{
+  border:1.5px dashed #93c5fd;
+  border-radius:10px;
+  padding:8px;
+  text-align:center;
+  color:#2563eb;
+  background:#eff6ff;
+  margin-bottom:7px;
+  position:relative;
+}
+.file-box-compact input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+
+.input-link-wrap{position:relative;margin-bottom:4px}
+.input-link-wrap .form-input-compact{margin-bottom:0;padding-right:28px}
+.link-clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#94a3b8;cursor:pointer;display:none}
+
+.btn-publish-submit{
+  width:100%;
+  height:34px;
+  background:linear-gradient(135deg,#3b82f6,#2563eb);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(37,99,235,0.25);
+  margin-top:6px;
+  flex-shrink:0;
+}
+
+.bottom-dock-bar{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:calc(54px + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(10px);
+  border-top:1px solid #e2e8f0;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:999;
+}
+.dock-item{
+  flex:1;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  color:#64748b;
+  user-select:none;
+  padding:6px 2px;
+  min-width:0;
+}
+.dock-label{
+  font-size:12px;
+  font-weight:600;
+  transition:all .2s ease;
+  white-space:nowrap;
+}
+.dock-item.active .dock-label{
+  font-size:13.5px;
+  font-weight:800;
+  color:#2563eb;
+}
+
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.45);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-content{background:#fff;width:90%;max-width:340px;border-radius:20px;padding:16px 14px;box-shadow:0 16px 36px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative}
+.bottom-sheet{align-items:flex-end}
+.bottom-sheet .modal-content{border-radius:20px 20px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.modal-title{font-size:14px;font-weight:700;margin-bottom:10px;text-align:center;color:#0f172a}
+.modal-input{width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;font-size:12px;margin-bottom:8px;outline:none;background:#f8fafc}
+.modal-btn-group{display:flex;gap:6px;margin-top:8px}
+.modal-btn{flex:1;padding:8px 0;border:none;border-radius:10px;font-size:12.5px;font-weight:600;cursor:pointer}
+.modal-btn-cancel{background:#f1f5f9;color:#64748b}
+.modal-btn-confirm{background:#2563eb;color:#fff}
+.close-modal-x{position:absolute;top:14px;right:14px;font-size:18px;color:#94a3b8;cursor:pointer;line-height:1}
+
+#toast{visibility:hidden;min-width:160px;background:rgba(15,23,42,0.92);backdrop-filter:blur(4px);color:#fff;text-align:center;border-radius:10px;padding:8px 14px;position:fixed;z-index:9999;bottom:calc(70px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:12px;opacity:0;transition:.3s}
+#toast.show{visibility:visible;opacity:1}
+.copy-area{background:#f8fafc;padding:6px;border-radius:8px;font-size:11.5px;word-break:break-all;margin:4px 0 6px;border:1px dashed #cbd5e1;color:#334155}
+
+.village-section{margin-bottom:16px}
+.village-section-title{font-size:13px;font-weight:bold;color:#1e293b;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.village-btn-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.village-btn{background:#eff6ff;color:#2563eb;border:none;padding:5px 10px;border-radius:8px;font-size:11.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.village-btn:active{background:#dbeafe;transform:scale(0.95)}
+.village-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px;font-size:12px;color:#475569;line-height:1.5}
+.village-card p{margin-bottom:8px}
+.village-card strong{color:#0f172a}
+.village-link-text{color:#2563eb;text-decoration:none;word-break:break-all}
+.action-link{display:inline-block;color:#2563eb;font-weight:bold;margin-top:4px;cursor:pointer}
+
+.village-tag-box{margin-top:10px;padding-top:10px;border-top:1px dashed #e2e8f0;display:flex;gap:6px}
+.village-tag-container{position:relative;flex:1;display:flex;align-items:center}
+.village-tag-input{width:100%;height:32px;padding:0 28px 0 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;outline:none;background:#f8fafc;text-transform:uppercase}
+.village-tag-clear{position:absolute;right:6px;font-size:11px;color:#94a3b8;cursor:pointer;display:none;padding:2px 4px}
+.village-tag-btn{height:32px;padding:0 10px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+
+.clan-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#fff;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e2e8f0;
+  width:100%;
+  cursor:pointer;
+  box-shadow:0 1px 4px rgba(0,0,0,0.02);
+  margin-bottom:6px;
+}
+.clan-item.pinned{border-color:#bfdbfe;background:#eff6ff}
+.clan-item.built-in:not(.pinned){border-color:#e2e8f0;background:#fff}
+.clan-actions{display:none;align-items:center;gap:12px;padding-left:10px;border-left:1px dashed #cbd5e1;margin-left:6px}
+.edit-mode .clan-actions{display:flex}
+.edit-mode .clan-item{padding-right:10px}
+.action-icon-btn{font-size:14px;padding:3px;border-radius:4px;cursor:pointer;display:flex;align-items:center}
+.clan-enter-icon{display:block;color:#cbd5e1;font-size:13px}
+.edit-mode .clan-enter-icon{display:none}
+
+.input-with-btn{position:relative;display:flex;align-items:center;width:100%;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;overflow:hidden}
+.input-with-btn input{flex:1;border:none;outline:none;background:transparent;padding:8px 10px;font-size:12px;color:#0f172a}
+.paste-btn-inside{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:16px;cursor:pointer;color:#64748b;padding:4px;display:flex;align-items:center}
+.input-clear-clan{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-size:12px;color:#94a3b8;cursor:pointer;padding:3px;display:none}
+.input-clear-clan.show{display:block}
+.modal-divider{height:1px;background:#e2e8f0;margin:12px 0 10px;border-radius:1px}
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="pages-slider" id="pagesSlider">
+
+        <div class="page-panel" id="panelSquare">
+            <div id="adminTrigger" style="width:100%; height:6px;"></div>
+            
+            <div class="input-wrapper">
+                <input type="text" class="input-area" id="linkInput" placeholder="粘贴阵型 / 配兵 / 部落链接" autocomplete="off"/>
+                <span class="input-clear" id="clearBtn" onclick="document.getElementById('linkInput').value=''; validateMainInput();">✕</span>
+                <button class="input-open-btn" id="openBtn">打开</button>
+            </div>
+            
+            <div class="compact-nav-bar" id="quickFilterContainer">
+                <span class="nav-pill link-pill" onclick="openExternalLink('https://cungu.aiyige.ren/')">计时器</span>
+                <span class="nav-pill link-pill" onclick="openExternalLink('https://pan.xingchencoc.com/')">国际服</span>
+                <span class="nav-pill link-pill" style="color: #1d4ed8; border-color: #93c5fd;" onclick="document.getElementById('downloadModal').style.display='flex'">下载App</span>
+                <div class="nav-divider"></div>
+                <div class="nav-pill active" id="tab-all" onclick="setQuickFilter('全部', this)">全部</div>
+                <div class="nav-pill" onclick="setQuickFilter('传奇杯', this)">传奇杯</div>
+                <div class="nav-pill" onclick="setQuickFilter('联赛阵型', this)">联赛阵型</div>
+                <div class="nav-pill nav-pill-special" id="advancedFilterBtn" onclick="openAdvancedFilter()">筛选 ▾</div>
+            </div>
+
+            <div class="grid-container" id="gridContainer"></div>
+        </div>
+
+        <div class="page-panel" id="panelUpload">
+            <div class="upload-card-view">
+                <span class="form-section-title">援兵 / 备注（可选）</span>
+                <input class="form-input-compact" id="modalRemark" autocomplete="off"/>
+
+                <span class="form-section-title">标签属性选择</span>
+                <div style="font-size:9px;color:#94a3b8;margin:-2px 0 4px;">名称将根据「精工防御」+「法术塔」标签自动生成</div>
+                <div class="tag-picker-compact" id="uploadTagContainer"></div>
+
+                <span class="form-section-title">自定义标签</span>
+                <input class="form-input-compact" id="customTagInput" placeholder="空格隔开多个标签" autocomplete="off"/>
+
+                <span class="form-section-title">阵型全景截图</span>
+                <div class="file-box-compact">
+                    <div id="fileStatus" style="font-size:11.5px;font-weight:700;margin-bottom:1px;">📸 点击选择阵型截图</div>
+                    <div style="font-size:9px;color:#64748b;">建议上传完整无遮挡游戏阵型截图</div>
+                    <input type="file" id="modalImage" accept="image/*"/>
+                </div>
+
+                <span class="form-section-title">官方分享链接</span>
+                <div class="input-link-wrap">
+                    <input class="form-input-compact" id="modalLink" name="coc_share_link" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="validateModalLinkInput()"/>
+                    <span class="link-clear-btn" id="modalLinkClearBtn" onclick="clearModalLinkInput()">✕</span>
+                </div>
+                <div style="font-size:9px;color:#64748b;margin-bottom:6px;">必须为游戏内复制的以 link.clashofclans.com 开头的有效链接</div>
+
+                <button class="btn-publish-submit" id="modalConfirm">立即保存发布</button>
+            </div>
+        </div>
+
+        <div class="page-panel" id="panelStar">
+            <div class="header-bar-star">
+                <div class="clan-btn" onclick="document.getElementById('clanModal').classList.add('active'); renderSavedClans();">🛡️</div>
+                <div class="header-star-title">我的收藏</div>
+                <div class="gift-btn" onclick="document.getElementById('villageModal').classList.add('active')">🎁</div>
+            </div>
+
+            <div style="font-size: 12px; font-weight: 700; color: #475569; margin: 2px 0 10px 2px; display:flex; justify-content:space-between; align-items:center;">
+                <span>⭐ 我保存的阵型 <span id="myStarCount" style="font-size: 10.5px; font-weight: normal; color: #94a3b8;"></span></span>
+                <span style="font-size: 11px; color: #2563eb; font-weight: normal; cursor: pointer;" onclick="slideToPage(0)">去挑选阵型 ➔</span>
+            </div>
+            <div class="grid-container" id="starGridContainer"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="bottom-dock-bar">
+    <div class="dock-item active" id="dock0" onclick="slideToPage(0)">
+        <span class="dock-label">阵型广场</span>
+    </div>
+    <div class="dock-item" id="dock1" onclick="slideToPage(1)">
+        <span class="dock-label">上传阵型</span>
+    </div>
+    <div class="dock-item" id="dock2" onclick="slideToPage(2)">
+        <span class="dock-label">我的收藏</span>
+    </div>
+    <div class="dock-item" id="dock3" onclick="window.open('https://clashfox.com/','_blank')">
+        <span class="dock-label">ClashFox</span>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<div class="modal-overlay" id="clanModal">
+    <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+        <span class="close-modal-x" onclick="document.getElementById('clanModal').classList.remove('active')">✕</span>
+        <div style="padding-top: 4px;">
+            <div style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 4px; text-align: left;">加入部落</div>
+            <p style="font-size: 11px; color: #64748b; margin-bottom: 10px;">长按输入框粘贴链接，系统会自动提取标签</p>
+            <div class="input-with-btn" style="margin-bottom: 8px;">
+                <input class="input-area" id="clanTagInput" placeholder="长按粘贴链接 或 输入标签" autocomplete="off" oninput="formatClanInput()"/>
+                <span class="input-clear-clan" id="clanInputClearBtn" onclick="clearClanInput()">✕</span>
+                <div class="paste-btn-inside" onclick="pasteClanTag()" title="尝试一键粘贴">📋</div>
+            </div>
+            <span id="clanInputHint" style="display:none; font-size:10.5px; color:#ef4444; margin-top:-4px; margin-bottom:10px; padding-left:4px;"></span>
+            <input class="modal-input" id="clanRemarkInput" placeholder="部落名称或备注 (如: 联赛主营 / FWA互刷)" autocomplete="off" style="border-radius: 10px; height: 36px; margin-bottom: 10px; border: 1px solid #cbd5e1; background: #fff; padding: 0 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.02); font-size: 12px;"/>
+            <div class="modal-btn-group" style="margin-bottom: 12px;">
+                <button class="modal-btn modal-btn-cancel" id="clanSaveBtn" onclick="saveClanTag()" style="background: #e2e8f0; color: #475569; opacity: 0.5;">保存部落</button>
+                <button class="modal-btn modal-btn-confirm" onclick="joinClan(document.getElementById('clanTagInput').value)" style="background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 2px 8px rgba(37,99,235,0.25);">前往加入 ➔</button>
+            </div>
+            <div class="modal-divider"></div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 13px; font-weight: 800; color: #1e293b;">我保存的部落 <span id="clanCount" style="font-size: 11px; color: #94a3b8; font-weight: normal; margin-left: 4px;"></span></span>
+                <span id="manageClanBtn" style="font-size: 11.5px; color: #2563eb; cursor: pointer; padding: 3px 10px; background: #eff6ff; border-radius: 10px; font-weight: 700; transition: .2s;" onclick="toggleClanEditMode()">管理</span>
+            </div>
+            <div id="savedClansContainer" style="display: flex; flex-direction: column; gap: 8px; min-height: 50px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="downloadModal">
+    <div class="modal-content" style="text-align:center;">
+        <h3 style="margin-bottom:6px;font-size:14px;">客户端获取引导</h3>
+        <p style="font-size:11.5px;color:#475569;margin-bottom:10px;text-align:left;line-height:1.5">
+        建议使用APP操作，获得流畅体验。<br>
+        ● <strong>Android：</strong>点击下方直接下载 APK 安装<br>
+        ● <strong>iPhone：</strong>用 Safari 打开 → 共享 → '添加到主屏幕'</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+            <button class="modal-btn modal-btn-confirm" onclick="openExternalLink('https://pan.meil.wang/f/d/217Uj/%E5%9B%BD%E9%99%85%E6%9C%8D%E9%98%B5%E5%9E%8B.apk')">安卓极速下载</button>
+            <div style="text-align:left;font-size:10.5px;color:#64748b;">iPhone请复制链接用Safari打开：</div>
+            <div class="copy-area" id="copyText">https://coc-tools.github.io</div>
+            <button class="modal-btn" style="background:#16a34a;color:#fff;" onclick="copyDownloadUrl()">一键复制链接</button>
+            <button class="modal-btn modal-btn-cancel" onclick="document.getElementById('downloadModal').style.display='none'">关闭窗口</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="villageModal">
+    <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+        <span class="close-modal-x" onclick="document.getElementById('villageModal').classList.remove('active')">✕</span>
+        <div class="village-section">
+            <div class="village-section-title">制作一本村庄</div>
+            <div class="village-btn-grid">
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenSCID')">注册SCID</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en?action=OpenShop')">打开商城</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenLayoutEditor')">阵型(清障碍)</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenEvents')">打开活动</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en?action=OpenMoreSettings')">打开更多设置</button>
+                <button class="village-btn" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenNews')">打开新闻</button>
+                <button class="village-btn" onclick="openExternalLink('https://id.supercell.com/zh-CN/clashofclans/')">SCID网页商城</button>
+            </div>
+            <div class="village-tag-box">
+                <div class="village-tag-container">
+                    <input type="text" id="villagePlayerTagInput" class="village-tag-input" placeholder="输入标签如：#QJULU0G0V" autocomplete="off">
+                    <span class="village-tag-clear" id="villageClearTagBtn">✕</span>
+                </div>
+                <button class="village-tag-btn" id="villageOpenTagBtn">打开标签页面</button>
+            </div>
+        </div>
+        <div class="village-card">
+            <div class="village-section-title" style="color: #d97706;">⚡ 新手教程与快速升级</div>
+            <p><strong>1、</strong>在进行新手教程中，起名字后提示1本升级2本时停止操作，直接用链接打开游戏铲树和刷单人模式。</p>
+            <p><strong>2、</strong>将账号弄到10级就会自动跳过新手教程。</p>
+            <p><strong>3、建城堡：</strong>需要超上限的圣水，通过官网以及赛事预测夯木节等获取资源，此处只例赛事官网 <a href="#" class="village-link-text" onclick="openExternalLink('https://event.supercell.com/clashofclans/zh-tc')">https://event.supercell.com/clashofclans/zh-tc</a></p>
+            <p style="margin-top: 10px;"><strong>重点为以下重复操作：</strong></p>
+            <p><strong>4、</strong>通过浏览器输入以下链接跳转到游戏内：</p>
+            <div style="margin-left: 8px; margin-bottom: 10px;">
+                用以下链接跳转到游戏内编辑阵型进行铲树<br>
+                <span class="action-link" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenLayoutEditor')">点击跳转 ➔</span>
+            </div>
+            <div style="margin-left: 8px;">
+                用以下链接跳转至进攻界面切换到单人模式进攻哥布林营地，使用20个野蛮人爆本后立刻关闭游戏（重复此操作直至10级）<br>
+                <span class="action-link" onclick="processUrl('https://link.clashofclans.com/en/?action=OpenAttackScreen')">点击跳转 ➔</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="starModal">
+    <div class="modal-content">
+        <div class="modal-title">添加收藏备注</div>
+        <p style="font-size:11px;color:#64748b;margin-bottom:8px;text-align:center;">阵型将永久保存在您的手机本地</p>
+        <input class="modal-input" id="starTitle" placeholder="" autocomplete="off"/>
+        <div class="modal-btn-group">
+            <button class="modal-btn modal-btn-cancel" onclick="document.getElementById('starModal').classList.remove('active')">取消</button>
+            <button class="modal-btn modal-btn-confirm" id="confirmStarBtn">确定收藏</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay bottom-sheet" id="advancedFilterModal">
+    <div class="modal-content">
+        <div class="modal-title">标签筛选</div>
+        <div class="tag-picker-compact" id="filterTagContainer" style="background:transparent;border:none;"></div>
+        <div class="modal-btn-group">
+            <button class="modal-btn modal-btn-cancel" onclick="resetFilter()">重置</button>
+            <button class="modal-btn modal-btn-confirm" onclick="applyFilter()">确定</button>
+        </div>
+    </div>
+</div>
+
+<script>
+Bmob.initialize("7d02e5a27eb27ee9","123456");
+const IMGBB_API_KEY="a2062137421eb1609a508bff675756e1";
+const isAndroid=/android/i.test(navigator.userAgent);
+
+let allLayoutsCache=[], activeQueryTags=[], readyToUploadFile=null, pendingStarData=null;
+let layoutViewer=null, starLayoutViewer=null;
+let currentSlideIndex = 0;
+
+function escapeHtml(str) {
+    if(!str) return '';
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+function showToast(m){
+    const t=document.getElementById('toast');
+    t.textContent=m;
+    t.className="show";
+    setTimeout(()=>{t.className=""}, 2300);
+}
+
+const sliderEl = document.getElementById('pagesSlider');
+const allPanels = [document.getElementById('panelSquare'), document.getElementById('panelUpload'), document.getElementById('panelStar')];
+function updateSliderHeight(idx){
+    const p = allPanels[idx];
+    if(p) sliderEl.style.height = p.scrollHeight + 'px';
+}
+function slideToPage(idx){
+    currentSlideIndex = idx;
+    const w = sliderEl.clientWidth;
+    updateSliderHeight(idx);
+    sliderEl.scrollTo({left: idx * w, behavior: 'smooth'});
+    updateDockIndicator(idx);
+}
+
+function updateDockIndicator(idx){
+    [0, 1, 2].forEach(i => {
+        document.getElementById('dock' + i).classList.toggle('active', i === idx);
+    });
+    if(idx === 2) renderMyStarsPage();
+}
+
+let scrollTimer = null;
+sliderEl.addEventListener('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+        const w = sliderEl.clientWidth;
+        const pageIdx = Math.round(sliderEl.scrollLeft / w);
+        if(pageIdx !== currentSlideIndex){
+            currentSlideIndex = pageIdx;
+            updateDockIndicator(pageIdx);
+        }
+        updateSliderHeight(pageIdx);
+    }, 60);
+});
+window.addEventListener('resize', () => updateSliderHeight(currentSlideIndex));
+window.addEventListener('load', () => updateSliderHeight(currentSlideIndex || 0));
+setTimeout(() => updateSliderHeight(currentSlideIndex || 0), 300);
+
+function extractOfficialCocLink(str){
+    if(!str) return '';
+    const m = str.match(/https:\/\/link\.clashofclans\.com\/[^\s\u4e00-\u9fa5]+/i);
+    return m ? m[0].trim() : str.trim();
+}
+function isValidCocLink(u){
+    return u && u.toLowerCase().includes('link.clashofclans.com');
+}
+
+function processUrl(u){
+    if(!u) return showToast('链接无效！');
+    u = extractOfficialCocLink(u);
+    if(isAndroid && u.startsWith('https://link.clashofclans.com')){
+        let q = u.includes('?') ? u.split('?')[1] : (u.includes('action=') ? u.substring(u.indexOf('action=')) : '');
+        if(q){
+            window.location.href=`intent://open_layout?${q}#Intent;scheme=clashofclans;package=com.supercell.clashofclans;end;`;
+            return;
+        }
+    }
+    window.location.href=u;
+}
+function openExternalLink(u){
+    if(isAndroid){
+        try{const o=new URL(u);window.location.href=`intent://${o.host}${o.pathname}${o.search}#Intent;scheme=https;action=android.intent.action.VIEW;end;`}catch(e){window.location.href=u}
+    }else window.open(u,'_blank');
+}
+function copyDownloadUrl(){
+    const t=document.getElementById('copyText').innerText;
+    if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>showToast('已复制，请前往Safari打开！'))}
+}
+function copyLayoutLink(link) {
+    if (!link) return showToast('链接为空！');
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => showToast('✅ 阵型链接已复制！'));
+    }
+}
+function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
+
+function getTagClass(t){
+    const spells = ["双狂暴","双隐身","双毒药","一狂一隐","一狂一毒","一隐一毒"];
+    if(spells.includes(t)) return 'tag-purple';
+    if(["火热蜡烛","英雄猎台","蛋糕投掷器"].includes(t) || t.includes('炮') || t.includes('防御')) return 'tag-green';
+    if(t.includes('本')) return 'tag-blue'; return 'tag-orange';
+}
+
+function openStarModal(img,title,link){
+    pendingStarData={img,title:title||'未命名阵型',link,time:new Date().toLocaleString()};
+    document.getElementById('starTitle').value=''; document.getElementById('starModal').classList.add('active');
+}
+document.getElementById('confirmStarBtn').onclick=()=>{
+    const title=document.getElementById('starTitle').value.trim()||pendingStarData.title;
+    let stars=JSON.parse(localStorage.getItem('myStars')||'[]');
+    if(stars.some(s=>s.link===pendingStarData.link))showToast('已经在收藏库啦！');
+    else{stars.unshift({...pendingStarData,title});localStorage.setItem('myStars',JSON.stringify(stars));showToast('收藏成功！')}
+    document.getElementById('starModal').classList.remove('active'); 
+    renderLayouts();
+    renderMyStarsPage();
+}
+function removeStar(link){
+    let stars=JSON.parse(localStorage.getItem('myStars')||'[]'); stars=stars.filter(i=>i.link!==link);
+    localStorage.setItem('myStars',JSON.stringify(stars)); showToast('已移出收藏'); 
+    renderLayouts();
+    renderMyStarsPage();
+}
+
+const gridContainer=document.getElementById('gridContainer');
+const starGridContainer=document.getElementById('starGridContainer');
+
+function loadCloudLayouts(){
+    const q=Bmob.Query("LayoutData");q.order("-createdAt");q.limit(1000);
+    q.find().then(res=>{
+        allLayoutsCache=res.map(i=>({objectId:i.objectId,title:i.title,tags:i.tags||[],imageUrl:i.imageUrl,link:i.link,createdAt:i.createdAt}));
+        document.getElementById('tab-all').innerText = `全部(${allLayoutsCache.length})`;
+        renderLayouts();
+    });
+}
+loadCloudLayouts();
+
+function renderLayoutCard(item, isStarPage) {
+    let myStars=JSON.parse(localStorage.getItem('myStars')||'[]');
+    let imgUrl=item.imageUrl||item.img||'', linkStr=item.link||'', objId=item.objectId||'';
+    let rawTitle=(item.title||'').trim();
+    let titleStr=(rawTitle&&rawTitle!=='未命名阵型')?rawTitle:((item.tags&&item.tags.length)?item.tags.slice(0,2).join(' · '):'未命名阵型');
+    let timeStr=item.createdAt?item.createdAt.substring(5,10):(item.time?item.time.substring(5,10):'');
+    let tagsHtml=(item.tags||[]).map(t=>`<span class="tag ${getTagClass(t)}">${escapeHtml(t)}</span>`).join('');
+    let isStarred=myStars.some(s=>s.link===(item.link||item.img));
+
+    return `<div class="layout-card">
+        <div class="card-img-wrapper">
+            <img class="preview-image" src="${escapeHtml(imgUrl)}" loading="lazy"/>
+            <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${escapeHtml(linkStr)}')`:`openStarModal('${escapeHtml(imgUrl)}','${escapeHtml(titleStr)}','${escapeHtml(linkStr)}')`}">${isStarred?'★':'☆'}</span>
+        </div>
+        <div class="card-info">
+            <div>
+                <div class="card-title-row">
+                    <div class="card-title">${escapeHtml(titleStr)}</div>
+                    <span class="card-date">${escapeHtml(timeStr)}</span>
+                    ${!isStarPage?`<span><span class="admin-mgr-icon" onclick="event.stopPropagation();openPasswordPrompt('edit','${escapeHtml(objId)}')">✏️</span> <span class="admin-mgr-icon" onclick="event.stopPropagation();openPasswordPrompt('delete','${escapeHtml(objId)}')">✕</span></span>`:''}
+                </div>
+                <div class="card-tags">${tagsHtml}</div>
+            </div>
+            <div class="card-actions">
+                <button class="pill-action-btn" onclick="event.stopPropagation();openLayout('${escapeHtml(linkStr)}')">一键打开</button>
+                <button class="btn-copy-icon" title="复制链接" onclick="event.stopPropagation();copyLayoutLink('${escapeHtml(linkStr)}')">🔗</button>
+                ${isStarPage?`<button class="pill-action-btn btn-del-pill" onclick="event.stopPropagation();removeStar('${escapeHtml(linkStr)}')">移出</button>`:''}
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderLayouts(){
+    let display=allLayoutsCache.filter(item=>{
+        return activeQueryTags.length?activeQueryTags.every(t=>item.tags.includes(t)):true;
+    });
+    display.sort((a, b) => new Date(b.createdAt||0).getTime() - new Date(a.createdAt||0).getTime());
+    if(!display.length){
+        gridContainer.innerHTML=`<div class="empty-state" style="padding:40px 0;color:#cbd5e1;"><div style="font-size:28px;margin-bottom:8px;">( Ĭ ^ Ĭ )</div><div style="font-size:12px;color:#94a3b8;">当前暂无符合条件的阵型</div></div>`;
+        return;
+    }
+    gridContainer.innerHTML=display.map(item=>renderLayoutCard(item, false)).join('');
+
+    if(!layoutViewer) layoutViewer = new Viewer(gridContainer,{filter(i){return i.classList.contains('preview-image')},toolbar:false,navbar:false});
+    else layoutViewer.update();
+    if(currentSlideIndex===0) updateSliderHeight(0);
+}
+
+function renderMyStarsPage(){
+    let myStars=JSON.parse(localStorage.getItem('myStars')||'[]');
+    document.getElementById('myStarCount').innerText = `(${myStars.length}个)`;
+    if(!myStars.length){
+        starGridContainer.innerHTML=`<div class="empty-state" style="padding:40px 0;color:#cbd5e1;"><div style="font-size:28px;margin-bottom:8px;">⭐</div><div style="font-size:12px;color:#94a3b8;">收藏库为空~<br>去阵型广场点击星号添加吧！</div></div>`;
+        updateSliderHeight(2);
+        return;
+    }
+    starGridContainer.innerHTML=myStars.map(item=>renderLayoutCard(item, true)).join('');
+    if(!starLayoutViewer) starLayoutViewer = new Viewer(starGridContainer,{filter(i){return i.classList.contains('preview-image')},toolbar:false,navbar:false});
+    else starLayoutViewer.update();
+    updateSliderHeight(2);
+}
+
+const tagGroups=[
+    {name:"精工防御",items:["火热蜡烛","英雄猎台","蛋糕投掷器"],single:true},
+    {name:"法术塔",items:["双狂暴","双隐身","双毒药","一狂一隐","一狂一毒","一隐一毒"],single:true},
+    {name:"用途",items:["护资源","防三星","部落战","世锦赛","金票赛","传奇杯","联赛阵型"],single:false}
+];
+let uploadSelectedTags=[],filterSelectedTags=[];
+
+function renderTagsToContainer(containerId,isFilterMode){
+    const wrapper=document.getElementById(containerId);wrapper.innerHTML='';
+    let selArr=isFilterMode?filterSelectedTags:uploadSelectedTags,groupState={};
+    tagGroups.forEach(group=>{
+        const titleEl=document.createElement('span');titleEl.className='tag-group-caption';titleEl.innerText=group.name;wrapper.appendChild(titleEl);
+        const container=document.createElement('div');container.className='tag-group-wrap';
+        if(group.single)groupState[group.name]='';
+        group.items.forEach(tag=>{
+            const el=document.createElement('span');el.className='tag-btn-opt';el.innerText=tag;
+            if(selArr.includes(tag)){el.classList.add('active');if(group.single)groupState[group.name]=tag}
+            el.onclick=function(){
+                if(group.single){
+                    if(this.classList.contains('active')){this.classList.remove('active');selArr.splice(selArr.indexOf(tag),1);groupState[group.name]=''}
+                    else{container.querySelectorAll('.tag-btn-opt').forEach(t=>t.classList.remove('active'));this.classList.add('active');const old=groupState[group.name];if(old)selArr.splice(selArr.indexOf(old),1);selArr.push(tag);groupState[group.name]=tag}
+                }else{this.classList.toggle('active');const idx=selArr.indexOf(tag);if(idx>-1)selArr.splice(idx,1);else selArr.push(tag)}
+            };
+            container.appendChild(el);
+        });
+        wrapper.appendChild(container);
+    });
+}
+renderTagsToContainer('uploadTagContainer', false);
+
+function clearModalLinkInput() {
+    const inputEl = document.getElementById('modalLink');
+    inputEl.value = '';
+    validateModalLinkInput();
+    inputEl.focus();
+}
+function validateModalLinkInput() {
+    const inputEl = document.getElementById('modalLink'), clearBtn = document.getElementById('modalLinkClearBtn');
+    if(!inputEl) return; 
+    if(clearBtn) clearBtn.style.display = inputEl.value.length > 0 ? 'block' : 'none';
+}
+
+document.getElementById('modalImage').onchange=function(e){
+    const file=e.target.files[0];
+    if(file){
+        document.getElementById('fileStatus').innerText='图片处理中...';
+        const r=new FileReader();r.onload=function(ev){
+            const img=new Image();img.onload=function(){
+                const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
+                let w=img.width,h=img.height,MAX=1200;
+                if(w>MAX){h=Math.round((h*MAX)/w);w=MAX}
+                canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);
+                canvas.toBlob(blob=>{
+                    readyToUploadFile=new File([blob],"layout.jpg",{type:"image/jpeg"});
+                    document.getElementById('fileStatus').innerText='✅ 图片已就绪';
+                    document.getElementById('fileStatus').style.color='#16a34a';
+                },'image/jpeg',0.85);
+            };img.src=ev.target.result;
+        };r.readAsDataURL(file);
+    }
+};
+
+document.getElementById('modalConfirm').onclick=()=>{
+    const preciseTag=uploadSelectedTags.find(t=>tagGroups[0].items.includes(t));
+    const spellTag=uploadSelectedTags.find(t=>tagGroups[1].items.includes(t));
+    const baseTitle=[preciseTag,spellTag].filter(Boolean).join(' · ');
+    const rm=document.getElementById('modalRemark').value.trim();
+    const title=rm ? baseTitle + ' / ' + rm : baseTitle;
+    const rawLink=document.getElementById('modalLink').value.trim();
+    const customTagStr=document.getElementById('customTagInput').value.trim();
+    const link = extractOfficialCocLink(rawLink);
+
+    if(!title) return showToast('请至少选择一个精工防御或法术塔标签');
+    if(!link) return showToast('请填写官方阵型链接！');
+    if(!isValidCocLink(link)) return showToast('⚠️ 请填写官方游戏分享链接');
+    if(!readyToUploadFile) return showToast('请选择阵型截图！');
+    
+    let finalTags=[...uploadSelectedTags];
+    if(customTagStr) finalTags.push(...customTagStr.split(' ').filter(t=>t));
+    document.getElementById('modalConfirm').innerText='处理中...';
+    document.getElementById('modalConfirm').disabled=true;
+
+    const saveToBmob=(imageUrl)=>{
+        const q=Bmob.Query('LayoutData');
+        q.set("title",title);q.set("tags",finalTags);q.set("imageUrl",imageUrl);q.set("link",link);
+        q.save().then(()=>{
+            showToast('🎉 发布成功！');
+            document.getElementById('modalConfirm').innerText='立即保存发布';
+            document.getElementById('modalConfirm').disabled=false;
+            document.getElementById('modalRemark').value='';
+            document.getElementById('modalLink').value='';
+            readyToUploadFile=null;
+            loadCloudLayouts();
+            slideToPage(0);
+        }).catch(()=>{
+            showToast('保存失败');
+            document.getElementById('modalConfirm').innerText='立即保存发布';
+            document.getElementById('modalConfirm').disabled=false;
+        });
+    };
+
+    const fd=new FormData();fd.append('image',readyToUploadFile);
+    fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd})
+    .then(r=>r.json()).then(res=>{
+        if(res.success) saveToBmob(res.data.url);
+        else throw new Error();
+    }).catch(()=>{
+        showToast('图床上传失败，请重试');
+        document.getElementById('modalConfirm').innerText='立即保存发布';
+        document.getElementById('modalConfirm').disabled=false;
+    });
+};
+
+let isClanEditMode = false;
+function toggleClanEditMode() {
+    isClanEditMode = !isClanEditMode;
+    const btn = document.getElementById('manageClanBtn');
+    btn.innerText = isClanEditMode ? '完成' : '管理';
+    const container = document.getElementById('savedClansContainer');
+    if(isClanEditMode) { container.classList.add('edit-mode'); } else { container.classList.remove('edit-mode'); }
+}
+function getSavedClans() {
+    let clans = JSON.parse(localStorage.getItem('savedClansData') || '[]');
+    const builtInTag = '2GC0000YU';
+    if (!clans.some(c => c.tag === builtInTag)) {
+        clans.unshift({ tag: builtInTag, remark: '奶营', isDefault: false, isBuiltIn: true });
+        localStorage.setItem('savedClansData', JSON.stringify(clans));
+    }
+    return clans;
+}
+function saveClansToLocal(c) { localStorage.setItem('savedClansData', JSON.stringify(c)); }
+function formatClanTag(tag) {
+    let t = tag.trim().toUpperCase().replace(/[^A-Z0-9#]/g, '');
+    if(t.startsWith('#')) t = t.substring(1);
+    return t;
+}
+function formatClanInput() {
+    let el = document.getElementById('clanTagInput'), val = el.value;
+    if(val.includes('link.clashofclans.com') || val.includes('tag=')) {
+        let match = val.match(/tag=([A-Za-z0-9]+)/i);
+        if(match && match[1]) {
+            el.value = '#' + match[1].toUpperCase();
+            showToast('✅ 已自动提取标签');
+            checkClanInputState();
+            return;
+        }
+    }
+    val = val.toUpperCase().replace(/[^A-Z0-9#]/g, '');
+    if(val.length > 0 && !val.startsWith('#')) val = '#' + val;
+    el.value = val.replace(/^#+/, '#');
+    checkClanInputState();
+}
+function clearClanInput() {
+    document.getElementById('clanTagInput').value = '';
+    document.getElementById('clanRemarkInput').value = '';
+    checkClanInputState();
+}
+function checkClanInputState() {
+    let val = document.getElementById('clanTagInput').value;
+    document.getElementById('clanInputClearBtn').classList.toggle('show', val.length > 0);
+    document.getElementById('clanSaveBtn').style.opacity = val.length > 0 ? '1' : '0.5';
+}
+async function pasteClanTag() {
+    try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+            const text = await navigator.clipboard.readText();
+            if(text) {
+                let tag = text, match = text.match(/(?:tag=|#)([A-Z0-9]{5,12})/i);
+                if(match && match[1]) tag = match[1];
+                document.getElementById('clanTagInput').value = '#' + formatClanTag(tag);
+                checkClanInputState();
+                showToast('✅ 已提取标签');
+            }
+        } else { showToast('请长按输入框粘贴'); }
+    } catch(e) { showToast('请长按输入框粘贴'); }
+}
+function joinClan(tag) {
+    if(!tag) return showToast('请输入部落标签！');
+    processUrl(`https://link.clashofclans.com/cn?action=OpenClanProfile&tag=${formatClanTag(tag)}`);
+}
+function saveClanTag() {
+    let cleanTag = formatClanTag(document.getElementById('clanTagInput').value);
+    if(!cleanTag) return showToast('请输入有效标签！');
+    let remark = document.getElementById('clanRemarkInput').value.trim();
+    let clans = getSavedClans(), idx = clans.findIndex(c => c.tag === cleanTag);
+    if(idx > -1) clans[idx].remark = remark;
+    else clans.push({ tag: cleanTag, remark: remark, isDefault: false });
+    saveClansToLocal(clans);
+    renderSavedClans();
+    clearClanInput();
+    showToast('✅ 保存成功');
+}
+function removeClanTag(tag, e) {
+    e.stopPropagation();
+    if(tag === '2GC0000YU') return showToast('官方推荐部落不可删');
+    let clans = getSavedClans().filter(t => t.tag !== tag);
+    saveClansToLocal(clans);
+    renderSavedClans();
+}
+
+function renderSavedClans() {
+    const container = document.getElementById('savedClansContainer');
+    let clans = getSavedClans();
+    document.getElementById('clanCount').innerText = `(${clans.length}/15)`;
+    container.innerHTML = clans.map(clan => {
+        let isBuiltIn = clan.tag === '2GC0000YU';
+        let displayName = clan.remark ? clan.remark : `#${clan.tag}`;
+        let builtInTag = isBuiltIn ? '<span style="font-size:10px;background:#f1f5f9;color:#64748b;padding:1px 5px;border-radius:4px;margin-left:4px;border:1px solid #e2e8f0;">捐兵部落</span>' : '';
+        return `
+        <div class="clan-item ${clan.isDefault ? 'pinned' : ''}" onclick="joinClan('${clan.tag}')">
+           <div style="flex:1; overflow:hidden;">
+               <div style="font-size:13px; font-weight:700; color:#0f172a; display:flex; align-items:center;">
+                   ${displayName} ${builtInTag}
+               </div>
+               <div style="font-size:11px; color:#64748b; font-family:monospace; margin-top:2px;">#${clan.tag}</div>
+           </div>
+           <div class="clan-enter-icon">➔</div>
+           <div class="clan-actions">
+               ${!isBuiltIn ? `<span style="color:#ef4444;font-size:18px;cursor:pointer;" onclick="removeClanTag('${clan.tag}',event)">×</span>` : ''}
+           </div>
+        </div>`;
+    }).join('');
+}
+
+const vTagInput = document.getElementById('villagePlayerTagInput');
+const vClearBtn = document.getElementById('villageClearTagBtn');
+const vOpenBtn = document.getElementById('villageOpenTagBtn');
+vTagInput.addEventListener('input', function() { vClearBtn.style.display = this.value.trim() ? 'block' : 'none'; });
+vClearBtn.addEventListener('click', function() { vTagInput.value = ''; vClearBtn.style.display = 'none'; vTagInput.focus(); });
+vOpenBtn.addEventListener('click', function() {
+    let inputVal = vTagInput.value.trim();
+    if (!inputVal) return showToast('请输入玩家标签！');
+    processUrl(`https://link.clashofclans.com/cn?action=OpenPlayerProfile&tag=${inputVal.replace(/#/g, '').toUpperCase()}`);
+});
+
+document.getElementById('openBtn').onclick=()=>{processUrl(document.getElementById('linkInput').value)};
+function validateMainInput(){
+    document.getElementById('clearBtn').style.display = document.getElementById('linkInput').value ? 'block' : 'none';
+}
+function setQuickFilter(tag,el){
+    document.querySelectorAll('#quickFilterContainer .nav-pill').forEach(t=>t.classList.remove('active'));
+    el.classList.add('active');
+    activeQueryTags=tag==='全部'?[]:[tag];
+    renderLayouts();
+}
+</script>
+</body>
+</html>
