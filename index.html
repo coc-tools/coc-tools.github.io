@@ -32,7 +32,7 @@ body{
   align-items:flex-start;
   width:100%;
   overflow-x:auto;
-  overflow-y:hidden;
+  overflow-y:visible;
   scroll-snap-type:x mandatory;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
@@ -991,14 +991,18 @@ if(localStorage.getItem('adminUnlocked')==='1') document.body.classList.add('adm
 
 const dockBarEl = document.querySelector('.bottom-dock-bar');
 document.addEventListener('focusin', (e)=>{
-    if(e.target.matches('input,textarea')) dockBarEl.style.display='none';
+    if(e.target.matches('input,textarea')){
+        dockBarEl.style.display='none';
+        setTimeout(()=>updateSliderHeight(currentSlideIndex), 300);
+    }
 });
 document.addEventListener('focusout', (e)=>{
     if(e.target.matches('input,textarea')){
         setTimeout(()=>{
             const a=document.activeElement;
             if(!a || !a.matches('input,textarea')) dockBarEl.style.display='flex';
-        }, 100);
+            updateSliderHeight(currentSlideIndex);
+        }, 150);
     }
 });
 
