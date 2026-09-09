@@ -989,6 +989,19 @@ document.getElementById('adminTrigger').addEventListener('click', ()=>{
 });
 if(localStorage.getItem('adminUnlocked')==='1') document.body.classList.add('admin-mode');
 
+const dockBarEl = document.querySelector('.bottom-dock-bar');
+document.addEventListener('focusin', (e)=>{
+    if(e.target.matches('input,textarea')) dockBarEl.style.display='none';
+});
+document.addEventListener('focusout', (e)=>{
+    if(e.target.matches('input,textarea')){
+        setTimeout(()=>{
+            const a=document.activeElement;
+            if(!a || !a.matches('input,textarea')) dockBarEl.style.display='flex';
+        }, 100);
+    }
+});
+
 let isClanEditMode = false;
 function toggleClanEditMode() {
     isClanEditMode = !isClanEditMode;
