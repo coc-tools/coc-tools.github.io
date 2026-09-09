@@ -359,11 +359,14 @@ body{
                     <span>✏️ 正在编辑已有阵型</span>
                     <span style="margin-left:auto;cursor:pointer;text-decoration:underline;" onclick="resetUploadForm()">取消编辑</span>
                 </div>
+                <span class="form-section-title">阵型名称（可选，留空则自动生成）</span>
+                <input class="form-input-compact" id="modalTitle" placeholder="留空将根据标签自动生成" autocomplete="off"/>
+
                 <span class="form-section-title">援兵 / 备注（可选）</span>
                 <input class="form-input-compact" id="modalRemark" autocomplete="off"/>
 
                 <span class="form-section-title">标签属性选择</span>
-                <div style="font-size:9px;color:#94a3b8;margin:-2px 0 4px;">名称将根据「精工防御」+「法术塔」标签自动生成</div>
+                <div style="font-size:9px;color:#94a3b8;margin:-2px 0 4px;">若未填写阵型名称，将根据「精工防御」+「法术塔」标签自动生成</div>
                 <div class="tag-picker-compact" id="uploadTagContainer"></div>
 
                 <span class="form-section-title">自定义标签</span>
@@ -842,14 +845,16 @@ document.getElementById('modalImage').onchange=function(e){
 document.getElementById('modalConfirm').onclick=()=>{
     const preciseTag=uploadSelectedTags.find(t=>tagGroups[0].items.includes(t));
     const spellTag=uploadSelectedTags.find(t=>tagGroups[1].items.includes(t));
-    const baseTitle=[preciseTag,spellTag].filter(Boolean).join(' · ');
+    const autoTitle=[preciseTag,spellTag].filter(Boolean).join(' · ');
+    const manualTitle=document.getElementById('modalTitle').value.trim();
+    const baseTitle=manualTitle || autoTitle;
     const rm=document.getElementById('modalRemark').value.trim();
     const title=rm ? baseTitle + ' / ' + rm : baseTitle;
     const rawLink=document.getElementById('modalLink').value.trim();
     const customTagStr=document.getElementById('customTagInput').value.trim();
     const link = extractOfficialCocLink(rawLink);
 
-    if(!title) return showToast('请至少选择一个精工防御或法术塔标签');
+    if(!title) return showToast('请填写阵型名称，或至少选择一个精工防御/法术塔标签');
     if(!link) return showToast('请填写官方阵型链接！');
     if(!isValidCocLink(link)) return showToast('⚠️ 请填写官方游戏分享链接');
     if(!readyToUploadFile && !(editingObjectId && existingImageUrl)) return showToast('请选择阵型截图！');
@@ -902,6 +907,7 @@ document.getElementById('modalConfirm').onclick=()=>{
 function resetUploadForm(){
     editingObjectId=null; existingImageUrl='';
     document.getElementById('editModeBanner').style.display='none';
+    document.getElementById('modalTitle').value='';
     document.getElementById('modalRemark').value='';
     document.getElementById('modalLink').value='';
     validateModalLinkInput();
@@ -919,9 +925,9 @@ function resetUploadForm(){
 function startEditLayout(item){
     editingObjectId = item.objectId;
     existingImageUrl = item.imageUrl || '';
-    let remark = '';
     const titleParts = (item.title||'').split(' / ');
-    if(titleParts.length>1) remark = titleParts.slice(1).join(' / ');
+    document.getElementById('modalTitle').value = titleParts[0] || '';
+    let remark = titleParts.length>1 ? titleParts.slice(1).join(' / ') : '';
     document.getElementById('modalRemark').value = remark;
     document.getElementById('modalLink').value = item.link || '';
     validateModalLinkInput();
