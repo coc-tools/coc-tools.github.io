@@ -32,7 +32,7 @@ body{
   align-items:flex-start;
   width:100%;
   overflow-x:auto;
-  overflow-y:visible;
+  overflow-y:hidden;
   scroll-snap-type:x mandatory;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
@@ -107,17 +107,17 @@ body{
 .img-fav-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
 .img-fav-btn.active{background:#fffbeb;color:#f59e0b;border:1px solid #fcd34d}
 
-.card-info{padding:8px 8px 10px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px}
-.card-title-row{display:flex;justify-content:space-between;align-items:center;gap:4px}
-.card-title{font-size:13px;font-weight:700;color:#0f172a;height:18px;line-height:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.card-date{font-size:8.5px;color:#94a3b8;flex-shrink:0}
+.card-info{padding:7px 7px 9px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:5px}
+.card-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
+.card-title{font-size:11.5px;font-weight:700;color:#0f172a;line-height:14.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.card-date{font-size:8px;color:#94a3b8;flex-shrink:0;margin-top:1px}
 
 .admin-mgr-icon{cursor:pointer;padding:0 1px;opacity:0.6;font-size:10px;transition:.2s;display:none !important}
 .admin-mode .admin-mgr-icon{display:inline-block !important}
 
-.card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:3px;height:18px;align-items:center}
+.card-tags{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:3px;height:16px;align-items:center}
 .card-tags::-webkit-scrollbar{display:none}
-.tag{padding:2px 6px;border-radius:5px;font-size:10px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:18px;display:inline-flex;align-items:center;user-select:none}
+.tag{padding:1.5px 5px;border-radius:5px;font-size:9px;cursor:pointer;font-weight:600;white-space:nowrap;flex-shrink:0;height:16px;display:inline-flex;align-items:center;user-select:none}
 .tag-blue{background:#eff6ff;color:#2563eb}
 .tag-green{background:#f0fdf4;color:#16a34a}
 .tag-purple{background:#faf5ff;color:#9333ea}
@@ -594,6 +594,11 @@ sliderEl.addEventListener('scroll', function() {
 window.addEventListener('resize', () => updateSliderHeight(currentSlideIndex));
 window.addEventListener('load', () => updateSliderHeight(currentSlideIndex || 0));
 setTimeout(() => updateSliderHeight(currentSlideIndex || 0), 300);
+
+if(window.ResizeObserver){
+    const panelResizeObserver = new ResizeObserver(() => updateSliderHeight(currentSlideIndex));
+    allPanels.forEach(p => { if(p) panelResizeObserver.observe(p); });
+}
 
 function extractOfficialCocLink(str){
     if(!str) return '';
