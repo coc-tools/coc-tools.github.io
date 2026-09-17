@@ -104,12 +104,50 @@ body{
 .card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#e2e8f0;flex-shrink:0}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
 
-.img-fav-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;cursor:pointer;color:#fff;transition:.2s}
-.img-fav-btn.active{background:#fffbeb;color:#f59e0b;border:1px solid #fcd34d}
+.img-fav-btn{position:absolute;top:8px;right:8px;width:30px;height:30px;background:rgba(15,23,42,0.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.28);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;z-index:3;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:transform .15s ease,background .2s ease,box-shadow .2s ease,border-color .2s ease}
+.img-fav-btn svg{width:16px;height:16px;display:block}
+.img-fav-btn:active{transform:scale(0.85)}
+.img-fav-btn.active{background:linear-gradient(135deg,#fde68a,#f59e0b);border-color:#fbbf24;box-shadow:0 3px 10px rgba(245,158,11,0.5)}
+.img-fav-btn.active svg{animation:favPop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes favPop{0%{transform:scale(0.4) rotate(-15deg)}60%{transform:scale(1.3) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
 
-.card-info{padding:7px 7px 9px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:5px}
+.card-stats-bar{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:24px;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  padding:0 8px;
+  gap:10px;
+  font-size:10.5px;
+  color:#ffffff;
+  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+  pointer-events:none;
+  user-select:none;
+  z-index:2;
+}
+.card-stat-item{
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+  font-weight:600;
+  line-height:1;
+}
+.card-stat-icon{
+  width:12px;
+  height:12px;
+  fill:currentColor;
+  display:inline-block;
+  vertical-align:middle;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+}
+
+.card-info{padding:8px 7px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px}
 .card-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:4px}
-.card-title{font-size:11.5px;font-weight:700;color:#0f172a;line-height:14.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.card-title{font-size:11.5px;font-weight:700;color:#0f172a;line-height:15px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;flex:1}
 .card-date{font-size:8px;color:#94a3b8;flex-shrink:0;margin-top:1px}
 
 .admin-mgr-icon{cursor:pointer;padding:0 1px;opacity:0.6;font-size:10px;transition:.2s;display:none !important}
@@ -123,7 +161,7 @@ body{
 .tag-purple{background:#faf5ff;color:#9333ea}
 .tag-orange{background:#fffbeb;color:#d97706}
 
-.card-actions{margin-top:auto;display:flex;gap:6px;width:100%;padding-top:4px}
+.card-actions{margin-top:auto;display:flex;gap:6px;width:100%;padding-top:3px}
 .btn-copy-icon{width:34px;height:32px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;flex-shrink:0;transition:.15s}
 .btn-copy-icon:active{background:#f1f5f9}
 .pill-action-btn{width:100%;background:#eff6ff;color:#2563eb;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none}
@@ -134,7 +172,7 @@ body{
   background:#fff;
   border-radius:14px;
   border:1px solid #e2e8f0;
-  padding:10px 10px;
+  padding:12px 12px;
   box-shadow:0 2px 8px rgba(0,0,0,0.02);
   width:100%;
   max-width:460px;
@@ -148,18 +186,72 @@ body{
   margin:0 0 3px;
   display:block;
 }
+.required-mark{color:#ef4444;margin-left:2px}
+.field-row-between{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+.field-row-between .form-section-title{margin-bottom:0}
+.char-counter{font-size:9px;color:#94a3b8;font-weight:600;flex-shrink:0}
+.field-hint{font-size:9px;color:#64748b;margin-bottom:7px}
+
+.cover-upload-box{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:14px;
+  overflow:hidden;
+  background:#f8fafc;
+  border:1.5px dashed #cbd5e1;
+  cursor:pointer;
+  margin-bottom:10px;
+  transition:transform .1s,border-color .2s;
+}
+.cover-upload-box:active{transform:scale(0.985)}
+.cover-upload-box.has-image{border-style:solid;border-color:#e2e8f0}
+.cover-preview-img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-upload-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  color:#64748b;text-align:center;padding:14px;
+  transition:background .2s,justify-content .2s,color .2s;
+}
+.cover-upload-box.has-image .cover-upload-overlay{
+  background:linear-gradient(180deg,rgba(15,23,42,0) 45%,rgba(15,23,42,0.6) 100%);
+  color:#fff;
+  justify-content:flex-end;
+  padding-bottom:8px;
+}
+.cover-upload-icon{color:#94a3b8;display:flex;align-items:center;justify-content:center}
+.cover-upload-icon svg{width:30px;height:30px}
+.cover-upload-box.has-image .cover-upload-icon{display:none}
+.cover-upload-title{font-size:13px;font-weight:800;color:#334155}
+.cover-upload-box.has-image .cover-upload-title{color:rgba(255,255,255,0.8);font-size:11.5px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)}
+
 .form-input-compact{
   width:100%;
-  height:29px;
+  height:34px;
   padding:0 10px;
   border:1px solid #cbd5e1;
-  border-radius:8px;
-  font-size:12px;
+  border-radius:9px;
+  font-size:12.5px;
   margin-bottom:7px;
   outline:none;
   background:#f8fafc;
 }
 .form-input-compact:focus{border-color:#2563eb;background:#fff}
+.form-textarea-compact{
+  width:100%;
+  min-height:60px;
+  padding:8px 10px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  font-size:12.5px;
+  margin-bottom:3px;
+  outline:none;
+  background:#f8fafc;
+  resize:none;
+  font-family:inherit;
+  line-height:1.5;
+}
+.form-textarea-compact:focus{border-color:#2563eb;background:#fff}
 
 .tag-picker-compact{
   background:#f8fafc;
@@ -186,20 +278,9 @@ body{
 }
 .tag-btn-opt.active{background:#2563eb;color:#fff;border-color:#2563eb}
 
-.file-box-compact{
-  border:1.5px dashed #93c5fd;
-  border-radius:10px;
-  padding:8px;
-  text-align:center;
-  color:#2563eb;
-  background:#eff6ff;
-  margin-bottom:7px;
-  position:relative;
-}
-.file-box-compact input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-
 .input-link-wrap{position:relative;margin-bottom:4px}
 .input-link-wrap .form-input-compact{margin-bottom:0;padding-right:28px}
+.input-link-wrap .link-clear-btn{right:8px}
 .link-clear-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;color:#94a3b8;cursor:pointer;display:none}
 
 .btn-publish-submit{
@@ -359,34 +440,43 @@ body{
                     <span>✏️ 正在编辑已有阵型</span>
                     <span style="margin-left:auto;cursor:pointer;text-decoration:underline;" onclick="resetUploadForm()">取消编辑</span>
                 </div>
-                <span class="form-section-title">阵型名称（可选，留空则自动生成）</span>
-                <input class="form-input-compact" id="modalTitle" placeholder="留空将根据标签自动生成" autocomplete="off"/>
 
-                <span class="form-section-title">援兵 / 备注（可选）</span>
-                <input class="form-input-compact" id="modalRemark" autocomplete="off"/>
+                <div class="cover-upload-box" id="coverUploadBox" onclick="document.getElementById('modalImage').click()">
+                    <img id="coverPreviewImg" class="cover-preview-img" style="display:none" alt=""/>
+                    <div class="cover-upload-overlay">
+                        <div class="cover-upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.4"/><path d="M21 15.5l-4.7-4.7a1.5 1.5 0 0 0-2.12 0L11 14l-2-2a1.5 1.5 0 0 0-2.12 0L3.5 15.5"/></svg></div>
+                        <div class="cover-upload-title" id="coverUploadTitle">点击上传阵型封面</div>
+                    </div>
+                    <input type="file" id="modalImage" accept="image/*" style="display:none"/>
+                </div>
+
+                <span class="form-section-title">游戏内分享链接<span class="required-mark">*</span></span>
+                <div class="input-link-wrap">
+                    <input class="form-input-compact" id="modalLink" name="coc_share_link" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="validateModalLinkInput()"/>
+                    <span class="link-clear-btn" id="modalLinkClearBtn" onclick="clearModalLinkInput()">✕</span>
+                </div>
+                <div class="field-hint">必须为游戏内复制的以 link.clashofclans.com 开头的有效链接</div>
+
+                <div class="field-row-between">
+                    <span class="form-section-title">阵型标题（可选，留空则自动生成）</span>
+                    <span class="char-counter" id="titleCharCount">0/100</span>
+                </div>
+                <input class="form-input-compact" id="modalTitle" maxlength="100" placeholder="留空将根据标签自动生成" autocomplete="off" oninput="updateCharCount('modalTitle','titleCharCount',100)"/>
 
                 <span class="form-section-title">标签属性选择</span>
-                <div style="font-size:9px;color:#94a3b8;margin:-2px 0 4px;">若未填写阵型名称，将根据「精工防御」+「法术塔」标签自动生成</div>
+                <div class="field-hint" style="margin-top:-2px;">若未填写阵型名称，将根据「精工防御」+「法术塔」标签自动生成</div>
                 <div class="tag-picker-compact" id="uploadTagContainer"></div>
 
                 <span class="form-section-title">自定义标签</span>
                 <input class="form-input-compact" id="customTagInput" placeholder="空格隔开多个标签" autocomplete="off"/>
 
-                <span class="form-section-title">阵型全景截图</span>
-                <div class="file-box-compact">
-                    <div id="fileStatus" style="font-size:11.5px;font-weight:700;margin-bottom:1px;">📸 点击选择阵型截图</div>
-                    <div style="font-size:9px;color:#64748b;">建议上传完整无遮挡游戏阵型截图</div>
-                    <input type="file" id="modalImage" accept="image/*"/>
+                <div class="field-row-between">
+                    <span class="form-section-title">援兵 / 备注（选填）</span>
+                    <span class="char-counter" id="remarkCharCount">0/500</span>
                 </div>
+                <textarea class="form-textarea-compact" id="modalRemark" maxlength="500" oninput="updateCharCount('modalRemark','remarkCharCount',500)"></textarea>
 
-                <span class="form-section-title">官方分享链接</span>
-                <div class="input-link-wrap">
-                    <input class="form-input-compact" id="modalLink" name="coc_share_link" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="validateModalLinkInput()"/>
-                    <span class="link-clear-btn" id="modalLinkClearBtn" onclick="clearModalLinkInput()">✕</span>
-                </div>
-                <div style="font-size:9px;color:#64748b;margin-bottom:6px;">必须为游戏内复制的以 link.clashofclans.com 开头的有效链接</div>
-
-                <button class="btn-publish-submit" id="modalConfirm">立即保存发布</button>
+                <button class="btn-publish-submit" id="modalConfirm" style="margin-top:8px;">立即保存发布</button>
             </div>
         </div>
 
@@ -547,6 +637,10 @@ Bmob.initialize("7d02e5a27eb27ee9","123456");
 const IMGBB_API_KEY="a2062137421eb1609a508bff675756e1";
 const isAndroid=/android/i.test(navigator.userAgent);
 
+// 矢量图标定义（解决 Emoji 在安卓 WebView 中方块乱码与编辑器语法报错）
+const ICON_EYE = '<svg class="card-stat-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>';
+const ICON_DOWNLOAD = '<svg class="card-stat-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>';
+
 let allLayoutsCache=[], activeQueryTags=[], readyToUploadFile=null, pendingStarData=null, editingObjectId=null, existingImageUrl='';
 let layoutViewer=null, starLayoutViewer=null;
 let currentSlideIndex = 0;
@@ -658,6 +752,46 @@ function copyLayoutLink(link) {
 }
 function openLayout(l){if(!l)return showToast('链接无效！');processUrl(l)}
 
+// 点击卡片动作：触发并记录下载量（open 或 copy 均计入下载/使用）
+function handleCardAction(objId, link, type) {
+    if(objId) {
+        recordStatIncrement(objId, 'downloads');
+    }
+    if(type === 'open') {
+        openLayout(link);
+    } else {
+        copyLayoutLink(link);
+    }
+}
+
+// 统计自增（前端即时乐观更新 + 后台 Bmob 持久化）
+function recordStatIncrement(objId, field) {
+    if(!objId) return;
+
+    // 1. 立即乐观更新内存缓存和界面 DOM，保证绝不延迟、百分之百刷新
+    const cacheItem = allLayoutsCache.find(x => x.objectId === objId);
+    let newVal = 1;
+    if(cacheItem) {
+        cacheItem[field] = (Number(cacheItem[field]) || 0) + 1;
+        newVal = cacheItem[field];
+    }
+    const targetClass = field === 'downloads' ? `.down-cnt-${objId}` : `.view-cnt-${objId}`;
+    document.querySelectorAll(targetClass).forEach(el => {
+        el.innerText = newVal;
+    });
+
+    // 2. 异步同步到 Bmob 数据库中持久保存
+    try {
+        const query = Bmob.Query('LayoutData');
+        query.get(objId).then(item => {
+            item.set(field, (Number(item[field]) || 0) + 1);
+            return item.save();
+        }).catch(err => {
+            console.error('统计写入异常:', err);
+        });
+    } catch(e) {}
+}
+
 function getTagClass(t){
     const spells = ["双狂暴","双隐身","双毒药","一狂一隐","一狂一毒","一隐一毒"];
     if(spells.includes(t)) return 'tag-purple';
@@ -691,13 +825,25 @@ const starGridContainer=document.getElementById('starGridContainer');
 function loadCloudLayouts(){
     const q=Bmob.Query("LayoutData");q.order("-createdAt");q.limit(1000);
     q.find().then(res=>{
-        allLayoutsCache=res.map(i=>({objectId:i.objectId,title:i.title,tags:i.tags||[],imageUrl:i.imageUrl,link:i.link,createdAt:i.createdAt}));
+        allLayoutsCache=res.map(i=>({
+            objectId:i.objectId,
+            title:i.title,
+            tags:i.tags||[],
+            imageUrl:i.imageUrl,
+            link:i.link,
+            views:Number(i.views) || 0,
+            downloads:Number(i.downloads) || 0,
+            createdAt:i.createdAt
+        }));
         document.getElementById('tab-all').innerText = `全部(${allLayoutsCache.length})`;
         renderLayouts();
     });
 }
 loadCloudLayouts();
 
+function favIconSvg(active){
+    return `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="${active?'currentColor':'none'}" stroke="currentColor" stroke-width="${active?'0':'1.6'}" stroke-linejoin="round"/></svg>`;
+}
 function renderLayoutCard(item, isStarPage) {
     let myStars=JSON.parse(localStorage.getItem('myStars')||'[]');
     let imgUrl=item.imageUrl||item.img||'', linkStr=item.link||'', objId=item.objectId||'';
@@ -707,10 +853,18 @@ function renderLayoutCard(item, isStarPage) {
     let tagsHtml=(item.tags||[]).map(t=>`<span class="tag ${getTagClass(t)}" onclick="event.stopPropagation();filterByCardTag('${escapeHtml(t)}')">${escapeHtml(t)}</span>`).join('');
     let isStarred=myStars.some(s=>s.link===(item.link||item.img));
 
-    return `<div class="layout-card">
+    let views = item.views !== undefined ? item.views : 0;
+    let downloads = item.downloads !== undefined ? item.downloads : 0;
+
+    return `<div class="layout-card" data-objid="${escapeHtml(objId)}">
         <div class="card-img-wrapper">
-            <img class="preview-image" src="${escapeHtml(imgUrl)}" loading="lazy"/>
-            <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${escapeHtml(linkStr)}')`:`openStarModal('${escapeHtml(imgUrl)}','${escapeHtml(titleStr)}','${escapeHtml(linkStr)}')`}">${isStarred?'★':'☆'}</span>
+            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy"/>
+            <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${escapeHtml(linkStr)}')`:`openStarModal('${escapeHtml(imgUrl)}','${escapeHtml(titleStr)}','${escapeHtml(linkStr)}')`}">${favIconSvg(isStarred)}</span>
+            
+            <div class="card-stats-bar">
+                <span class="card-stat-item">${ICON_EYE} <span class="view-cnt-${escapeHtml(objId)}">${views}</span></span>
+                <span class="card-stat-item">${ICON_DOWNLOAD} <span class="down-cnt-${escapeHtml(objId)}">${downloads}</span></span>
+            </div>
         </div>
         <div class="card-info">
             <div>
@@ -722,8 +876,8 @@ function renderLayoutCard(item, isStarPage) {
                 <div class="card-tags">${tagsHtml}</div>
             </div>
             <div class="card-actions">
-                <button class="pill-action-btn" onclick="event.stopPropagation();openLayout('${escapeHtml(linkStr)}')">一键打开</button>
-                <button class="btn-copy-icon" title="复制链接" onclick="event.stopPropagation();copyLayoutLink('${escapeHtml(linkStr)}')">🔗</button>
+                <button class="pill-action-btn" onclick="event.stopPropagation();handleCardAction('${escapeHtml(objId)}','${escapeHtml(linkStr)}','open')">一键打开</button>
+                <button class="btn-copy-icon" title="复制链接" onclick="event.stopPropagation();handleCardAction('${escapeHtml(objId)}','${escapeHtml(linkStr)}','copy')">🔗</button>
                 ${isStarPage?`<button class="pill-action-btn btn-del-pill" onclick="event.stopPropagation();removeStar('${escapeHtml(linkStr)}')">移出</button>`:''}
             </div>
         </div>
@@ -741,8 +895,24 @@ function renderLayouts(){
     }
     gridContainer.innerHTML=display.map(item=>renderLayoutCard(item, false)).join('');
 
-    if(!layoutViewer) layoutViewer = new Viewer(gridContainer,{filter(i){return i.classList.contains('preview-image')},toolbar:false,navbar:false});
-    else layoutViewer.update();
+    if(!layoutViewer) {
+        layoutViewer = new Viewer(gridContainer,{
+            filter(i){return i.classList.contains('preview-image')},
+            toolbar:false,
+            navbar:false,
+            view(e) {
+                // 注意：e.detail.image 是 Viewer.js 内部克隆出来的展示图片，不带自定义 data-id 属性；
+                // 真正带 data-id 的是原始缩略图 e.detail.originalImage，必须用它才能正确取到 id
+                const targetImg = e.detail.originalImage;
+                const id = targetImg ? targetImg.getAttribute('data-id') : null;
+                if(id) {
+                    recordStatIncrement(id, 'views');
+                }
+            }
+        });
+    } else {
+        layoutViewer.update();
+    }
     if(currentSlideIndex===0) updateSliderHeight(0);
 }
 
@@ -755,8 +925,23 @@ function renderMyStarsPage(){
         return;
     }
     starGridContainer.innerHTML=myStars.map(item=>renderLayoutCard(item, true)).join('');
-    if(!starLayoutViewer) starLayoutViewer = new Viewer(starGridContainer,{filter(i){return i.classList.contains('preview-image')},toolbar:false,navbar:false});
-    else starLayoutViewer.update();
+    if(!starLayoutViewer) {
+        starLayoutViewer = new Viewer(starGridContainer,{
+            filter(i){return i.classList.contains('preview-image')},
+            toolbar:false,
+            navbar:false,
+            view(e) {
+                // 同上：必须用 originalImage 才能取到自定义的 data-id 属性
+                const targetImg = e.detail.originalImage;
+                const id = targetImg ? targetImg.getAttribute('data-id') : null;
+                if(id) {
+                    recordStatIncrement(id, 'views');
+                }
+            }
+        });
+    } else {
+        starLayoutViewer.update();
+    }
     updateSliderHeight(2);
 }
 
@@ -833,10 +1018,32 @@ function validateModalLinkInput() {
     if(clearBtn) clearBtn.style.display = inputEl.value.length > 0 ? 'block' : 'none';
 }
 
+function updateCharCount(inputId, counterId, max){
+    const el=document.getElementById(inputId), counter=document.getElementById(counterId);
+    if(el && counter) counter.innerText = `${el.value.length}/${max}`;
+}
+async function pasteShareLink(){
+    try{
+        if(navigator.clipboard && navigator.clipboard.readText){
+            const text=await navigator.clipboard.readText();
+            if(text){
+                document.getElementById('modalLink').value = extractOfficialCocLink(text);
+                validateModalLinkInput();
+                showToast('✅ 已粘贴链接');
+                return;
+            }
+        }
+        showToast('请长按输入框粘贴');
+    }catch(e){ showToast('请长按输入框粘贴'); }
+}
+
 document.getElementById('modalImage').onchange=function(e){
     const file=e.target.files[0];
     if(file){
-        document.getElementById('fileStatus').innerText='图片处理中...';
+        const box=document.getElementById('coverUploadBox');
+        const previewImg=document.getElementById('coverPreviewImg');
+        const titleEl=document.getElementById('coverUploadTitle');
+        titleEl.innerText='图片处理中...';
         const r=new FileReader();r.onload=function(ev){
             const img=new Image();img.onload=function(){
                 const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
@@ -845,8 +1052,10 @@ document.getElementById('modalImage').onchange=function(e){
                 canvas.width=w;canvas.height=h;ctx.drawImage(img,0,0,w,h);
                 canvas.toBlob(blob=>{
                     readyToUploadFile=new File([blob],"layout.jpg",{type:"image/jpeg"});
-                    document.getElementById('fileStatus').innerText='✅ 图片已就绪';
-                    document.getElementById('fileStatus').style.color='#16a34a';
+                    previewImg.src=ev.target.result;
+                    previewImg.style.display='block';
+                    box.classList.add('has-image');
+                    titleEl.innerText='点击更换封面';
                 },'image/jpeg',0.85);
             };img.src=ev.target.result;
         };r.readAsDataURL(file);
@@ -895,6 +1104,7 @@ document.getElementById('modalConfirm').onclick=()=>{
         }else{
             const q=Bmob.Query('LayoutData');
             q.set("title",title);q.set("tags",finalTags);q.set("imageUrl",imageUrl);q.set("link",link);
+            q.set("views", 0); q.set("downloads", 0);
             q.save().then(afterSave).catch(onFail);
         }
     };
@@ -919,7 +1129,9 @@ function resetUploadForm(){
     editingObjectId=null; existingImageUrl='';
     document.getElementById('editModeBanner').style.display='none';
     document.getElementById('modalTitle').value='';
+    updateCharCount('modalTitle','titleCharCount',100);
     document.getElementById('modalRemark').value='';
+    updateCharCount('modalRemark','remarkCharCount',500);
     document.getElementById('modalLink').value='';
     validateModalLinkInput();
     document.getElementById('customTagInput').value='';
@@ -927,8 +1139,10 @@ function resetUploadForm(){
     renderTagsToContainer('uploadTagContainer', false);
     readyToUploadFile=null;
     document.getElementById('modalImage').value='';
-    document.getElementById('fileStatus').innerText='📸 点击选择阵型截图';
-    document.getElementById('fileStatus').style.color='';
+    document.getElementById('coverUploadBox').classList.remove('has-image');
+    document.getElementById('coverPreviewImg').style.display='none';
+    document.getElementById('coverPreviewImg').src='';
+    document.getElementById('coverUploadTitle').innerText='点击上传阵型封面';
     document.getElementById('modalConfirm').innerText='立即保存发布';
     document.getElementById('modalConfirm').disabled=false;
 }
@@ -938,8 +1152,10 @@ function startEditLayout(item){
     existingImageUrl = item.imageUrl || '';
     const titleParts = (item.title||'').split(' / ');
     document.getElementById('modalTitle').value = titleParts[0] || '';
+    updateCharCount('modalTitle','titleCharCount',100);
     let remark = titleParts.length>1 ? titleParts.slice(1).join(' / ') : '';
     document.getElementById('modalRemark').value = remark;
+    updateCharCount('modalRemark','remarkCharCount',500);
     document.getElementById('modalLink').value = item.link || '';
     validateModalLinkInput();
     uploadSelectedTags = (item.tags||[]).filter(t=>tagGroups.some(g=>g.items.includes(t)));
@@ -947,8 +1163,17 @@ function startEditLayout(item){
     renderTagsToContainer('uploadTagContainer', false);
     readyToUploadFile = null;
     document.getElementById('modalImage').value = '';
-    document.getElementById('fileStatus').innerText = existingImageUrl ? '✅ 已有图片（不选择则保持原图）' : '📸 点击选择阵型截图';
-    document.getElementById('fileStatus').style.color = existingImageUrl ? '#16a34a' : '';
+    const box=document.getElementById('coverUploadBox'), previewImg=document.getElementById('coverPreviewImg');
+    if(existingImageUrl){
+        previewImg.src=existingImageUrl;
+        previewImg.style.display='block';
+        box.classList.add('has-image');
+        document.getElementById('coverUploadTitle').innerText='点击更换封面';
+    }else{
+        previewImg.style.display='none';
+        box.classList.remove('has-image');
+        document.getElementById('coverUploadTitle').innerText='点击上传阵型封面';
+    }
     document.getElementById('modalConfirm').innerText='保存修改';
     document.getElementById('editModeBanner').style.display='flex';
     slideToPage(1);
@@ -972,7 +1197,7 @@ function openPasswordPrompt(action, objId){
     }
 }
 
-const ADMIN_PASSWORD = '1212'; // 管理员密码，可自行修改
+const ADMIN_PASSWORD = '1212';
 function verifyAdminPassword(){
     const pwd = prompt('请输入管理员密码：');
     if(pwd === null) return false;
