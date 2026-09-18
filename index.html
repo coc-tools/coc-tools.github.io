@@ -237,21 +237,6 @@ body{
   background:#f8fafc;
 }
 .form-input-compact:focus{border-color:#2563eb;background:#fff}
-.form-textarea-compact{
-  width:100%;
-  min-height:60px;
-  padding:8px 10px;
-  border:1px solid #cbd5e1;
-  border-radius:9px;
-  font-size:12.5px;
-  margin-bottom:3px;
-  outline:none;
-  background:#f8fafc;
-  resize:none;
-  font-family:inherit;
-  line-height:1.5;
-}
-.form-textarea-compact:focus{border-color:#2563eb;background:#fff}
 
 .tag-picker-compact{
   background:#f8fafc;
@@ -472,11 +457,11 @@ body{
 
                 <div class="field-row-between">
                     <span class="form-section-title">援兵 / 备注（选填）</span>
-                    <span class="char-counter" id="remarkCharCount">0/500</span>
+                    <span class="char-counter" id="remarkCharCount">0/15</span>
                 </div>
-                <textarea class="form-textarea-compact" id="modalRemark" maxlength="500" oninput="updateCharCount('modalRemark','remarkCharCount',500)"></textarea>
+                <input class="form-input-compact" id="modalRemark" maxlength="15" placeholder="如：2冰人1猎手" autocomplete="off" oninput="updateCharCount('modalRemark','remarkCharCount',15)"/>
 
-                <button class="btn-publish-submit" id="modalConfirm" style="margin-top:8px;">立即保存发布</button>
+                <button class="btn-publish-submit" id="modalConfirm" style="margin-top:6px;">立即保存发布</button>
             </div>
         </div>
 
@@ -1131,7 +1116,7 @@ function resetUploadForm(){
     document.getElementById('modalTitle').value='';
     updateCharCount('modalTitle','titleCharCount',100);
     document.getElementById('modalRemark').value='';
-    updateCharCount('modalRemark','remarkCharCount',500);
+    updateCharCount('modalRemark','remarkCharCount',15);
     document.getElementById('modalLink').value='';
     validateModalLinkInput();
     document.getElementById('customTagInput').value='';
@@ -1155,7 +1140,7 @@ function startEditLayout(item){
     updateCharCount('modalTitle','titleCharCount',100);
     let remark = titleParts.length>1 ? titleParts.slice(1).join(' / ') : '';
     document.getElementById('modalRemark').value = remark;
-    updateCharCount('modalRemark','remarkCharCount',500);
+    updateCharCount('modalRemark','remarkCharCount',15);
     document.getElementById('modalLink').value = item.link || '';
     validateModalLinkInput();
     uploadSelectedTags = (item.tags||[]).filter(t=>tagGroups.some(g=>g.items.includes(t)));
