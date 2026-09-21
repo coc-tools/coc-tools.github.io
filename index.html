@@ -123,8 +123,8 @@ body{
   padding:0 8px;
   gap:10px;
   font-size:10.5px;
-  color:#ffffff;
-  text-shadow:0 1px 3px rgba(0,0,0,0.8);
+  color:rgba(255,255,255,0.8);
+  text-shadow:0 1px 2px rgba(0,0,0,0.55);
   pointer-events:none;
   user-select:none;
   z-index:2;
@@ -142,7 +142,7 @@ body{
   fill:currentColor;
   display:inline-block;
   vertical-align:middle;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.8));
+  filter:drop-shadow(0 1px 1.5px rgba(0,0,0,0.55));
 }
 
 .card-info{padding:8px 7px;flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:6px}
@@ -459,7 +459,7 @@ body{
                     <span class="form-section-title">援兵 / 备注（选填）</span>
                     <span class="char-counter" id="remarkCharCount">0/15</span>
                 </div>
-                <input class="form-input-compact" id="modalRemark" maxlength="15" placeholder="如：2冰人1猎手" autocomplete="off" oninput="updateCharCount('modalRemark','remarkCharCount',15)"/>
+                <input class="form-input-compact" id="modalRemark" maxlength="15" placeholder="如：需带毒药援兵" autocomplete="off" oninput="updateCharCount('modalRemark','remarkCharCount',15)"/>
 
                 <button class="btn-publish-submit" id="modalConfirm" style="margin-top:6px;">立即保存发布</button>
             </div>
