@@ -355,6 +355,42 @@ body{
 .village-tag-input{width:100%;height:32px;padding:0 28px 0 10px;border:1px solid #cbd5e1;border-radius:8px;font-size:12px;outline:none;background:#f8fafc;text-transform:uppercase}
 .village-tag-clear{position:absolute;right:6px;font-size:11px;color:#94a3b8;cursor:pointer;display:none;padding:2px 4px}
 .village-tag-btn{height:32px;padding:0 10px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.village-tag-history{
+  display:none;
+  position:absolute;
+  left:0;right:0;
+  top:calc(100% + 4px);
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  box-shadow:0 6px 20px rgba(15,23,42,0.12);
+  z-index:30;
+  max-height:200px;
+  overflow-y:auto;
+}
+.village-tag-history.active{display:block}
+.village-tag-history-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 10px;
+  font-size:10.5px;color:#94a3b8;font-weight:700;
+  border-bottom:1px solid #f1f5f9;
+  position:sticky;top:0;background:#fff;
+}
+.village-tag-history-clear{cursor:pointer;color:#94a3b8;font-weight:600}
+.village-tag-history-clear:active{color:#ef4444}
+.village-tag-history-item{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 10px;
+  font-size:12.5px;font-weight:700;color:#334155;
+  cursor:pointer;
+  border-bottom:1px solid #f8fafc;
+}
+.village-tag-history-item:last-child{border-bottom:none}
+.village-tag-history-item:active{background:#f8fafc}
+.village-tag-history-item .rm{
+  color:#cbd5e1;font-size:12px;padding:2px 6px;font-weight:400;
+}
+.village-tag-history-empty{padding:12px 10px;font-size:11px;color:#94a3b8;text-align:center}
 
 .clan-item{
   display:flex;
@@ -506,10 +542,13 @@ body{
         <div style="padding-top: 4px;">
             <div style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 4px; text-align: left;">加入部落</div>
             <p style="font-size: 11px; color: #64748b; margin-bottom: 10px;">长按输入框粘贴链接，系统会自动提取标签</p>
-            <div class="input-with-btn" style="margin-bottom: 8px;">
-                <input class="input-area" id="clanTagInput" placeholder="长按粘贴链接 或 输入标签" autocomplete="off" oninput="formatClanInput()"/>
-                <span class="input-clear-clan" id="clanInputClearBtn" onclick="clearClanInput()">✕</span>
-                <div class="paste-btn-inside" onclick="pasteClanTag()" title="尝试一键粘贴">📋</div>
+            <div style="position:relative;">
+                <div class="input-with-btn" style="margin-bottom: 8px;">
+                    <input class="input-area" id="clanTagInput" placeholder="长按粘贴链接 或 输入标签" autocomplete="off" oninput="formatClanInput()"/>
+                    <span class="input-clear-clan" id="clanInputClearBtn" onclick="clearClanInput()">✕</span>
+                    <div class="paste-btn-inside" onclick="pasteClanTag()" title="尝试一键粘贴">📋</div>
+                </div>
+                <div class="village-tag-history" id="clanTagHistory"></div>
             </div>
             <span id="clanInputHint" style="display:none; font-size:10.5px; color:#ef4444; margin-top:-4px; margin-bottom:10px; padding-left:4px;"></span>
             <input class="modal-input" id="clanRemarkInput" placeholder="部落名称或备注 (如: 联赛主营 / FWA互刷)" autocomplete="off" style="border-radius: 10px; height: 36px; margin-bottom: 10px; border: 1px solid #cbd5e1; background: #fff; padding: 0 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.02); font-size: 12px;"/>
@@ -568,6 +607,7 @@ body{
                 <div class="village-tag-container">
                     <input type="text" id="villagePlayerTagInput" class="village-tag-input" placeholder="输入标签如：#QJULU0G0V" autocomplete="off">
                     <span class="village-tag-clear" id="villageClearTagBtn">✕</span>
+                    <div class="village-tag-history" id="villageTagHistory"></div>
                 </div>
                 <button class="village-tag-btn" id="villageOpenTagBtn">打开标签页面</button>
             </div>
@@ -684,6 +724,17 @@ if(window.ResizeObserver){
     const panelResizeObserver = new ResizeObserver(() => updateSliderHeight(currentSlideIndex));
     allPanels.forEach(p => { if(p) panelResizeObserver.observe(p); });
 }
+
+// 自愈：如果纵向滚动已经到（或接近）当前算出的底部，重新测量一次当前面板真实高度。
+// 避免因为高度计算时机不巧（图片/字体延迟加载、动态内容变化）导致页面卡在一个偏矮的高度上滑不动。
+let vScrollTimer = null;
+window.addEventListener('scroll', function() {
+    clearTimeout(vScrollTimer);
+    vScrollTimer = setTimeout(() => {
+        const nearBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 40);
+        if(nearBottom) updateSliderHeight(currentSlideIndex);
+    }, 80);
+}, { passive: true });
 
 function extractOfficialCocLink(str){
     if(!str) return '';
@@ -1292,8 +1343,59 @@ async function pasteClanTag() {
 }
 function joinClan(tag) {
     if(!tag) return showToast('请输入部落标签！');
-    processUrl(`https://link.clashofclans.com/cn?action=OpenClanProfile&tag=${formatClanTag(tag)}`);
+    const cleanTag = formatClanTag(tag);
+    if(cleanTag) addClanTagHistory('#' + cleanTag);
+    processUrl(`https://link.clashofclans.com/cn?action=OpenClanProfile&tag=${cleanTag}`);
 }
+
+const clanTagInputEl = document.getElementById('clanTagInput');
+const clanTagHistoryBox = document.getElementById('clanTagHistory');
+const CLAN_TAG_HISTORY_KEY = 'clanTagSearchHistory';
+const CLAN_TAG_HISTORY_MAX = 8;
+
+function getClanTagHistory(){
+    try{ return JSON.parse(localStorage.getItem(CLAN_TAG_HISTORY_KEY) || '[]'); }catch(e){ return []; }
+}
+function saveClanTagHistoryList(list){
+    try{ localStorage.setItem(CLAN_TAG_HISTORY_KEY, JSON.stringify(list)); }catch(e){}
+}
+function addClanTagHistory(tag){
+    if(!tag) return;
+    let list = getClanTagHistory().filter(t => t !== tag);
+    list.unshift(tag);
+    if(list.length > CLAN_TAG_HISTORY_MAX) list = list.slice(0, CLAN_TAG_HISTORY_MAX);
+    saveClanTagHistoryList(list);
+}
+function removeClanTagHistory(tag){
+    saveClanTagHistoryList(getClanTagHistory().filter(t => t !== tag));
+    renderClanTagHistory();
+}
+function renderClanTagHistory(){
+    const list = getClanTagHistory();
+    if(list.length === 0){
+        clanTagHistoryBox.innerHTML = '<div class="village-tag-history-empty">暂无搜索历史</div>';
+        return;
+    }
+    clanTagHistoryBox.innerHTML = `
+        <div class="village-tag-history-head">
+            <span>搜索历史</span>
+            <span class="village-tag-history-clear" onmousedown="event.preventDefault();event.stopPropagation();saveClanTagHistoryList([]);renderClanTagHistory();">清空</span>
+        </div>
+        ${list.map(t => `
+            <div class="village-tag-history-item" onmousedown="event.preventDefault();selectClanTagHistory('${escapeHtml(t)}')">
+                <span>${escapeHtml(t)}</span>
+                <span class="rm" onmousedown="event.preventDefault();event.stopPropagation();removeClanTagHistory('${escapeHtml(t)}')">✕</span>
+            </div>
+        `).join('')}
+    `;
+}
+function selectClanTagHistory(tag){
+    clanTagInputEl.value = tag;
+    checkClanInputState();
+    clanTagHistoryBox.classList.remove('active');
+}
+clanTagInputEl.addEventListener('focus', function(){ renderClanTagHistory(); clanTagHistoryBox.classList.add('active'); });
+clanTagInputEl.addEventListener('blur', function(){ setTimeout(()=>clanTagHistoryBox.classList.remove('active'), 150); });
 function saveClanTag() {
     let cleanTag = formatClanTag(document.getElementById('clanTagInput').value);
     if(!cleanTag) return showToast('请输入有效标签！');
@@ -1341,11 +1443,63 @@ function renderSavedClans() {
 const vTagInput = document.getElementById('villagePlayerTagInput');
 const vClearBtn = document.getElementById('villageClearTagBtn');
 const vOpenBtn = document.getElementById('villageOpenTagBtn');
+const vHistoryBox = document.getElementById('villageTagHistory');
+const VILLAGE_TAG_HISTORY_KEY = 'villageTagSearchHistory';
+const VILLAGE_TAG_HISTORY_MAX = 8;
+
+function getVillageTagHistory(){
+    try{
+        return JSON.parse(localStorage.getItem(VILLAGE_TAG_HISTORY_KEY) || '[]');
+    }catch(e){ return []; }
+}
+function saveVillageTagHistory(list){
+    try{ localStorage.setItem(VILLAGE_TAG_HISTORY_KEY, JSON.stringify(list)); }catch(e){}
+}
+function addVillageTagHistory(tag){
+    if(!tag) return;
+    let list = getVillageTagHistory().filter(t => t !== tag);
+    list.unshift(tag);
+    if(list.length > VILLAGE_TAG_HISTORY_MAX) list = list.slice(0, VILLAGE_TAG_HISTORY_MAX);
+    saveVillageTagHistory(list);
+}
+function removeVillageTagHistory(tag){
+    saveVillageTagHistory(getVillageTagHistory().filter(t => t !== tag));
+    renderVillageTagHistory();
+}
+function renderVillageTagHistory(){
+    const list = getVillageTagHistory();
+    if(list.length === 0){
+        vHistoryBox.innerHTML = '<div class="village-tag-history-empty">暂无搜索历史</div>';
+        return;
+    }
+    vHistoryBox.innerHTML = `
+        <div class="village-tag-history-head">
+            <span>搜索历史</span>
+            <span class="village-tag-history-clear" onmousedown="event.preventDefault();event.stopPropagation();saveVillageTagHistory([]);renderVillageTagHistory();">清空</span>
+        </div>
+        ${list.map(t => `
+            <div class="village-tag-history-item" onmousedown="event.preventDefault();selectVillageTagHistory('${escapeHtml(t)}')">
+                <span>${escapeHtml(t)}</span>
+                <span class="rm" onmousedown="event.preventDefault();event.stopPropagation();removeVillageTagHistory('${escapeHtml(t)}')">✕</span>
+            </div>
+        `).join('')}
+    `;
+}
+function selectVillageTagHistory(tag){
+    vTagInput.value = tag;
+    vClearBtn.style.display = 'block';
+    vHistoryBox.classList.remove('active');
+    vOpenBtn.click();
+}
 vTagInput.addEventListener('input', function() { vClearBtn.style.display = this.value.trim() ? 'block' : 'none'; });
+vTagInput.addEventListener('focus', function(){ renderVillageTagHistory(); vHistoryBox.classList.add('active'); });
+vTagInput.addEventListener('blur', function(){ setTimeout(()=>vHistoryBox.classList.remove('active'), 150); });
 vClearBtn.addEventListener('click', function() { vTagInput.value = ''; vClearBtn.style.display = 'none'; vTagInput.focus(); });
 vOpenBtn.addEventListener('click', function() {
     let inputVal = vTagInput.value.trim();
     if (!inputVal) return showToast('请输入玩家标签！');
+    const normalizedTag = '#' + inputVal.replace(/#/g, '').toUpperCase();
+    addVillageTagHistory(normalizedTag);
     processUrl(`https://link.clashofclans.com/cn?action=OpenPlayerProfile&tag=${inputVal.replace(/#/g, '').toUpperCase()}`);
 });
 
