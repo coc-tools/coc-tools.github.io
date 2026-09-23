@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>COC 阵型广场</title>
+<title>COC阵型收集</title>
 <script src="https://cdn.jsdelivr.net/npm/hydrogen-js-sdk/dist/Bmob-2.2.5.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
@@ -101,8 +101,10 @@ body{
 .layout-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.03);border:1px solid #e2e8f0;display:flex;flex-direction:column;transition:transform .2s ease;cursor:pointer}
 .layout-card:active{transform:scale(0.98)}
 
-.card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#e2e8f0;flex-shrink:0}
-.card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
+.card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;flex-shrink:0;background:linear-gradient(100deg,#eef2f7 30%,#e2e8f0 45%,#eef2f7 60%);background-size:250% 100%;animation:cardShimmer 1.5s ease-in-out infinite}
+@keyframes cardShimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+.card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .3s ease}
+.card-img-wrapper img.loaded{opacity:1}
 
 .img-fav-btn{position:absolute;top:8px;right:8px;width:24px;height:24px;background:rgba(15,23,42,0.32);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.75);z-index:3;box-shadow:0 1px 4px rgba(0,0,0,0.18);transition:transform .15s ease,background .2s ease,box-shadow .2s ease,border-color .2s ease}
 .img-fav-btn svg{width:12px;height:12px;display:block}
@@ -894,7 +896,7 @@ function renderLayoutCard(item, isStarPage) {
 
     return `<div class="layout-card" data-objid="${escapeHtml(objId)}">
         <div class="card-img-wrapper">
-            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy"/>
+            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')"/>
             <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${escapeHtml(linkStr)}')`:`openStarModal('${escapeHtml(imgUrl)}','${escapeHtml(titleStr)}','${escapeHtml(linkStr)}')`}">${favIconSvg(isStarred)}</span>
             
             <div class="card-stats-bar">
