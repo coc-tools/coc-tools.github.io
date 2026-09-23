@@ -104,10 +104,10 @@ body{
 .card-img-wrapper{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;background:#e2e8f0;flex-shrink:0}
 .card-img-wrapper img{width:100%;height:100%;object-fit:cover;display:block}
 
-.img-fav-btn{position:absolute;top:8px;right:8px;width:30px;height:30px;background:rgba(15,23,42,0.45);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.28);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;z-index:3;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:transform .15s ease,background .2s ease,box-shadow .2s ease,border-color .2s ease}
-.img-fav-btn svg{width:16px;height:16px;display:block}
+.img-fav-btn{position:absolute;top:8px;right:8px;width:24px;height:24px;background:rgba(15,23,42,0.32);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(255,255,255,0.75);z-index:3;box-shadow:0 1px 4px rgba(0,0,0,0.18);transition:transform .15s ease,background .2s ease,box-shadow .2s ease,border-color .2s ease}
+.img-fav-btn svg{width:12px;height:12px;display:block}
 .img-fav-btn:active{transform:scale(0.85)}
-.img-fav-btn.active{background:linear-gradient(135deg,#fde68a,#f59e0b);border-color:#fbbf24;box-shadow:0 3px 10px rgba(245,158,11,0.5)}
+.img-fav-btn.active{background:linear-gradient(135deg,#fde68a,#f2a90f);border-color:rgba(251,191,36,0.8);color:#fff;box-shadow:0 2px 7px rgba(245,158,11,0.4)}
 .img-fav-btn.active svg{animation:favPop .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes favPop{0%{transform:scale(0.4) rotate(-15deg)}60%{transform:scale(1.3) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
 
