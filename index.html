@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>COC阵型收集</title>
 <script src="https://cdn.jsdelivr.net/npm/hydrogen-js-sdk/dist/Bmob-2.2.5.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{
@@ -369,6 +367,26 @@ body{
 .modal-content{background:#fff;width:90%;max-width:340px;border-radius:20px;padding:16px 14px;box-shadow:0 16px 36px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative}
 .bottom-sheet{align-items:flex-end}
 .bottom-sheet .modal-content{border-radius:20px 20px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+
+.ld-content{padding:0;overflow:hidden;max-width:400px;}
+.ld-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px 10px}
+.ld-title{font-size:14px;font-weight:800;color:#1e293b;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ld-image-viewport{width:100%;aspect-ratio:16/10;overflow:auto;background:linear-gradient(100deg,#1e293b 30%,#334155 45%,#1e293b 60%);background-size:250% 100%;animation:cardShimmer 1.5s ease-in-out infinite;touch-action:pan-x pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+.ld-image-viewport::-webkit-scrollbar{display:none}
+.ld-image-viewport img{display:block;width:100%;height:auto;transform-origin:0 0;transition:width .15s ease,opacity .25s ease;opacity:0}
+.ld-image-viewport img.loaded{opacity:1}
+.ld-zoom-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:9px 14px;border-bottom:1px solid #f1f5f9}
+.ld-zoom-btn{width:28px;height:28px;border-radius:50%;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;font-weight:700;color:#475569;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:opacity .15s}
+.ld-zoom-btn:active{transform:scale(0.88)}
+.ld-zoom-btn.ld-disabled{opacity:0.35;pointer-events:none}
+.ld-zoom-pct{font-size:12.5px;font-weight:700;color:#334155;min-width:40px;text-align:center}
+.ld-zoom-reset{font-size:11.5px;color:#2563eb;font-weight:700;cursor:pointer;margin-left:2px}
+.ld-tags{display:flex;flex-wrap:wrap;gap:6px;padding:11px 14px}
+.ld-actions{display:flex;gap:8px;padding:2px 14px 14px}
+.ld-btn{flex:1;height:42px;border-radius:12px;border:none;font-size:13.5px;font-weight:700;cursor:pointer}
+.ld-btn-primary{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,0.35)}
+.ld-btn-secondary{background:#f1f5f9;color:#475569}
+.ld-btn:active{transform:scale(0.96)}
 .modal-title{font-size:14px;font-weight:700;margin-bottom:10px;text-align:center;color:#0f172a}
 .modal-input{width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;font-size:12px;margin-bottom:8px;outline:none;background:#f8fafc}
 .modal-btn-group{display:flex;gap:6px;margin-top:8px}
@@ -694,6 +712,29 @@ body{
     </div>
 </div>
 
+<div class="modal-overlay" id="layoutDetailModal">
+    <div class="modal-content ld-content">
+        <div class="ld-header">
+            <div class="ld-title" id="ldTitle"></div>
+            <span class="close-modal-x" onclick="closeLayoutDetail()">✕</span>
+        </div>
+        <div class="ld-image-viewport" id="ldViewport">
+            <img id="ldImage" src="" alt="" onload="this.classList.add('loaded')" ondblclick="ldToggleZoom()"/>
+        </div>
+        <div class="ld-zoom-bar">
+            <span class="ld-zoom-btn" onclick="ldZoom(-10)">−</span>
+            <span class="ld-zoom-pct" id="ldZoomPct">100%</span>
+            <span class="ld-zoom-btn" onclick="ldZoom(10)">＋</span>
+            <span class="ld-zoom-reset" onclick="ldZoomReset()">重置</span>
+        </div>
+        <div class="ld-tags" id="ldTags"></div>
+        <div class="ld-actions">
+            <button class="ld-btn ld-btn-primary" id="ldOpenBtn">一键打开</button>
+            <button class="ld-btn ld-btn-secondary" id="ldCopyBtn">复制链接</button>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay bottom-sheet" id="advancedFilterModal">
     <div class="modal-content">
         <div class="modal-title" style="display:flex;align-items:center;justify-content:space-between;">
@@ -718,7 +759,6 @@ const ICON_EYE = '<svg class="card-stat-icon" viewBox="0 0 24 24"><path d="M12 4
 const ICON_DOWNLOAD = '<svg class="card-stat-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>';
 
 let allLayoutsCache=[], activeQueryTags=[], readyToUploadFile=null, pendingStarData=null, editingObjectId=null, existingImageUrl='';
-let layoutViewer=null, starLayoutViewer=null;
 let currentSlideIndex = 0;
 
 function escapeHtml(str) {
@@ -959,8 +999,8 @@ function renderLayoutCard(item, isStarPage) {
     let downloads = item.downloads !== undefined ? item.downloads : 0;
 
     return `<div class="layout-card" data-objid="${escapeHtml(objId)}">
-        <div class="card-img-wrapper">
-            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')"/>
+        <div class="card-img-wrapper" onclick="openLayoutDetail('${escapeHtml(objId)}','${escapeHtml(linkStr)}',${isStarPage?'true':'false'})">
+            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')" onclick="openLayoutDetail('${escapeHtml(objId)}','${escapeHtml(linkStr)}',${isStarPage?'true':'false'})"/>
             <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${escapeHtml(linkStr)}')`:`openStarModal('${escapeHtml(imgUrl)}','${escapeHtml(titleStr)}','${escapeHtml(linkStr)}')`}">${favIconSvg(isStarred)}</span>
             
             <div class="card-stats-bar">
@@ -986,6 +1026,72 @@ function renderLayoutCard(item, isStarPage) {
     </div>`;
 }
 
+// ===== 阵型详情弹窗（大图 + 标题 + 标签 + 缩放 + 一键打开/复制链接） =====
+let ldZoomLevel = 100;
+let ldCurrentItem = null;
+
+function openLayoutDetail(objId, linkKey, isStar){
+    let item;
+    if(isStar){
+        const stars = JSON.parse(localStorage.getItem('myStars')||'[]');
+        item = stars.find(s=>s.link===linkKey);
+    } else {
+        item = allLayoutsCache.find(i=>i.objectId===objId);
+    }
+    if(!item) return;
+    ldCurrentItem = item;
+
+    const imgUrl = item.imageUrl || item.img || '';
+    const tags = item.tags || [];
+    const rawTitle = (item.title||'').trim();
+    const titleStr = (rawTitle && rawTitle!=='未命名阵型') ? rawTitle : (tags.length ? tags.slice(0,2).join(' · ') : '未命名阵型');
+
+    document.getElementById('ldTitle').textContent = titleStr;
+    const ldImgEl = document.getElementById('ldImage');
+    ldImgEl.classList.remove('loaded');
+    ldImgEl.src = imgUrl;
+    document.getElementById('ldTags').innerHTML = tags.map(t=>`<span class="tag ${getTagClass(t)}">${escapeHtml(t)}</span>`).join('');
+
+    ldZoomLevel = 100;
+    updateLdZoom();
+    document.getElementById('ldViewport').scrollTop = 0;
+    document.getElementById('ldViewport').scrollLeft = 0;
+
+    document.getElementById('ldOpenBtn').onclick = () => {
+        handleCardAction(item.objectId||'', item.link||'', 'open');
+    };
+    document.getElementById('ldCopyBtn').onclick = () => {
+        handleCardAction(item.objectId||'', item.link||'', 'copy');
+    };
+
+    if(item.objectId) recordStatIncrement(item.objectId, 'views');
+
+    document.getElementById('layoutDetailModal').classList.add('active');
+}
+function closeLayoutDetail(){
+    document.getElementById('layoutDetailModal').classList.remove('active');
+}
+const LD_ZOOM_MIN = 50, LD_ZOOM_MAX = 300;
+function ldZoom(delta){
+    ldZoomLevel = Math.min(LD_ZOOM_MAX, Math.max(LD_ZOOM_MIN, ldZoomLevel + delta));
+    updateLdZoom();
+}
+function ldZoomReset(){
+    ldZoomLevel = 100;
+    updateLdZoom();
+}
+function ldToggleZoom(){
+    ldZoomLevel = ldZoomLevel > 100 ? 100 : 200;
+    updateLdZoom();
+}
+function updateLdZoom(){
+    document.getElementById('ldImage').style.width = ldZoomLevel + '%';
+    document.getElementById('ldZoomPct').textContent = ldZoomLevel + '%';
+    const btns = document.querySelectorAll('.ld-zoom-btn');
+    btns[0].classList.toggle('ld-disabled', ldZoomLevel <= LD_ZOOM_MIN);
+    btns[1].classList.toggle('ld-disabled', ldZoomLevel >= LD_ZOOM_MAX);
+}
+
 function renderLayouts(){
     let display=allLayoutsCache.filter(item=>{
         return activeQueryTags.length?activeQueryTags.every(t=>item.tags.includes(t)):true;
@@ -996,25 +1102,6 @@ function renderLayouts(){
         return;
     }
     gridContainer.innerHTML=display.map(item=>renderLayoutCard(item, false)).join('');
-
-    if(!layoutViewer) {
-        layoutViewer = new Viewer(gridContainer,{
-            filter(i){return i.classList.contains('preview-image')},
-            toolbar:false,
-            navbar:false,
-            view(e) {
-                // 注意：e.detail.image 是 Viewer.js 内部克隆出来的展示图片，不带自定义 data-id 属性；
-                // 真正带 data-id 的是原始缩略图 e.detail.originalImage，必须用它才能正确取到 id
-                const targetImg = e.detail.originalImage;
-                const id = targetImg ? targetImg.getAttribute('data-id') : null;
-                if(id) {
-                    recordStatIncrement(id, 'views');
-                }
-            }
-        });
-    } else {
-        layoutViewer.update();
-    }
     if(currentSlideIndex===0) updateSliderHeight(0);
 }
 
@@ -1027,23 +1114,6 @@ function renderMyStarsPage(){
         return;
     }
     starGridContainer.innerHTML=myStars.map(item=>renderLayoutCard(item, true)).join('');
-    if(!starLayoutViewer) {
-        starLayoutViewer = new Viewer(starGridContainer,{
-            filter(i){return i.classList.contains('preview-image')},
-            toolbar:false,
-            navbar:false,
-            view(e) {
-                // 同上：必须用 originalImage 才能取到自定义的 data-id 属性
-                const targetImg = e.detail.originalImage;
-                const id = targetImg ? targetImg.getAttribute('data-id') : null;
-                if(id) {
-                    recordStatIncrement(id, 'views');
-                }
-            }
-        });
-    } else {
-        starLayoutViewer.update();
-    }
     updateSliderHeight(2);
 }
 
