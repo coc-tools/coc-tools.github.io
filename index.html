@@ -364,28 +364,47 @@ body{
 
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.45);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center}
 .modal-overlay.active{display:flex}
+#starModal{z-index:1001}
 .modal-content{background:#fff;width:90%;max-width:340px;border-radius:20px;padding:16px 14px;box-shadow:0 16px 36px rgba(0,0,0,0.12);max-height:85vh;overflow-y:auto;position:relative}
 .bottom-sheet{align-items:flex-end}
 .bottom-sheet .modal-content{border-radius:20px 20px 0 0;width:100%;max-width:440px;margin:0 auto;padding-bottom:calc(20px + env(safe-area-inset-bottom))}
 
-.ld-content{padding:0;overflow:hidden;max-width:400px;}
-.ld-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px 10px}
-.ld-title{font-size:14px;font-weight:800;color:#1e293b;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ld-image-viewport{width:100%;aspect-ratio:16/10;overflow:auto;background:linear-gradient(100deg,#1e293b 30%,#334155 45%,#1e293b 60%);background-size:250% 100%;animation:cardShimmer 1.5s ease-in-out infinite;touch-action:pan-x pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+.ld-content{padding:0;overflow:hidden;max-width:440px;background:#15192a;border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -10px 40px rgba(0,0,0,0.4)}
+.ld-drag-handle{width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.25);margin:10px auto 2px}
+.ld-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:10px 16px 14px}
+.ld-header-text{min-width:0;flex:1}
+.ld-title{font-size:19px;font-weight:800;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ld-subtitle{font-size:12px;color:#94a3b8;margin-top:3px;display:flex;align-items:center;gap:5px}
+.ld-subtitle svg{width:12px;height:12px;fill:currentColor;vertical-align:-1.5px}
+.ld-header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;padding-top:2px}
+.ld-icon-btn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#cbd5e1;cursor:pointer;transition:transform .15s}
+.ld-icon-btn svg{width:19px;height:19px}
+.ld-icon-btn:active{transform:scale(0.85)}
+.ld-icon-btn.ld-fav-active{color:#f87171}
+
+.ld-image-viewport{position:relative;width:calc(100% - 28px);margin:0 14px;min-height:120px;max-height:60vh;overflow:auto;border-radius:16px;background:linear-gradient(100deg,#1e293b 30%,#334155 45%,#1e293b 60%);background-size:250% 100%;animation:cardShimmer 1.5s ease-in-out infinite;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch}
 .ld-image-viewport::-webkit-scrollbar{display:none}
 .ld-image-viewport img{display:block;width:100%;height:auto;transform-origin:0 0;transition:width .15s ease,opacity .25s ease;opacity:0}
 .ld-image-viewport img.loaded{opacity:1}
-.ld-zoom-bar{display:flex;align-items:center;justify-content:center;gap:14px;padding:9px 14px;border-bottom:1px solid #f1f5f9}
-.ld-zoom-btn{width:28px;height:28px;border-radius:50%;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;font-weight:700;color:#475569;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:opacity .15s}
-.ld-zoom-btn:active{transform:scale(0.88)}
-.ld-zoom-btn.ld-disabled{opacity:0.35;pointer-events:none}
-.ld-zoom-pct{font-size:12.5px;font-weight:700;color:#334155;min-width:40px;text-align:center}
-.ld-zoom-reset{font-size:11.5px;color:#2563eb;font-weight:700;cursor:pointer;margin-left:2px}
-.ld-tags{display:flex;flex-wrap:wrap;gap:6px;padding:11px 14px}
-.ld-actions{display:flex;gap:8px;padding:2px 14px 14px}
-.ld-btn{flex:1;height:42px;border-radius:12px;border:none;font-size:13.5px;font-weight:700;cursor:pointer}
-.ld-btn-primary{background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;box-shadow:0 4px 14px rgba(124,58,237,0.35)}
-.ld-btn-secondary{background:#f1f5f9;color:#475569}
+.ld-hint-overlay{position:absolute;left:10px;bottom:9px;font-size:10.5px;color:rgba(255,255,255,0.75);text-shadow:0 1px 3px rgba(0,0,0,0.6);pointer-events:none;z-index:2}
+.ld-zoom-pill{position:absolute;right:9px;bottom:9px;display:flex;align-items:center;gap:7px;background:rgba(15,23,42,0.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.15);border-radius:999px;padding:5px 6px 5px 11px;z-index:2}
+.ld-zoom-pill span:first-child{font-size:11.5px;font-weight:700;color:#fff}
+.ld-zoom-reset-icon{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ld-zoom-reset-icon svg{width:12px;height:12px;fill:#fff}
+.ld-zoom-reset-icon:active{transform:scale(0.85)}
+
+.ld-tags{display:flex;flex-wrap:wrap;gap:7px;padding:14px 14px 4px}
+.ld-tag-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-size:11.5px;font-weight:700}
+.ld-tag-pill.tag-purple{background:rgba(167,139,250,0.18);color:#c4b5fd}
+.ld-tag-pill.tag-green{background:rgba(52,211,153,0.18);color:#6ee7b7}
+.ld-tag-pill.tag-blue{background:rgba(96,165,250,0.18);color:#93c5fd}
+.ld-tag-pill.tag-orange{background:rgba(251,191,36,0.18);color:#fcd34d}
+
+.ld-actions{display:flex;gap:9px;padding:14px 14px 16px}
+.ld-btn{flex:1;height:46px;border-radius:14px;border:none;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.ld-btn svg{width:16px;height:16px}
+.ld-btn-primary{background:linear-gradient(135deg,#818cf8,#6366f1);color:#fff;box-shadow:0 6px 18px rgba(99,102,241,0.4)}
+.ld-btn-secondary{background:rgba(255,255,255,0.08);color:#e2e8f0;border:1px solid rgba(255,255,255,0.12)}
 .ld-btn:active{transform:scale(0.96)}
 .modal-title{font-size:14px;font-weight:700;margin-bottom:10px;text-align:center;color:#0f172a}
 .modal-input{width:100%;padding:8px 10px;border:1px solid #cbd5e1;border-radius:10px;font-size:12px;margin-bottom:8px;outline:none;background:#f8fafc}
@@ -712,25 +731,40 @@ body{
     </div>
 </div>
 
-<div class="modal-overlay" id="layoutDetailModal">
+<div class="modal-overlay bottom-sheet ld-overlay" id="layoutDetailModal">
     <div class="modal-content ld-content">
+        <div class="ld-drag-handle"></div>
         <div class="ld-header">
-            <div class="ld-title" id="ldTitle"></div>
-            <span class="close-modal-x" onclick="closeLayoutDetail()">✕</span>
+            <div class="ld-header-text">
+                <div class="ld-title" id="ldTitle"></div>
+                <div class="ld-subtitle" id="ldSubtitle"></div>
+            </div>
+            <div class="ld-header-actions">
+                <span class="ld-icon-btn" id="ldFavBtn" onclick="ldToggleFav()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </span>
+                <span class="ld-icon-btn" onclick="ldShare()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                </span>
+                <span class="ld-icon-btn" onclick="closeLayoutDetail()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </span>
+            </div>
         </div>
         <div class="ld-image-viewport" id="ldViewport">
             <img id="ldImage" src="" alt="" onload="this.classList.add('loaded')" ondblclick="ldToggleZoom()"/>
-        </div>
-        <div class="ld-zoom-bar">
-            <span class="ld-zoom-btn" onclick="ldZoom(-10)">−</span>
-            <span class="ld-zoom-pct" id="ldZoomPct">100%</span>
-            <span class="ld-zoom-btn" onclick="ldZoom(10)">＋</span>
-            <span class="ld-zoom-reset" onclick="ldZoomReset()">重置</span>
+            <div class="ld-hint-overlay">双指缩放 · 双击放大</div>
+            <div class="ld-zoom-pill">
+                <span id="ldZoomPct">100%</span>
+                <span class="ld-zoom-reset-icon" onclick="ldZoomReset()">
+                    <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.75 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                </span>
+            </div>
         </div>
         <div class="ld-tags" id="ldTags"></div>
         <div class="ld-actions">
-            <button class="ld-btn ld-btn-primary" id="ldOpenBtn">一键打开</button>
-            <button class="ld-btn ld-btn-secondary" id="ldCopyBtn">复制链接</button>
+            <button class="ld-btn ld-btn-primary" id="ldOpenBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>一键打开</button>
+            <button class="ld-btn ld-btn-secondary" id="ldCopyBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制链接</button>
         </div>
     </div>
 </div>
@@ -750,7 +784,7 @@ body{
 </div>
 
 <script>
-Bmob.initialize("7d02e5a27eb27ee9","123456");
+Bmob.initialize("728799204b06f685","fU2yv6FvVhtknZSs");
 const IMGBB_API_KEY="a2062137421eb1609a508bff675756e1";
 const isAndroid=/android/i.test(navigator.userAgent);
 
@@ -953,12 +987,14 @@ document.getElementById('confirmStarBtn').onclick=()=>{
     document.getElementById('starModal').classList.remove('active'); 
     renderLayouts();
     renderMyStarsPage();
+    if(typeof ldRefreshFavIcon==='function') ldRefreshFavIcon();
 }
 function removeStar(link){
     let stars=JSON.parse(localStorage.getItem('myStars')||'[]'); stars=stars.filter(i=>i.link!==link);
     localStorage.setItem('myStars',JSON.stringify(stars)); showToast('已移出收藏'); 
     renderLayouts();
     renderMyStarsPage();
+    if(typeof ldRefreshFavIcon==='function') ldRefreshFavIcon();
 }
 
 const gridContainer=document.getElementById('gridContainer');
@@ -970,7 +1006,7 @@ function loadCloudLayouts(){
         allLayoutsCache=res.map(i=>({
             objectId:i.objectId,
             title:i.title,
-            tags:i.tags||[],
+            tags:(Array.isArray(i.tags)?i.tags:(typeof i.tags==='string'?i.tags.split(/[\s,，、]+/).filter(Boolean):[])),
             imageUrl:i.imageUrl,
             link:i.link,
             views:Number(i.views) || 0,
@@ -979,6 +1015,18 @@ function loadCloudLayouts(){
         }));
         document.getElementById('tab-all').innerText = `全部(${allLayoutsCache.length})`;
         renderLayouts();
+    }).catch(err=>{
+        console.error('加载阵型数据失败：', err);
+        const gridEl = document.getElementById('gridContainer');
+        if(gridEl){
+            gridEl.innerHTML = `<div class="empty-state" style="padding:40px 0;color:#cbd5e1;grid-column:1/-1;">
+                <div style="font-size:28px;margin-bottom:8px;">(╥﹏╥)</div>
+                <div style="font-size:12px;color:#94a3b8;margin-bottom:6px;">内容加载失败，请检查网络或稍后再试</div>
+                <div style="font-size:11px;color:#ef4444;margin-bottom:12px;word-break:break-all;padding:0 16px;">错误信息：${escapeHtml(String((err && (err.message || err.code)) || JSON.stringify(err) || '未知'))}</div>
+                <button onclick="loadCloudLayouts()" style="padding:7px 18px;border-radius:999px;border:1px solid #cbd5e1;background:#fff;color:#2563eb;font-size:12px;font-weight:700;">重新加载</button>
+            </div>`;
+        }
+        if(currentSlideIndex===0) updateSliderHeight(0);
     });
 }
 loadCloudLayouts();
@@ -1026,9 +1074,55 @@ function renderLayoutCard(item, isStarPage) {
     </div>`;
 }
 
-// ===== 阵型详情弹窗（大图 + 标题 + 标签 + 缩放 + 一键打开/复制链接） =====
+// ===== 阵型详情弹窗（大图 + 标题 + 标签 + 双指缩放 + 收藏/分享 + 一键打开/复制链接） =====
 let ldZoomLevel = 100;
 let ldCurrentItem = null;
+
+function getTagIcon(t){
+    if(t==='蛋糕投掷器') return '🎂';
+    if(t==='火热蜡烛') return '🕯️';
+    if(t==='英雄猎台') return '🎯';
+    if(['双狂暴','一狂一隐','一狂一毒'].includes(t)) return '⚡';
+    if(['双隐身','一隐一毒'].includes(t)) return '🫥';
+    if(t==='双毒药') return '🧪';
+    if(['联赛阵型','传奇杯','世锦赛','金票赛'].includes(t)) return '🏆';
+    if(t==='部落战') return '⚔️';
+    if(t==='护资源') return '🛡️';
+    if(t==='防三星') return '⭐';
+    if(t.includes('本')) return '🏠';
+    return '🔖';
+}
+
+function ldIsStarred(link){
+    const myStars = JSON.parse(localStorage.getItem('myStars')||'[]');
+    return myStars.some(s=>s.link===link);
+}
+function ldRefreshFavIcon(){
+    if(!ldCurrentItem) return;
+    const link = ldCurrentItem.link||'';
+    document.getElementById('ldFavBtn').classList.toggle('ld-fav-active', ldIsStarred(link));
+}
+function ldToggleFav(){
+    if(!ldCurrentItem) return;
+    const { link, title } = ldCurrentItem;
+    const imgUrl = ldCurrentItem.imageUrl || ldCurrentItem.img || '';
+    if(ldIsStarred(link)){
+        removeStar(link);
+    } else {
+        openStarModal(imgUrl, title||'未命名阵型', link);
+    }
+    setTimeout(ldRefreshFavIcon, 0);
+}
+async function ldShare(){
+    if(!ldCurrentItem) return;
+    const link = ldCurrentItem.link||'';
+    const title = ldCurrentItem.title||'COC阵型';
+    if(navigator.share){
+        try{ await navigator.share({title, url: link}); }catch(e){}
+    } else {
+        copyLayoutLink(link);
+    }
+}
 
 function openLayoutDetail(objId, linkKey, isStar){
     let item;
@@ -1050,7 +1144,20 @@ function openLayoutDetail(objId, linkKey, isStar){
     const ldImgEl = document.getElementById('ldImage');
     ldImgEl.classList.remove('loaded');
     ldImgEl.src = imgUrl;
-    document.getElementById('ldTags').innerHTML = tags.map(t=>`<span class="tag ${getTagClass(t)}">${escapeHtml(t)}</span>`).join('');
+
+    // 副标题：用真实的上传日期/浏览量/下载量，不编造服务器、大本营等级这类我们没有的数据
+    let timeStr = item.createdAt ? item.createdAt.substring(5,10) : (item.time ? item.time.substring(5,10) : '');
+    let subtitleParts = [];
+    if(timeStr) subtitleParts.push(timeStr);
+    if(item.views !== undefined) subtitleParts.push(`${ICON_EYE} ${item.views||0}`);
+    if(item.downloads !== undefined) subtitleParts.push(`${ICON_DOWNLOAD} ${item.downloads||0}`);
+    document.getElementById('ldSubtitle').innerHTML = subtitleParts.join(' &nbsp;·&nbsp; ');
+
+    document.getElementById('ldTags').innerHTML = tags.map(t=>
+        `<span class="ld-tag-pill ${getTagClass(t)}">${getTagIcon(t)} ${escapeHtml(t)}</span>`
+    ).join('');
+
+    ldRefreshFavIcon();
 
     ldZoomLevel = 100;
     updateLdZoom();
@@ -1072,10 +1179,6 @@ function closeLayoutDetail(){
     document.getElementById('layoutDetailModal').classList.remove('active');
 }
 const LD_ZOOM_MIN = 50, LD_ZOOM_MAX = 300;
-function ldZoom(delta){
-    ldZoomLevel = Math.min(LD_ZOOM_MAX, Math.max(LD_ZOOM_MIN, ldZoomLevel + delta));
-    updateLdZoom();
-}
 function ldZoomReset(){
     ldZoomLevel = 100;
     updateLdZoom();
@@ -1086,11 +1189,36 @@ function ldToggleZoom(){
 }
 function updateLdZoom(){
     document.getElementById('ldImage').style.width = ldZoomLevel + '%';
-    document.getElementById('ldZoomPct').textContent = ldZoomLevel + '%';
-    const btns = document.querySelectorAll('.ld-zoom-btn');
-    btns[0].classList.toggle('ld-disabled', ldZoomLevel <= LD_ZOOM_MIN);
-    btns[1].classList.toggle('ld-disabled', ldZoomLevel >= LD_ZOOM_MAX);
+    document.getElementById('ldZoomPct').textContent = Math.round(ldZoomLevel) + '%';
 }
+
+// 双指缩放手势
+(function setupLdPinchZoom(){
+    const vp = document.getElementById('ldViewport');
+    let pinchStartDist = 0, pinchStartZoom = 100;
+    function dist(touches){
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
+    vp.addEventListener('touchstart', e => {
+        if(e.touches.length === 2){
+            pinchStartDist = dist(e.touches);
+            pinchStartZoom = ldZoomLevel;
+        }
+    }, {passive:true});
+    vp.addEventListener('touchmove', e => {
+        if(e.touches.length === 2 && pinchStartDist > 0){
+            e.preventDefault();
+            const ratio = dist(e.touches) / pinchStartDist;
+            ldZoomLevel = Math.min(LD_ZOOM_MAX, Math.max(LD_ZOOM_MIN, Math.round(pinchStartZoom * ratio)));
+            updateLdZoom();
+        }
+    }, {passive:false});
+    vp.addEventListener('touchend', e => {
+        if(e.touches.length < 2) pinchStartDist = 0;
+    }, {passive:true});
+})();
 
 function renderLayouts(){
     let display=allLayoutsCache.filter(item=>{
