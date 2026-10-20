@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <title>COC阵型收集</title>
 <script src="https://cdn.jsdelivr.net/npm/hydrogen-js-sdk/dist/Bmob-2.2.5.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.6/viewer.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{
@@ -15,7 +17,7 @@ body{
   justify-content:center;
   padding-top:4px;
   overflow-x:hidden;
-  padding-bottom:calc(78px + env(safe-area-inset-bottom))!important;
+  padding-bottom:calc(54px + env(safe-area-inset-bottom))!important;
 }
 .container{max-width:414px;width:100%;padding:6px 10px;overflow:hidden}
 @media (min-width:700px){
@@ -288,51 +290,18 @@ body{
 
 .bottom-dock-bar{
   position:fixed;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:calc(10px + env(safe-area-inset-bottom));
-  width:calc(100% - 20px);
-  max-width:460px;
-  height:56px;
-  padding:0 6px;
-  border-radius:24px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.38));
-  backdrop-filter:blur(22px) saturate(180%);
-  -webkit-backdrop-filter:blur(22px) saturate(180%);
-  border:1px solid rgba(255,255,255,0.65);
-  box-shadow:
-    0 10px 30px rgba(15,23,42,0.16),
-    0 1px 0 rgba(255,255,255,0.85) inset,
-    0 -1px 0 rgba(15,23,42,0.04) inset;
+  bottom:0;
+  left:0;
+  right:0;
+  height:calc(54px + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(255,255,255,0.96);
+  backdrop-filter:blur(10px);
+  border-top:1px solid #e2e8f0;
   display:flex;
-  align-items:center;
   justify-content:space-around;
+  align-items:center;
   z-index:999;
-  overflow:hidden;
-}
-.bottom-dock-bar::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;
-  height:52%;
-  background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0));
-  pointer-events:none;
-}
-.dock-liquid-indicator{
-  position:absolute;
-  top:6px;
-  bottom:6px;
-  left:6px;
-  width:0;
-  border-radius:18px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
-  box-shadow:
-    0 2px 8px rgba(15,23,42,0.14),
-    0 1px 0 rgba(255,255,255,0.95) inset,
-    0 0 0 1px rgba(255,255,255,0.55) inset;
-  transition:left .4s cubic-bezier(.34,1.56,.64,1), width .4s cubic-bezier(.34,1.56,.64,1);
-  z-index:0;
-  pointer-events:none;
 }
 .dock-item{
   flex:1;
@@ -345,11 +314,8 @@ body{
   user-select:none;
   padding:6px 2px;
   min-width:0;
-  position:relative;
-  z-index:1;
-  transition:transform .15s ease;
 }
-.dock-item:active{transform:scale(0.9)}
+.dock-liquid-indicator{display:none}
 .dock-label{
   font-size:12px;
   font-weight:600;
@@ -499,6 +465,7 @@ body{
 .input-clear-clan{position:absolute;right:34px;top:50%;transform:translateY(-50%);font-size:12px;color:#94a3b8;cursor:pointer;padding:3px;display:none}
 .input-clear-clan.show{display:block}
 .modal-divider{height:1px;background:#e2e8f0;margin:12px 0 10px;border-radius:1px}
+
 </style>
 </head>
 <body>
@@ -793,6 +760,7 @@ const ICON_EYE = '<svg class="card-stat-icon" viewBox="0 0 24 24"><path d="M12 4
 const ICON_DOWNLOAD = '<svg class="card-stat-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>';
 
 let allLayoutsCache=[], activeQueryTags=[], readyToUploadFile=null, pendingStarData=null, editingObjectId=null, existingImageUrl='';
+let layoutViewer=null, starLayoutViewer=null;
 let currentSlideIndex = 0;
 
 function escapeHtml(str) {
@@ -960,7 +928,7 @@ function recordStatIncrement(objId, field) {
     try {
         const query = Bmob.Query('LayoutData');
         query.get(objId).then(item => {
-            item.set(field, (Number(item[field]) || 0) + 1);
+            item.set(field, String((Number(item[field]) || 0) + 1));
             return item.save();
         }).catch(err => {
             console.error('统计写入异常:', err);
@@ -1047,8 +1015,8 @@ function renderLayoutCard(item, isStarPage) {
     let downloads = item.downloads !== undefined ? item.downloads : 0;
 
     return `<div class="layout-card" data-objid="${escapeHtml(objId)}">
-        <div class="card-img-wrapper" onclick="openLayoutDetail('${escapeHtml(objId)}','${escapeHtml(linkStr)}',${isStarPage?'true':'false'})">
-            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')" onclick="openLayoutDetail('${escapeHtml(objId)}','${escapeHtml(linkStr)}',${isStarPage?'true':'false'})"/>
+        <div class="card-img-wrapper">
+            <img class="preview-image" src="${escapeHtml(imgUrl)}" data-id="${escapeHtml(objId)}" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.classList.add('loaded')"/>
             <span class="img-fav-btn ${isStarred?'active':''}" onclick="event.stopPropagation();${isStarred?`removeStar('${escapeHtml(linkStr)}')`:`openStarModal('${escapeHtml(imgUrl)}','${escapeHtml(titleStr)}','${escapeHtml(linkStr)}')`}">${favIconSvg(isStarred)}</span>
             
             <div class="card-stats-bar">
@@ -1230,6 +1198,20 @@ function renderLayouts(){
         return;
     }
     gridContainer.innerHTML=display.map(item=>renderLayoutCard(item, false)).join('');
+    if(!layoutViewer) {
+        layoutViewer = new Viewer(gridContainer,{
+            filter(i){return i.classList.contains('preview-image')},
+            toolbar:false,
+            navbar:false,
+            view(e) {
+                const targetImg = e.detail.originalImage;
+                const id = targetImg ? targetImg.getAttribute('data-id') : null;
+                if(id) recordStatIncrement(id, 'views');
+            }
+        });
+    } else {
+        layoutViewer.update();
+    }
     if(currentSlideIndex===0) updateSliderHeight(0);
 }
 
@@ -1242,6 +1224,20 @@ function renderMyStarsPage(){
         return;
     }
     starGridContainer.innerHTML=myStars.map(item=>renderLayoutCard(item, true)).join('');
+    if(!starLayoutViewer) {
+        starLayoutViewer = new Viewer(starGridContainer,{
+            filter(i){return i.classList.contains('preview-image')},
+            toolbar:false,
+            navbar:false,
+            view(e) {
+                const targetImg = e.detail.originalImage;
+                const id = targetImg ? targetImg.getAttribute('data-id') : null;
+                if(id) recordStatIncrement(id, 'views');
+            }
+        });
+    } else {
+        starLayoutViewer.update();
+    }
     updateSliderHeight(2);
 }
 
@@ -1391,20 +1387,22 @@ document.getElementById('modalConfirm').onclick=()=>{
             loadCloudLayouts();
             slideToPage(0);
         };
-        const onFail=()=>{
-            showToast('保存失败');
+        const onFail=(err)=>{
+            const msg = (err && (err.message || err.error || err.code)) || JSON.stringify(err) || '未知错误';
+            showToast('保存失败：' + String(msg).slice(0,80));
+            console.error('保存失败:', err);
             document.getElementById('modalConfirm').innerText=editingObjectId?'保存修改':'立即保存发布';
             document.getElementById('modalConfirm').disabled=false;
         };
         if(editingObjectId){
             Bmob.Query('LayoutData').get(editingObjectId).then(obj=>{
-                obj.set("title",title);obj.set("tags",finalTags);obj.set("imageUrl",imageUrl);obj.set("link",link);
+                obj.set("title",title);obj.set("tags",finalTags.join(" "));obj.set("imageUrl",imageUrl);obj.set("link",link);
                 return obj.save();
             }).then(afterSave).catch(onFail);
         }else{
             const q=Bmob.Query('LayoutData');
-            q.set("title",title);q.set("tags",finalTags);q.set("imageUrl",imageUrl);q.set("link",link);
-            q.set("views", 0); q.set("downloads", 0);
+            q.set("title",title);q.set("tags",finalTags.join(" "));q.set("imageUrl",imageUrl);q.set("link",link);
+            q.set("views", "0"); q.set("downloads", "0");
             q.save().then(afterSave).catch(onFail);
         }
     };
@@ -1414,9 +1412,11 @@ document.getElementById('modalConfirm').onclick=()=>{
         fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`,{method:'POST',body:fd})
         .then(r=>r.json()).then(res=>{
             if(res.success) finishSave(res.data.url);
-            else throw new Error();
-        }).catch(()=>{
-            showToast('图床上传失败，请重试');
+            else throw new Error((res.error && res.error.message) || 'imgbb返回失败');
+        }).catch(err=>{
+            const msg = (err && err.message) || String(err) || '未知错误';
+            showToast('图床上传失败：' + String(msg).slice(0,80));
+            console.error('图床上传失败:', err);
             document.getElementById('modalConfirm').innerText=editingObjectId?'保存修改':'立即保存发布';
             document.getElementById('modalConfirm').disabled=false;
         });
